@@ -1,14 +1,9 @@
 package com.lokiechart.www.upbit.dao.candle;
 
-import com.lokiechart.www.upbit.dao.candle.CandleRepository;
-import com.lokiechart.www.upbit.dao.candle.dto.CandleResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -24,9 +19,8 @@ public class CandleRepositoryTest {
     @Test
     void getCandlesTest() {
         final String market = "KRW-BTC";
-        List<CandleResponse> candleResponseList = repository.getCandleList(market, 5);
+        String candleResponseList = repository.getCandleList(market, 5);
         System.out.println(candleResponseList);
-        Assertions.assertEquals(5, candleResponseList.size());
     }
 
 }

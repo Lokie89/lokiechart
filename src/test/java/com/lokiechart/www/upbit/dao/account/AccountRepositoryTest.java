@@ -20,6 +20,7 @@ class AccountRepositoryTest {
     @Test
     void getAssetsTest() {
         String account = "tjdfhrdk10@naver.com";
-        repository.getAssets(account);
+        String assetStr = repository.getAssets(account);
+        System.out.println(assetStr);
     }
 }
