@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 @PropertySource("classpath:application-secret.yml")
 @Component
-public class TokenHeader {
+public class UpbitHeader implements ApiHeader {
     @Value("${accessKey}")
     private String accessKey;
     @Value("${secretKey}")
