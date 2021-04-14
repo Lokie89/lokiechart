@@ -1,7 +1,8 @@
 package com.lokiechart.www.upbit.dao.account.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author SeongRok.Oh
@@ -18,9 +19,6 @@ import lombok.*;
  */
 @ToString
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class AssetResponse {
     private String currency;
     private Double balance;
