@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.service.candle;
+package com.lokiechart.www.upbit.dao.candle;
 
 import com.lokiechart.www.upbit.dao.candle.CandleRepository;
 import com.lokiechart.www.upbit.dao.candle.dto.CandleResponse;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @DisplayName("캔들 서비스 테스트")
 @SpringBootTest
-public class CandleServiceTest {
+public class CandleRepositoryTest {
     @Autowired
     CandleRepository repository;
 
