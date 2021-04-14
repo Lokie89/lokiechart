@@ -1,6 +1,6 @@
 package com.lokiechart.www.upbit.service.market;
 
-import com.lokiechart.www.upbit.dao.market.dto.CoinResponse;
+import com.lokiechart.www.upbit.dao.market.dto.MarketResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class MarketServiceTest {
     @DisplayName("코인 목록 가져오기 테스트")
     @Test
     void getCoinListTest() {
-        List<CoinResponse> coinResponseList = marketService.getAll();
-        Assertions.assertTrue(coinResponseList.stream().anyMatch(coinResponse -> coinResponse.getKorean().equals("비트코인")));
+        List<MarketResponse> marketResponseList = marketService.getAll();
+        Assertions.assertTrue(marketResponseList.stream().anyMatch(marketResponse -> marketResponse.getKorean().equals("비트코인")));
     }
 }

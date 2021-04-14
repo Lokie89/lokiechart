@@ -3,7 +3,7 @@ package com.lokiechart.www.upbit.dao.market;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokiechart.www.upbit.dao.CallByApi;
-import com.lokiechart.www.upbit.dao.market.dto.CoinResponse;
+import com.lokiechart.www.upbit.dao.market.dto.MarketResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -22,10 +22,10 @@ public class MarketRepository {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final CallByApi api;
 
-    public List<CoinResponse> getCoinList() throws JsonProcessingException {
+    public List<MarketResponse> getCoinList() throws JsonProcessingException {
         String jsonArray = api.get(prefixUrl + "all", HttpHeaders.EMPTY);
-        List<CoinResponse> coinResponses = Arrays.asList(objectMapper.readValue(jsonArray, CoinResponse[].class));
-        System.out.println(coinResponses);
-        return coinResponses;
+        List<MarketResponse> marketRespons = Arrays.asList(objectMapper.readValue(jsonArray, MarketResponse[].class));
+        System.out.println(marketRespons);
+        return marketRespons;
     }
 }

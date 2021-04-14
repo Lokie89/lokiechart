@@ -1,7 +1,7 @@
 package com.lokiechart.www.upbit.service.market;
 
 import com.lokiechart.www.upbit.dao.market.MarketRepository;
-import com.lokiechart.www.upbit.dao.market.dto.CoinResponse;
+import com.lokiechart.www.upbit.dao.market.dto.MarketResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ import java.util.List;
 public class MarketService {
     private final MarketRepository repository;
 
-    public List<CoinResponse> getAll() {
-        List<CoinResponse> bo = null;
+    public List<MarketResponse> getAll() {
+        List<MarketResponse> bo = null;
         try {
             bo = repository.getCoinList();
         } catch (IOException e) {
