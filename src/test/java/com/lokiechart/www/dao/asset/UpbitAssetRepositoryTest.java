@@ -14,13 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 class UpbitAssetRepositoryTest {
 
     @Autowired
-    UpbitAssetRepository repository;
+    AssetRepository upbitAssetRepository;
 
     @DisplayName("자산 정보 가져오기")
     @Test
     void getAssetsTest() {
         String account = "tjdfhrdk10@naver.com";
-        String assetStr = repository.getAssets(account);
+        String assetStr = upbitAssetRepository.getAssets(account);
         System.out.println(assetStr);
     }
 }

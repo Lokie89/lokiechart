@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @RequiredArgsConstructor
 @Component
-public class UpbitAssetRepository {
+public class UpbitAssetRepository implements AssetRepository {
 
     private final ApiHeader upbitHeader;
     private final CallByApi api;

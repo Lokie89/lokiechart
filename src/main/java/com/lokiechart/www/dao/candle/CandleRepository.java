@@ -1,22 +1,9 @@
 package com.lokiechart.www.dao.candle;
 
-import com.lokiechart.www.dao.tunnel.CallByApi;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
-
 /**
  * @author SeongRok.Oh
- * @since 2021/04/14
+ * @since 2021/04/15
  */
-@RequiredArgsConstructor
-@Component
-public class CandleRepository {
-    private final CallByApi api;
-    private final String prefixUrl = "https://api.upbit.com/v1/candles/minutes/";
-
-    public String getCandleList(String market, int count) {
-        final String url = prefixUrl + "3?market=" + market + "&count=" + count;
-        return api.get(url, HttpHeaders.EMPTY);
-    }
+public interface CandleRepository {
+    String getCandles(CandleMinute minute, String market, int candleCount);
 }

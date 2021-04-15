@@ -11,15 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @DisplayName("업비트 마켓 서비스 테스트")
 @SpringBootTest
-class MarketRepositoryTest {
+class UpbitMarketRepositoryTest {
 
     @Autowired
-    MarketRepository repository;
+    MarketRepository upbitMarketRepository;
 
     @DisplayName("코인 목록 가져오기 테스트")
     @Test
     void getCoinListTest() {
-        String coinListStr = repository.getCoinList();
+        String coinListStr = upbitMarketRepository.getMarkets();
         System.out.println(coinListStr);
     }
 }

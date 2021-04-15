@@ -11,15 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @DisplayName("캔들 서비스 테스트")
 @SpringBootTest
-public class CandleRepositoryTest {
+public class UpbitCandleRepositoryTest {
     @Autowired
-    CandleRepository repository;
+    CandleRepository upbitCandleRepository;
 
     @DisplayName("캔들 가져오기 테스트")
     @Test
     void getCandlesTest() {
         final String market = "KRW-BTC";
-        String candleResponseList = repository.getCandleList(market, 5);
+        String candleResponseList = upbitCandleRepository.getCandles(CandleMinute.THIRTY, market, 5);
         System.out.println(candleResponseList);
     }
 
