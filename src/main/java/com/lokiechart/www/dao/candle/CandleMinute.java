@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.dao.candle;
+package com.lokiechart.www.dao.candle;
 
 import lombok.Getter;
 

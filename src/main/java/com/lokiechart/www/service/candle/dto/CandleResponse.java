@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.service.candle.dto;
+package com.lokiechart.www.service.candle.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

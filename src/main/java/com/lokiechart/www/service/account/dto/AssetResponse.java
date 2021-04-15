@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.service.account.dto;
+package com.lokiechart.www.service.account.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

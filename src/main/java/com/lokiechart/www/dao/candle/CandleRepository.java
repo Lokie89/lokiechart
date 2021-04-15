@@ -1,6 +1,6 @@
-package com.lokiechart.www.upbit.dao.candle;
+package com.lokiechart.www.dao.candle;
 
-import com.lokiechart.www.upbit.dao.CallByApi;
+import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

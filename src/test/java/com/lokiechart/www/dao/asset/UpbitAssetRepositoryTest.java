@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.dao.asset;
+package com.lokiechart.www.dao.asset;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @DisplayName("계정 API 테스트")
 @SpringBootTest
-class AssetRepositoryTest {
+class UpbitAssetRepositoryTest {
 
     @Autowired
-    AssetRepository repository;
+    UpbitAssetRepository repository;
 
     @DisplayName("자산 정보 가져오기")
     @Test

@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.dao.candle;
+package com.lokiechart.www.dao.candle;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

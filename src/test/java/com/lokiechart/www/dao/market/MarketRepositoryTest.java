@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.dao.market;
+package com.lokiechart.www.dao.market;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

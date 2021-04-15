@@ -1,7 +1,7 @@
-package com.lokiechart.www.upbit.dao.asset;
+package com.lokiechart.www.dao.asset;
 
-import com.lokiechart.www.upbit.dao.ApiHeader;
-import com.lokiechart.www.upbit.dao.CallByApi;
+import com.lokiechart.www.dao.tunnel.ApiHeader;
+import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @RequiredArgsConstructor
 @Component
-public class AssetRepository {
+public class UpbitAssetRepository {
 
     private final ApiHeader upbitHeader;
     private final CallByApi api;

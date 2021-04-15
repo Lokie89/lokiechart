@@ -1,4 +1,4 @@
-package com.lokiechart.www.upbit.dao;
+package com.lokiechart.www.dao.tunnel;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
