@@ -17,8 +17,8 @@ public class AssetRepository {
     private final CallByApi api;
 
     public String getAssets(String account) {
-        final String serverUrl = "https://api.upbit.com";
-        return api.get(serverUrl + "/v1/accounts", upbitHeader.getHeaders(account));
+        final String url = "https://api.upbit.com/v1/accounts";
+        return api.get(url, upbitHeader.getHeaders(account));
     }
 
 }
