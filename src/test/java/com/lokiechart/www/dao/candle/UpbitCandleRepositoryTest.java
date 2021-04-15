@@ -9,9 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author SeongRok.Oh
  * @since 2021/04/14
  */
-@DisplayName("캔들 서비스 테스트")
+@DisplayName("업비트 캔들 API 테스트")
 @SpringBootTest
-public class UpbitCandleRepositoryTest {
+class UpbitCandleRepositoryTest {
     @Autowired
     CandleRepository upbitCandleRepository;
 

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author SeongRok.Oh
  * @since 2021/04/13
  */
-@DisplayName("계정 API 테스트")
+@DisplayName("업비트 계정 API 테스트")
 @SpringBootTest
 class UpbitAssetRepositoryTest {
 

@@ -18,7 +18,7 @@ public class UpbitAssetRepository implements AssetRepository {
 
     public String getAssets(String account) {
         final String url = "https://api.upbit.com/v1/accounts";
-        return api.get(url, upbitHeader.getHeaders(account));
+        return api.get(url, upbitHeader.getHeaders(account, null));
     }
 
 }
