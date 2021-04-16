@@ -1,5 +1,8 @@
 package com.lokiechart.www.dao.order;
 
+import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
+import com.lokiechart.www.dao.order.dto.UpbitOrderSide;
+import com.lokiechart.www.dao.order.dto.UpbitOrderType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +22,9 @@ class UpbitOrderRepositoryTest {
     @DisplayName("주문 테스트")
     @Test
     void orderTest() {
-//        String result = upbitOrderRepository.order("tjdfhrdk10@naver.com", "KRW-AHT", "bid", 208.0, 24.5, "limit", null);
-//        System.out.println(result);
+        UpbitOrderParameter request = UpbitOrderParameter.builder().market("KRW-AHT").side(UpbitOrderSide.BUY).volume(250.0).price(20.0).orderType(UpbitOrderType.LIMIT).build();
+        String result = upbitOrderRepository.order("tjdfhrdk10@naver.com", request);
+        System.out.println(result);
     }
 
 }

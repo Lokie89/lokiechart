@@ -2,12 +2,13 @@ package com.lokiechart.www.dao.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author SeongRok.Oh
@@ -21,14 +22,8 @@ public class UpbitOrderRepository implements OrderRepository {
     private final ApiHeader upbitHeader;
 
     @Override
-    public String order(String account, String market, String side, Double volume, Double price, String orderType, String identifier) {
-
-        HashMap<String, String> params = new HashMap<>();
-        params.put("market", market);
-        params.put("side", side);
-        params.put("volume", String.valueOf(volume));
-        params.put("price", String.valueOf(price));
-        params.put("ord_type", orderType);
+    public String order(String account, OrderParameter request) {
+        Map params = request.toParameter();
 
         String url = "https://api.upbit.com/v1/orders";
         String mapAsJson = null;

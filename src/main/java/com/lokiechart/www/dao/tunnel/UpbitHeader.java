@@ -31,7 +31,7 @@ public class UpbitHeader implements ApiHeader {
     private String secretKey;
 
 
-    public HttpHeaders getHeaders(String account, Map<String, String> params) {
+    public HttpHeaders getHeaders(String account, Map<String, Object> params) {
         JWTCreator.Builder tokenCreatorBuilder = JWT.create()
                 .withClaim("access_key", accessKey)
                 .withClaim("nonce", UUID.randomUUID().toString());
@@ -55,12 +55,12 @@ public class UpbitHeader implements ApiHeader {
         return headers;
     }
 
-    private void buildParams(JWTCreator.Builder builder, Map<String, String> params) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    private void buildParams(JWTCreator.Builder builder, Map<String, Object> params) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         if (Objects.isNull(params)) {
             return;
         }
         ArrayList<String> queryElements = new ArrayList<>();
-        for (Map.Entry<String, String> entity : params.entrySet()) {
+        for (Map.Entry<String, Object> entity : params.entrySet()) {
             queryElements.add(entity.getKey() + "=" + entity.getValue());
         }
 
