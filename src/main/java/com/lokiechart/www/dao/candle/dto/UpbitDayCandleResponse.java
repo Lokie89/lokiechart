@@ -1,16 +1,16 @@
 package com.lokiechart.www.dao.candle.dto;
 
+/**
+ * @author SeongRok.Oh
+ * @since 2021/04/19
+ */
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-
-/**
- * @author SeongRok.Oh
- * @since 2021/04/19
- */
 
 /**
  * market : 마켓명
@@ -23,11 +23,14 @@ import java.time.LocalDateTime;
  * timestamp : 해당 캔들에서 마지막 틱이 저장된 시각
  * candle_acc_trade_price : 누적 거래 금액
  * candle_acc_trade_volume : 누적 거래량
- * unit : 분 단위(유닛)
+ * prev_closing_price : 전일 종가(UTC 0시 기준)
+ * change_price : 전일 종가 대비 변화 금액
+ * change_rate : 전일 종가 대비 변화량
+ * converted_trade_price : 종가 환산 화폐 단위로 환산된 가격(요청에 convertingPriceUnit 파라미터 없을 시 해당 필드 포함되지 않음.)
  */
 @ToString
 @Getter
-public class UpbitMinuteCandleResponse extends UpbitCandleResponse {
+public class UpbitDayCandleResponse extends UpbitCandleResponse {
 
     @ApiModelProperty(value = "마켓", example = "KRW-BTC")
     private String market;
@@ -67,7 +70,19 @@ public class UpbitMinuteCandleResponse extends UpbitCandleResponse {
     @JsonProperty("candle_acc_trade_volume")
     private Double accTradeVolume;
 
-    @ApiModelProperty(value = "분 단위", example = "30")
-    private Integer unit;
+    @ApiModelProperty(value = "전일 종가(UTC 0시 기준)", example = "73085000")
+    @JsonProperty("prev_closing_price")
+    private Double previousPrice;
 
+    @ApiModelProperty(value = "전일 종가 대비 변화 금액", example = "-1000")
+    @JsonProperty("change_price")
+    private Double changePrice;
+
+    @ApiModelProperty(value = "전일 종가 대비 변화량", example = "-0.02")
+    @JsonProperty("change_rate")
+    private Double changeRate;
+
+    @ApiModelProperty(value = "종가 환산 화폐 단위로 환산된 가격", example = "73100000")
+    @JsonProperty("converted_trade_price")
+    private Double convertedPrice;
 }
