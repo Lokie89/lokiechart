@@ -18,7 +18,6 @@ import java.util.Objects;
  */
 @Builder
 @AllArgsConstructor
-@Getter
 public class UpbitMinuteCandleParameter implements GetParameterUrl {
     @ApiModelProperty(value = "분 단위", required = true, example = "THIRTY")
     @NotNull

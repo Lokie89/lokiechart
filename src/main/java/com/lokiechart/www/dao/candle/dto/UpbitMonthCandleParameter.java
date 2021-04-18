@@ -1,6 +1,8 @@
 package com.lokiechart.www.dao.candle.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +13,8 @@ import java.util.Objects;
  * @author SeongRok.Oh
  * @since 2021/04/19
  */
+@AllArgsConstructor
+@Builder
 public class UpbitMonthCandleParameter implements GetParameterUrl {
 
     @ApiModelProperty(value = "마켓", required = true, example = "KRW-BTC")

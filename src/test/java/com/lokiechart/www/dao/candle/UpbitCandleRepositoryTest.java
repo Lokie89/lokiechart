@@ -1,8 +1,6 @@
 package com.lokiechart.www.dao.candle;
 
-import com.lokiechart.www.dao.candle.dto.CandleResponse;
-import com.lokiechart.www.dao.candle.dto.UpbitMinuteCandleParameter;
-import com.lokiechart.www.dao.candle.dto.UpbitMinuteCandleResponse;
+import com.lokiechart.www.dao.candle.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +16,37 @@ import java.util.List;
 @SpringBootTest
 class UpbitCandleRepositoryTest {
     @Autowired
-    CandleRepository upbitMinuteCandleRepository;
+    CandleRepository upbitCandleRepository;
 
-    @DisplayName("캔들 가져오기 테스트")
+    @DisplayName("분 캔들 가져오기 테스트")
     @Test
-    void getCandlesTest() {
+    void getMinuteCandlesTest() {
         final String market = "KRW-BTC";
-        List<CandleResponse> candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(10).build());
+        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(10).build());
+        System.out.println(candleResponseList);
+    }
+
+    @DisplayName("일 캔들 가져오기 테스트")
+    @Test
+    void getDayCandlesTest() {
+        final String market = "KRW-BTC";
+        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitDayCandleParameter.builder().market(market).count(10).build());
+        System.out.println(candleResponseList);
+    }
+
+    @DisplayName("주 캔들 가져오기 테스트")
+    @Test
+    void getWeekCandlesTest() {
+        final String market = "KRW-BTC";
+        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitWeekCandleParameter.builder().market(market).count(10).build());
+        System.out.println(candleResponseList);
+    }
+
+    @DisplayName("월 캔들 가져오기 테스트")
+    @Test
+    void getMonthCandlesTest() {
+        final String market = "KRW-BTC";
+        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitMonthCandleParameter.builder().market(market).count(10).build());
         System.out.println(candleResponseList);
     }
 
