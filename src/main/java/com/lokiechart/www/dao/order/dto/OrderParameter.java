@@ -7,5 +7,5 @@ import java.util.Map;
  * @since 2021/04/16
  */
 public interface OrderParameter {
-    Map toParameter();
+    Map<String, Object> toParameter();
 }

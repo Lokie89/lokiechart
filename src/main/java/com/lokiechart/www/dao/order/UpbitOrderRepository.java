@@ -23,7 +23,7 @@ public class UpbitOrderRepository implements OrderRepository {
 
     @Override
     public String order(String account, OrderParameter request) {
-        Map params = request.toParameter();
+        Map<String, Object> params = request.toParameter();
 
         String url = "https://api.upbit.com/v1/orders";
         String mapAsJson = null;
