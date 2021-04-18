@@ -18,9 +18,10 @@ public enum CandleMinute {
     ;
 
     @Getter
-    private int num;
+    private int number;
 
-    CandleMinute(int num) {
-        this.num = num;
+    CandleMinute(int number) {
+        this.number = number;
     }
+
 }
