@@ -3,7 +3,7 @@ package com.lokiechart.www.dao.candle;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
-import com.lokiechart.www.dao.candle.dto.UpbitMinuteCandleParameter;
+import com.lokiechart.www.dao.candle.dto.GetParameterUrl;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,14 +17,13 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @Component
-public abstract class UpbitCandleRepository implements CandleRepository {
+public class UpbitCandleRepository implements CandleRepository {
     private final CallByApi api;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<CandleResponse> getCandles(UpbitMinuteCandleParameter parameter) {
-        String response = api.get(getUrl(parameter), HttpHeaders.EMPTY);
+    public List<CandleResponse> getCandles(GetParameterUrl parameter) {
+        String response = api.get(parameter.getUrl(), HttpHeaders.EMPTY);
         return objectMapper.convertValue(response, new TypeReference<>() {});
     }
 
-    protected abstract String getUrl(UpbitMinuteCandleParameter parameter);
 }

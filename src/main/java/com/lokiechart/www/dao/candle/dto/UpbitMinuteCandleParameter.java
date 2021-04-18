@@ -10,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author SeongRok.Oh
@@ -18,11 +19,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Getter
-public class UpbitMinuteCandleParameter {
+public class UpbitMinuteCandleParameter implements GetParameterUrl {
     @ApiModelProperty(value = "분 단위", required = true, example = "THIRTY")
     @NotNull
     private CandleMinute candleMinute;
-    @ApiModelProperty(value = "코인 이름",required = true,example = "KRW-BTC")
+    @ApiModelProperty(value = "마켓", required = true, example = "KRW-BTC")
     @NotEmpty
     private String market;
     @ApiModelProperty(value = "캔들 개수", required = true, example = "20")
@@ -30,4 +31,14 @@ public class UpbitMinuteCandleParameter {
     private int count;
     @ApiModelProperty(value = "마지막 캔들 시각", example = "2018-04-18T10:16:00")
     private LocalDateTime to;
+
+    @Override
+    public String getUrl() {
+        String url = "https://api.upbit.com/v1/candles/minutes/";
+        url += candleMinute.getNumber() + "?market=" + market + "&count=" + count;
+        if (Objects.nonNull(to)) {
+            url += "&to=" + to;
+        }
+        return url;
+    }
 }
