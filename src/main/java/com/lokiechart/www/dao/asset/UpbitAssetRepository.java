@@ -1,9 +1,14 @@
 package com.lokiechart.www.dao.asset;
 
+import com.lokiechart.www.common.ConvertType;
+import com.lokiechart.www.dao.asset.dto.AssetResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 /**
  * @author SeongRok.Oh
@@ -13,12 +18,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class UpbitAssetRepository implements AssetRepository {
 
+    private final ConvertType convertType;
     private final ApiHeader upbitHeader;
     private final CallByApi api;
 
-    public String getAssets(String account) {
+    public AssetResponses getAssets(String account) {
         final String url = "https://api.upbit.com/v1/accounts";
-        return api.get(url, upbitHeader.getHeaders(account, null));
+        AssetResponse[] assetResponses = convertType.stringToType(api.get(url, upbitHeader.getHeaders(account, null)), AssetResponse[].class);
+        return new AssetResponses(Arrays.asList(assetResponses));
     }
 
 }

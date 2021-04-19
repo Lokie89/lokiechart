@@ -1,5 +1,6 @@
 package com.lokiechart.www.dao.asset;
 
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ class UpbitAssetRepositoryTest {
     @Test
     void getAssetsTest() {
         String account = "tjdfhrdk10@naver.com";
-        String assetStr = upbitAssetRepository.getAssets(account);
-        System.out.println(assetStr);
+        AssetResponses assetResponses = upbitAssetRepository.getAssets(account);
+        System.out.println(assetResponses);
     }
 }

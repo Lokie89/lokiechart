@@ -1,4 +1,4 @@
-package com.lokiechart.www.service.account.dto;
+package com.lokiechart.www.dao.asset.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
