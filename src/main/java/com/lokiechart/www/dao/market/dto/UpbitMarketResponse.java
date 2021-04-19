@@ -1,4 +1,4 @@
-package com.lokiechart.www.service.market.dto;
+package com.lokiechart.www.dao.market.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.ToString;
  */
 @ToString
 @Getter
-public class MarketResponse {
+public class UpbitMarketResponse {
     private String market;
     @JsonProperty("korean_name")
     private String korean;
