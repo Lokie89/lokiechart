@@ -1,6 +1,8 @@
 package com.lokiechart.www.dao.candle.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.ToString;
@@ -34,10 +36,12 @@ public class UpbitMinuteCandleResponse extends UpbitCandleResponse {
 
     @ApiModelProperty(value = "캔들 기준 시각 (UTC)", example = "2018-04-18T00:00:00")
     @JsonProperty("candle_date_time_utc")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime candleDateTimeUTC;
 
     @ApiModelProperty(value = "캔들 기준 시각 (KST)", example = "2018-04-18T00:09:00")
     @JsonProperty("candle_date_time_kst")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime candleDateTimeKST;
 
     @ApiModelProperty(value = "시가", example = "73132000")

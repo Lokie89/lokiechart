@@ -16,13 +16,22 @@ import java.util.List;
 @SpringBootTest
 class UpbitCandleRepositoryTest {
     @Autowired
-    CandleRepository upbitCandleRepository;
+    CandleRepository upbitMinuteCandleRepository;
+
+    @Autowired
+    CandleRepository upbitDayCandleRepository;
+
+    @Autowired
+    CandleRepository upbitWeekCandleRepository;
+
+    @Autowired
+    CandleRepository upbitMonthCandleRepository;
 
     @DisplayName("분 캔들 가져오기 테스트")
     @Test
     void getMinuteCandlesTest() {
         final String market = "KRW-BTC";
-        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(10).build());
+        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(10).build());
         System.out.println(candleResponseList);
     }
 
@@ -30,7 +39,7 @@ class UpbitCandleRepositoryTest {
     @Test
     void getDayCandlesTest() {
         final String market = "KRW-BTC";
-        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitDayCandleParameter.builder().market(market).count(10).build());
+        CandleResponses candleResponseList = upbitDayCandleRepository.getCandles(UpbitDayCandleParameter.builder().market(market).count(10).build());
         System.out.println(candleResponseList);
     }
 
@@ -38,7 +47,7 @@ class UpbitCandleRepositoryTest {
     @Test
     void getWeekCandlesTest() {
         final String market = "KRW-BTC";
-        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitWeekCandleParameter.builder().market(market).count(10).build());
+        CandleResponses candleResponseList = upbitWeekCandleRepository.getCandles(UpbitWeekCandleParameter.builder().market(market).count(10).build());
         System.out.println(candleResponseList);
     }
 
@@ -46,7 +55,7 @@ class UpbitCandleRepositoryTest {
     @Test
     void getMonthCandlesTest() {
         final String market = "KRW-BTC";
-        List<CandleResponse> candleResponseList = upbitCandleRepository.getCandles(UpbitMonthCandleParameter.builder().market(market).count(10).build());
+        CandleResponses candleResponseList = upbitMonthCandleRepository.getCandles(UpbitMonthCandleParameter.builder().market(market).count(10).build());
         System.out.println(candleResponseList);
     }
 
