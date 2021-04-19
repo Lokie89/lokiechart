@@ -13,6 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @ToString
 @Getter
-public class AssetResponses {
-    private final List<AssetResponse> assetResponses;
+public class UpbitAssetResponses {
+    private final List<UpbitAssetResponse> upbitAssetResponses;
 }

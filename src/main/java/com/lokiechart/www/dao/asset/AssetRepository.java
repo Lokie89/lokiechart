@@ -1,11 +1,11 @@
 package com.lokiechart.www.dao.asset;
 
-import com.lokiechart.www.dao.asset.dto.AssetResponses;
+import com.lokiechart.www.dao.asset.dto.UpbitAssetResponses;
 
 /**
  * @author SeongRok.Oh
  * @since 2021/04/15
  */
 public interface AssetRepository {
-    AssetResponses getAssets(String account);
+    UpbitAssetResponses getAssets(String account);
 }

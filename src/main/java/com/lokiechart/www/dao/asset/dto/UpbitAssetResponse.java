@@ -19,7 +19,7 @@ import lombok.ToString;
  */
 @ToString
 @Getter
-public class AssetResponse {
+public class UpbitAssetResponse {
     private String currency;
     private Double balance;
     private Double locked;
