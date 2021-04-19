@@ -2,12 +2,15 @@ package com.lokiechart.www.dao.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
+import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,5 +37,12 @@ public class UpbitOrderRepository implements OrderRepository {
         }
         return api.post(url, upbitHeader.getHeaders(account, params), mapAsJson);
 
+    }
+
+    public void orderByStrategy(AccountResponse accountResponse) {
+        List<OrderParameter> matchMarkets = accountResponse.findStrategically();
+        for (OrderParameter parameter : matchMarkets) {
+            order(accountResponse.getEmail(), parameter);
+        }
     }
 }
