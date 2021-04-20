@@ -3,7 +3,6 @@ package com.lokiechart.www.dao.account.dto;
 import com.lokiechart.www.common.TradeStrategy;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 

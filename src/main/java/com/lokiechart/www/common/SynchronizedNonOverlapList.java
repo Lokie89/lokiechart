@@ -3,6 +3,7 @@ package com.lokiechart.www.common;
 import lombok.ToString;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
  * @since 2021/04/20
  */
 @ToString
-public class SynchronizedNonOverlapList<E> {
+public class SynchronizedNonOverlapList<E> implements Iterable<E> {
 
     private final List<E> list;
 
@@ -52,6 +53,11 @@ public class SynchronizedNonOverlapList<E> {
         synchronized (list) {
             list.remove(0);
         }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return list.iterator();
     }
 
 }
