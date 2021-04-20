@@ -24,6 +24,9 @@ public class UpbitMarketRepository implements MarketRepository {
     public List<UpbitMarketResponse> getMarkets() {
         final String prefixUrl = "https://api.upbit.com/v1/market/";
         UpbitMarketResponse[] upbitMarketResponses = convertType.stringToType(api.get(prefixUrl + "all", HttpHeaders.EMPTY), UpbitMarketResponse[].class);
-        return new UpbitMarketResponses(Arrays.asList(upbitMarketResponses));
+        return Arrays.stream(upbitMarketResponses)
+                .filter((market) -> market.getMarket().contains("KRW-"))
+                .collect(Collectors.toList())
+                ;
     }
 }
