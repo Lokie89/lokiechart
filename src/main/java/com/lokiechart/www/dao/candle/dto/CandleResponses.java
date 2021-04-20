@@ -1,10 +1,9 @@
 package com.lokiechart.www.dao.candle.dto;
 
+import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -14,5 +13,13 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class CandleResponses {
-    private final List<CandleResponse> candleResponses;
+    private final SynchronizedNonOverlapList<CandleResponse> candleResponses;
+    private final int maxSize = 240;
+
+    public void add(CandleResponses responses) {
+        this.candleResponses.addAll(responses.candleResponses);
+        while (candleResponses.size() > maxSize) {
+            candleResponses.removeOldest();
+        }
+    }
 }

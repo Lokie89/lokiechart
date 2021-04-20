@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
  * change_rate : 전일 종가 대비 변화량
  * converted_trade_price : 종가 환산 화폐 단위로 환산된 가격(요청에 convertingPriceUnit 파라미터 없을 시 해당 필드 포함되지 않음.)
  */
+@EqualsAndHashCode(callSuper = false, of = {"market", "candleDateTimeKST"})
 @ToString
 @Getter
 public class UpbitDayCandleResponse extends UpbitCandleResponse {

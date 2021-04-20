@@ -6,7 +6,7 @@ import com.lokiechart.www.dao.order.dto.UpbitOrderSide;
 import com.lokiechart.www.dao.order.dto.UpbitOrderType;
 import lombok.Getter;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,13 +18,13 @@ public enum TradeStrategy {
         @Override
         public List<OrderParameter> match() {
             OrderParameter orderParameter = UpbitOrderParameter.builder().market("KRW-AHT").side(UpbitOrderSide.BUY).volume(5000.0).price(1.0).orderType(UpbitOrderType.LIMIT).build();
-            return Arrays.asList(orderParameter);
+            return Collections.singletonList(orderParameter);
         }
     },
     ;
 
     @Getter
-    private String description;
+    private final String description;
 
     TradeStrategy(String description) {
         this.description = description;

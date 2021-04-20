@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
  * candle_acc_trade_volume : 누적 거래량
  * unit : 분 단위(유닛)
  */
+@EqualsAndHashCode(of = {"market", "candleDateTimeKST", "unit"}, callSuper = false)
 @ToString
 @Getter
 public class UpbitMinuteCandleResponse extends UpbitCandleResponse {

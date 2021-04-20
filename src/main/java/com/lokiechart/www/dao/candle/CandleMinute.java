@@ -14,7 +14,7 @@ public enum CandleMinute {
     FIFTEEN(15),
     THIRTY(30),
     SIXTY(60),
-    TWOFOURTY(240),
+    TWOFORTY(240),
     ;
 
     @Getter

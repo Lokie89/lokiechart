@@ -1,5 +1,6 @@
 package com.lokiechart.www.dao.candle;
 
+import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.candle.dto.GetParameterUrl;
@@ -7,8 +8,6 @@ import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -24,6 +23,6 @@ public abstract class UpbitCandleRepository implements CandleRepository {
         return new CandleResponses(getCandlesByTime(response));
     }
 
-    protected abstract List<CandleResponse> getCandlesByTime(String response);
+    protected abstract SynchronizedNonOverlapList<CandleResponse> getCandlesByTime(String response);
 
 }

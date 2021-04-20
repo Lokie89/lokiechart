@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  * @author SeongRok.Oh
  * @since 2021/04/19
  */
+@EqualsAndHashCode(callSuper = false, of = {"market", "candleDateTimeKST"})
 @ToString
 @Getter
 public class UpbitWeekCandleResponse extends UpbitCandleResponse {

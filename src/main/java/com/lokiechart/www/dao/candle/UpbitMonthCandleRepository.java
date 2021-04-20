@@ -1,9 +1,9 @@
 package com.lokiechart.www.dao.candle;
 
 import com.lokiechart.www.common.ConvertType;
+import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.UpbitMonthCandleResponse;
-import com.lokiechart.www.dao.candle.dto.UpbitWeekCandleResponse;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +25,8 @@ public class UpbitMonthCandleRepository extends UpbitCandleRepository {
     }
 
     @Override
-    protected List<CandleResponse> getCandlesByTime(String response) {
+    protected SynchronizedNonOverlapList<CandleResponse> getCandlesByTime(String response) {
         UpbitMonthCandleResponse[] upbitMonthCandleResponses = convertType.stringToType(response, UpbitMonthCandleResponse[].class);
-        return Arrays.asList(upbitMonthCandleResponses);
+        return new SynchronizedNonOverlapList<>(upbitMonthCandleResponses);
     }
 }
