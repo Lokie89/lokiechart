@@ -18,6 +18,7 @@ public class ConvertType {
         try {
             result = objectMapper.readValue(convert.getBytes(), clazz);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new CannotReadValueString();
         }
         return result;
