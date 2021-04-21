@@ -14,8 +14,9 @@ import java.util.List;
 public class AccountResponse {
     private String email;
     private TradeStrategy strategy;
+    private Double onceInvestKRW;
 
     public List<OrderParameter> findStrategically() {
-        return strategy.match();
+        return strategy.match(onceInvestKRW);
     }
 }

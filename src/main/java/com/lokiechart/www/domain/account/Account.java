@@ -15,4 +15,5 @@ import lombok.ToString;
 public class Account {
     private String email;
     private TradeStrategy strategy;
+    private Integer onceInvestKRW;
 }

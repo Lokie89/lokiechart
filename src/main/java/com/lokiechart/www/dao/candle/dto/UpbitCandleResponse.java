@@ -7,6 +7,7 @@ import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import com.lokiechart.www.dao.order.dto.UpbitOrderSide;
 import com.lokiechart.www.dao.order.dto.UpbitOrderType;
+import com.lokiechart.www.exception.CannotCompareObjectException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 
@@ -64,5 +65,29 @@ public abstract class UpbitCandleResponse implements CandleResponse {
     @Override
     public OrderParameter toOrderParameter(UpbitOrderSide orderSide, Double totalCost) {
         return UpbitOrderParameter.builder().market(market).side(orderSide).price(tradePrice).volume(totalCost / tradePrice).orderType(UpbitOrderType.LIMIT).build();
+    }
+
+    @Override
+    public Double compareVolumeReplacePercentage(CandleResponse compare) {
+        UpbitCandleResponse other = getCompareInstance(compare);
+        return (this.accTradeVolume - other.accTradeVolume) / other.accTradeVolume * 100;
+    }
+
+    @Override
+    public Double compareTradePricePercentage(CandleResponse compare) {
+        UpbitCandleResponse other = getCompareInstance(compare);
+        return (this.tradePrice - other.tradePrice) / other.tradePrice * 100;
+    }
+
+    private boolean canCompare(final Object other) {
+        return other instanceof UpbitCandleResponse;
+    }
+
+    private UpbitCandleResponse getCompareInstance(final Object compare) {
+        if (!canCompare(compare)) {
+            throw new CannotCompareObjectException();
+        }
+        UpbitCandleResponse other = (UpbitCandleResponse) compare;
+        return other;
     }
 }
