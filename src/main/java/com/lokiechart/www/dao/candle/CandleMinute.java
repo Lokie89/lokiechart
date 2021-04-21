@@ -15,6 +15,9 @@ public enum CandleMinute {
     THIRTY(30),
     SIXTY(60),
     TWOFORTY(240),
+    DAY(1440),
+    WEEK(10080),
+    MONTH(43200),
     ;
 
     @Getter

@@ -64,7 +64,7 @@ public class UpbitCandles {
         }
     }
 
-    @Scheduled(cron = "1 0 0 */1 * *")
+    @Scheduled(cron = "1 0 0 * * *")
     private void updateUpbitMarket() {
         logger.info("Scheduling UPBIT MARKET UPDATE");
         upbitMarket = upbitMarketRepository.getMarkets();
