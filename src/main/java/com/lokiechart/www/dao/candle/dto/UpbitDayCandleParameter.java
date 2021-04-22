@@ -34,7 +34,7 @@ public class UpbitDayCandleParameter implements GetParameterUrl {
         String url = "https://api.upbit.com/v1/candles/days?";
         url += "market=" + market + "&count=" + count;
         if (Objects.nonNull(to)) {
-            url += "&to=" + to;
+            url += "&to=" + to + "Z";
         }
         if (Objects.nonNull(convertingPriceUnit)) {
             url += "&convertingPriceUnit=" + convertingPriceUnit;

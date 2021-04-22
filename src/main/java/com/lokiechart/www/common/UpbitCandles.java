@@ -35,33 +35,105 @@ public class UpbitCandles {
 
     static List<UpbitMarketResponse> upbitMarket;
     static final Map<String, CandleResponses> upbitOneMinuteCandles = new ConcurrentHashMap<>();
-    static final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
-    //    static final Map<String, CandleResponses> upbitFiveMinuteCandles = new ConcurrentHashMap<>();
-//    static final Map<String, CandleResponses> upbitTenMinuteCandles = new ConcurrentHashMap<>();
-//    static final Map<String, CandleResponses> upbitFifteenMinuteCandles = new ConcurrentHashMap<>();
+    public static final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitFiveMinuteCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitTenMinuteCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitFifteenMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitThirtyMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitSixtyMinuteCandles = new ConcurrentHashMap<>();
-    //    static final Map<String, CandleResponses> upbitTwoFortyMinuteCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitTwoFortyMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitDayCandles = new ConcurrentHashMap<>();
-//    static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
-//    static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
 
     private void init() {
         updateUpbitMarket();
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
             upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
+//            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
             upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
 //            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
 //            upbitTenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitFifteenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
+            upbitFifteenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
             upbitThirtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
             upbitSixtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
             upbitDayCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
 //            upbitWeekCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
 //            upbitMonthCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
         }
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                Thread.sleep(100);
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get1MinuteCandles(market, 120);
+                CandleResponses origin = upbitOneMinuteCandles.get(market);
+                origin.add(responses);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("1분 완료");
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 120);
+                CandleResponses origin = upbitThreeMinuteCandles.get(market);
+                origin.add(responses);
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("3분 완료");
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get15MinutesCandles(market, 120);
+                CandleResponses origin = upbitFifteenMinuteCandles.get(market);
+                origin.add(responses);
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("15분 완료");
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get30MinutesCandles(market, 120);
+                CandleResponses origin = upbitThirtyMinuteCandles.get(market);
+                origin.add(responses);
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("30분 완료");
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get60MinutesCandles(market, 120);
+                CandleResponses origin = upbitSixtyMinuteCandles.get(market);
+                origin.add(responses);
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("60분 완료");
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get1DayCandles(market, 120);
+                CandleResponses origin = upbitDayCandles.get(market);
+                origin.add(responses);
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("1일 완료");
     }
 
     @Scheduled(cron = "1 0 0 * * *")
@@ -70,20 +142,23 @@ public class UpbitCandles {
         upbitMarket = upbitMarketRepository.getMarkets();
     }
 
+
+    final int candleCount = 2;
+
     @Scheduled(cron = "1 * * * * *")
     private void updateUpbitOneMinuteCandles() {
         logger.info("Scheduling UPBIT 1 MINUTES CANDLES UPDATE");
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            CandleResponses responses = upbitCandleService.get1MinuteCandles(market, 2);
+            CandleResponses responses = upbitCandleService.get1MinuteCandles(market, candleCount);
             CandleResponses origin = upbitOneMinuteCandles.get(market);
             origin.add(responses);
+            origin.setUnderBollingerBands(candleCount);
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info("1 MINUTE " + market);
         }
         logger.info("1 MINUTE SIZE " + upbitOneMinuteCandles.get("KRW-BTC").getCandleResponses().size());
     }
@@ -93,7 +168,7 @@ public class UpbitCandles {
         logger.info("Scheduling UPBIT 3 MINUTES CANDLES UPDATE");
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 2);
+            CandleResponses responses = upbitCandleService.get3MinutesCandles(market, candleCount);
             CandleResponses origin = upbitThreeMinuteCandles.get(market);
             origin.add(responses);
             try {
@@ -101,9 +176,25 @@ public class UpbitCandles {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info("3 MINUTES " + market);
         }
-        logger.info("SIZE " + upbitThreeMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        logger.info("3 MINUTES SIZE " + upbitThreeMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+    }
+
+    @Scheduled(cron = "1 */15 * * * *")
+    private void updateUpbitFifteenMinuteCandles() {
+        logger.info("Scheduling UPBIT 15 MINUTES CANDLES UPDATE");
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            String market = marketResponse.getMarket();
+            CandleResponses responses = upbitCandleService.get15MinutesCandles(market, candleCount);
+            CandleResponses origin = upbitFifteenMinuteCandles.get(market);
+            origin.add(responses);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("15 MINUTES SIZE " + upbitFifteenMinuteCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
     @Scheduled(cron = "1 */30 * * * *")
@@ -111,7 +202,7 @@ public class UpbitCandles {
         logger.info("Scheduling UPBIT 30 MINUTES CANDLES UPDATE");
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            CandleResponses responses = upbitCandleService.get30MinutesCandles(market, 2);
+            CandleResponses responses = upbitCandleService.get30MinutesCandles(market, candleCount);
             CandleResponses origin = upbitThirtyMinuteCandles.get(market);
             origin.add(responses);
             try {
@@ -119,9 +210,8 @@ public class UpbitCandles {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info("30 MINUTES " + market);
         }
-        logger.info("SIZE " + upbitThirtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        logger.info("30 MINUTES SIZE " + upbitThirtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
     @Scheduled(cron = "1 0 * * * *")
@@ -129,7 +219,7 @@ public class UpbitCandles {
         logger.info("Scheduling UPBIT 60 MINUTES CANDLES UPDATE");
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            CandleResponses responses = upbitCandleService.get60MinutesCandles(market, 2);
+            CandleResponses responses = upbitCandleService.get60MinutesCandles(market, candleCount);
             CandleResponses origin = upbitSixtyMinuteCandles.get(market);
             origin.add(responses);
             try {
@@ -137,9 +227,8 @@ public class UpbitCandles {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info("60 MINUTES " + market);
         }
-        logger.info("SIZE " + upbitSixtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        logger.info("60 MINUTES SIZE " + upbitSixtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
     @Scheduled(cron = "1 0 9 * * *")
@@ -147,7 +236,7 @@ public class UpbitCandles {
         logger.info("Scheduling UPBIT 1 DAY CANDLES UPDATE");
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            CandleResponses responses = upbitCandleService.get1DayCandles(market, 2);
+            CandleResponses responses = upbitCandleService.get1DayCandles(market, candleCount);
             CandleResponses origin = upbitDayCandles.get(market);
             origin.add(responses);
             try {
@@ -155,9 +244,8 @@ public class UpbitCandles {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info("1 DAY " + market);
         }
-        logger.info("SIZE " + upbitDayCandles.get("KRW-BTC").getCandleResponses().size());
+        logger.info("1 DAY SIZE " + upbitDayCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
 }

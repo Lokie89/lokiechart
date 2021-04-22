@@ -4,12 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
-import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +20,15 @@ import java.util.Map;
  * @author SeongRok.Oh
  * @since 2021/04/15
  */
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class UpbitOrderRepository implements OrderRepository {
 
     private final CallByApi api;
     private final ApiHeader upbitHeader;
+
+    private final Logger logger = LoggerFactory.getLogger(UpbitOrderRepository.class);
 
     @Override
     public String order(String account, OrderParameter request) {
@@ -42,7 +48,8 @@ public class UpbitOrderRepository implements OrderRepository {
     public void orderByStrategy(AccountResponse accountResponse) {
         List<OrderParameter> matchMarkets = accountResponse.findStrategically();
         for (OrderParameter parameter : matchMarkets) {
-            order(accountResponse.getEmail(), parameter);
+            logger.warn(LocalDateTime.now() + " ORDER : " + accountResponse + " : " + parameter);
+//            order(accountResponse.getEmail(), parameter);
         }
     }
 }

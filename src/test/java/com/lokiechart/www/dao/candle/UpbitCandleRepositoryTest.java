@@ -1,12 +1,11 @@
 package com.lokiechart.www.dao.candle;
 
+import com.lokiechart.www.common.CandleMinute;
 import com.lokiechart.www.dao.candle.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -32,6 +31,15 @@ class UpbitCandleRepositoryTest {
     void getMinuteCandlesTest() {
         final String market = "KRW-BTC";
         CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(10).build());
+        System.out.println(candleResponseList);
+    }
+
+    @DisplayName("분 캔들 볼린저 밴드 설정 테스트")
+    @Test
+    void setBollingerBandsTest(){
+        final String market = "KRW-BTC";
+        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(21).build());
+        candleResponseList.setUnderBollingerBands(2);
         System.out.println(candleResponseList);
     }
 

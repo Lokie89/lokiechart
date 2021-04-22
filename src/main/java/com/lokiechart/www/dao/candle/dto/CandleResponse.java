@@ -11,4 +11,7 @@ public interface CandleResponse {
     OrderParameter toOrderParameter(UpbitOrderSide orderSide, Double totalCost);
     Double compareVolumeReplacePercentage(CandleResponse compare);
     Double compareTradePricePercentage(CandleResponse compare);
+    Double compareUnderBollingerBands();
+    Double getTradePrice();
+    void setBollingerBands(double middle, double deviation);
 }

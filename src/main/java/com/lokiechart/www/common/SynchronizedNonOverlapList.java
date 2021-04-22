@@ -4,8 +4,10 @@ import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author SeongRok.Oh
@@ -17,11 +19,11 @@ public class SynchronizedNonOverlapList<E> implements Iterable<E> {
     private final List<E> list;
 
     public SynchronizedNonOverlapList(List<E> list) {
-        this.list = list.stream().distinct().collect(Collectors.toList());
+        this.list = list.stream().distinct().collect(Collectors.toCollection(LinkedList::new));
     }
 
     public SynchronizedNonOverlapList(E[] array) {
-        this.list = Arrays.stream(array).distinct().collect(Collectors.toList());
+        this.list = Arrays.stream(array).distinct().collect(Collectors.toCollection(LinkedList::new));
     }
 
     public void add(E e) {
@@ -55,9 +57,21 @@ public class SynchronizedNonOverlapList<E> implements Iterable<E> {
         }
     }
 
+    public SynchronizedNonOverlapList<E> copy(int startIndex, int endIndex) {
+        return new SynchronizedNonOverlapList<>(list.subList(startIndex, endIndex));
+    }
+
+    public int indexOf(E e) {
+        return list.indexOf(e);
+    }
+
     @Override
     public Iterator<E> iterator() {
         return list.iterator();
+    }
+
+    public Stream<E> stream() {
+        return list.stream();
     }
 
 }

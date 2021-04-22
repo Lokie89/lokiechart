@@ -24,7 +24,7 @@ import lombok.ToString;
  * unit : 분 단위(유닛)
  */
 @EqualsAndHashCode(of = {"unit"}, callSuper = true)
-@ToString
+@ToString(callSuper = true)
 @Getter
 public class UpbitMinuteCandleResponse extends UpbitCandleResponse {
 

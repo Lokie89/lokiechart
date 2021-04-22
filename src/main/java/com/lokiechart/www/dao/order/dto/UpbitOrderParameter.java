@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lokiechart.www.exception.order.NotEnoughTotalCostException;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotEmpty;
  * - price : 시장가 주문(매수)
  * - market : 시장가 주문(매도)
  */
+@ToString
 @Getter
 public class UpbitOrderParameter extends AbstractOrderParameter {
 

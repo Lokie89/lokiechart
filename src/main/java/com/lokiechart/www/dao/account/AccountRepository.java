@@ -14,12 +14,12 @@ import java.util.List;
 @Component
 public class AccountRepository {
     public Account findByEmail(String email) {
-        return new Account("tjdfhrdk10@naver.com", TradeStrategy.TEST, 5100);
+        return new Account("tjdfhrdk10@naver.com", TradeStrategy.KEEP_TRADEPRICE_UNDERBOLLINGERBANDSTWICE, 5100);
     }
 
     public List<Account> findByTradeStrategy(TradeStrategy strategy) {
         List<Account> accounts = new ArrayList<>();
-        accounts.add(new Account("tjdfhrdk10@naver.com", TradeStrategy.TEST, 5100));
+        accounts.add(new Account("tjdfhrdk10@naver.com", TradeStrategy.KEEP_TRADEPRICE_UNDERBOLLINGERBANDSTWICE, 5100));
         return accounts;
     }
 }

@@ -1,7 +1,6 @@
 package com.lokiechart.www.common;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
-import com.lokiechart.www.dao.candle.CandleMinute;
 import com.lokiechart.www.service.account.AccountService;
 import com.lokiechart.www.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;

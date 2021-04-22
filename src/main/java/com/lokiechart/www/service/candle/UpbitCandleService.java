@@ -1,9 +1,12 @@
 package com.lokiechart.www.service.candle;
 
+import com.lokiechart.www.common.CandleMinute;
 import com.lokiechart.www.dao.candle.*;
 import com.lokiechart.www.dao.candle.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 /**
  * @author SeongRok.Oh
@@ -23,6 +26,10 @@ public class UpbitCandleService implements CandleService {
 
     public CandleResponses get3MinutesCandles(String market, int candleCount) {
         return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(CandleMinute.THREE).count(candleCount).build());
+    }
+
+    public CandleResponses get3MinutesCandles(String market, int candleCount, LocalDateTime to) {
+        return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(CandleMinute.THREE).count(candleCount).to(to).build());
     }
 
     public CandleResponses get5MinutesCandles(String market, int candleCount) {

@@ -10,15 +10,19 @@ import com.lokiechart.www.dao.order.dto.UpbitOrderType;
 import com.lokiechart.www.exception.CannotCompareObjectException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author SeongRok.Oh
  * @since 2021/04/19
  */
+@ToString
 @EqualsAndHashCode(of = {"market", "candleDateTimeKST"})
-public abstract class UpbitCandleResponse implements CandleResponse {
+public abstract class UpbitCandleResponse implements CandleResponse, Comparable<UpbitCandleResponse> {
 
     @ApiModelProperty(value = "마켓", example = "KRW-BTC")
     @JsonProperty("market")
@@ -46,6 +50,7 @@ public abstract class UpbitCandleResponse implements CandleResponse {
     @JsonProperty("low_price")
     private Double lowPrice;
 
+    @Getter
     @ApiModelProperty(value = "종가", example = "73100000")
     @JsonProperty("trade_price")
     private Double tradePrice;
@@ -61,6 +66,12 @@ public abstract class UpbitCandleResponse implements CandleResponse {
     @ApiModelProperty(value = "누적 거래량", example = "7.99672811")
     @JsonProperty("candle_acc_trade_volume")
     private Double accTradeVolume;
+
+    @ApiModelProperty(value = "아래 볼린저 밴드", example = "7.99672811")
+    private double lowBollingerBands;
+
+    @ApiModelProperty(value = "위 볼린저 밴드", example = "7.99672811")
+    private double highBollingerBands;
 
     @Override
     public OrderParameter toOrderParameter(UpbitOrderSide orderSide, Double totalCost) {
@@ -79,6 +90,20 @@ public abstract class UpbitCandleResponse implements CandleResponse {
         return (this.tradePrice - other.tradePrice) / other.tradePrice * 100;
     }
 
+    @Override
+    public Double compareUnderBollingerBands() {
+        if (Objects.isNull(lowBollingerBands)) {
+            return null;
+        }
+        return (tradePrice - lowBollingerBands) / lowBollingerBands * 100;
+    }
+
+    @Override
+    public void setBollingerBands(double middle, double deviation) {
+        this.lowBollingerBands = middle - deviation * 2;
+        this.highBollingerBands = middle + deviation * 2;
+    }
+
     private boolean canCompare(final Object other) {
         return other instanceof UpbitCandleResponse;
     }
@@ -89,5 +114,14 @@ public abstract class UpbitCandleResponse implements CandleResponse {
         }
         UpbitCandleResponse other = (UpbitCandleResponse) compare;
         return other;
+    }
+
+    @Override
+    public int compareTo(UpbitCandleResponse o) {
+        if (this.candleDateTimeKST.isBefore(o.candleDateTimeKST)) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }
