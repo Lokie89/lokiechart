@@ -1,4 +1,4 @@
-package com.lokiechart.www.common;
+package com.lokiechart.www.batch;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.service.account.AccountService;

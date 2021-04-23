@@ -1,6 +1,6 @@
 package com.lokiechart.www.dao.candle;
 
-import com.lokiechart.www.common.CandleMinute;
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.dao.candle.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

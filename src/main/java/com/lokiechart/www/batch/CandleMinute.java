@@ -1,5 +1,6 @@
-package com.lokiechart.www.common;
+package com.lokiechart.www.batch;
 
+import com.lokiechart.www.batch.UpbitCandles;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import lombok.Getter;
 

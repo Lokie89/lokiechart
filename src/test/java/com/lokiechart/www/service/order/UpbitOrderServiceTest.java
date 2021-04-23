@@ -1,7 +1,7 @@
 package com.lokiechart.www.service.order;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
-import com.lokiechart.www.common.UpbitCandles;
+import com.lokiechart.www.batch.UpbitCandles;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.UpbitMarketRepository;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;

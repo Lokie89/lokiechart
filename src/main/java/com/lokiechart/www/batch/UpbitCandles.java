@@ -1,5 +1,6 @@
-package com.lokiechart.www.common;
+package com.lokiechart.www.batch;
 
+import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.MarketRepository;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;

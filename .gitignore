@@ -38,4 +38,4 @@ out/
 
 
 src/main/resources/application-secret.yml
-src/main/java/com/lokiechart/www/common/TradeStrategy.java
+src/main/java/com/lokiechart/www/batch/TradeStrategy.java

@@ -1,6 +1,6 @@
 package com.lokiechart.www.dao.account;
 
-import com.lokiechart.www.common.TradeStrategy;
+import com.lokiechart.www.batch.TradeStrategy;
 import com.lokiechart.www.domain.account.Account;
 import org.springframework.stereotype.Component;
 

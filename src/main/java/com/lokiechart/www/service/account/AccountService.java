@@ -1,6 +1,6 @@
 package com.lokiechart.www.service.account;
 
-import com.lokiechart.www.common.TradeStrategy;
+import com.lokiechart.www.batch.TradeStrategy;
 import com.lokiechart.www.dao.account.AccountRepository;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.domain.account.Account;

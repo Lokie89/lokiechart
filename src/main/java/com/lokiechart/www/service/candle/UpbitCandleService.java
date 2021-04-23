@@ -1,6 +1,6 @@
 package com.lokiechart.www.service.candle;
 
-import com.lokiechart.www.common.CandleMinute;
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.dao.candle.*;
 import com.lokiechart.www.dao.candle.dto.*;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,9 @@
 package com.lokiechart.www.domain.account;
 
-import com.lokiechart.www.common.TradeStrategy;
+import com.lokiechart.www.batch.TradeStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -18,6 +16,6 @@ public class Account {
     private String email;
     private TradeStrategy strategy;
     private Integer onceInvestKRW;
-    private List<String> excludeMarket;
-    private List<String> decidedMarket;
+//    private List<String> excludeMarket;
+//    private List<String> decidedMarket;
 }

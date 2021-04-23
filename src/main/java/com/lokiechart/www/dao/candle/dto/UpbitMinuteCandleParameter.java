@@ -1,6 +1,6 @@
 package com.lokiechart.www.dao.candle.dto;
 
-import com.lokiechart.www.common.CandleMinute;
+import com.lokiechart.www.batch.CandleMinute;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
