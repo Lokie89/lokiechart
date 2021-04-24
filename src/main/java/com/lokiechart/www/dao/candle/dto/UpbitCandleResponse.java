@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 /**
  * @author SeongRok.Oh
@@ -92,7 +91,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
 
     @Override
     public Double compareUnderBollingerBands() {
-        if (Objects.isNull(lowBollingerBands)) {
+        if (lowBollingerBands == 0) {
             return null;
         }
         return (tradePrice - lowBollingerBands) / lowBollingerBands * 100;
@@ -112,8 +111,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
         if (!canCompare(compare)) {
             throw new CannotCompareObjectException();
         }
-        UpbitCandleResponse other = (UpbitCandleResponse) compare;
-        return other;
+        return (UpbitCandleResponse) compare;
     }
 
     @Override

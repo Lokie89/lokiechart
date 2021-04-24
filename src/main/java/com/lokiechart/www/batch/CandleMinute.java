@@ -1,6 +1,5 @@
 package com.lokiechart.www.batch;
 
-import com.lokiechart.www.batch.UpbitCandles;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import lombok.Getter;
 
@@ -14,13 +13,13 @@ public enum CandleMinute {
     ONE(1) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return UpbitCandles.upbitOneMinuteCandles;
+            return UpbitCandlesBatch.upbitOneMinuteCandles;
         }
     },
     THREE(3) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return UpbitCandles.upbitThreeMinuteCandles;
+            return UpbitCandlesBatch.upbitThreeMinuteCandles;
         }
     },
     FIVE(5) {
@@ -38,13 +37,13 @@ public enum CandleMinute {
     FIFTEEN(15) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return UpbitCandles.upbitFifteenMinuteCandles;
+            return UpbitCandlesBatch.upbitFifteenMinuteCandles;
         }
     },
     THIRTY(30) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return UpbitCandles.upbitThirtyMinuteCandles;
+            return UpbitCandlesBatch.upbitThirtyMinuteCandles;
         }
     },
     SIXTY(60) {
@@ -62,7 +61,7 @@ public enum CandleMinute {
     DAY(1440) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return UpbitCandles.upbitDayCandles;
+            return UpbitCandlesBatch.upbitDayCandles;
         }
     },
     WEEK(10080) {

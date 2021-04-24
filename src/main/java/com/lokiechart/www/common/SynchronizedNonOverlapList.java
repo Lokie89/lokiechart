@@ -41,6 +41,10 @@ public class SynchronizedNonOverlapList<E> implements Iterable<E> {
         }
     }
 
+    public E getRecent(int index) {
+        return get(size() - 1 - index);
+    }
+
     public E get(int index) {
         synchronized (list) {
             return list.get(index);
@@ -59,6 +63,10 @@ public class SynchronizedNonOverlapList<E> implements Iterable<E> {
 
     public SynchronizedNonOverlapList<E> copy(int startIndex, int endIndex) {
         return new SynchronizedNonOverlapList<>(list.subList(startIndex, endIndex));
+    }
+
+    public SynchronizedNonOverlapList<E> copyRecent(int startIndex, int endIndex) {
+        return copy(size() - endIndex, size() - startIndex);
     }
 
     public int indexOf(E e) {

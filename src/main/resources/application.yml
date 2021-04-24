@@ -1,0 +1,12 @@
+schedule:
+  candle:
+    one-minute: "5 * * * * *"
+    three-minutes: "5 */3 * * * *"
+    fifteen-minutes: "5 */15 * * * *"
+    thirty-minutes: "5 */30 * * * *"
+    one-hour: "5 0 * * * *"
+    one-day: "5 0 9 * * *"
+  order:
+    one-minute: "30 * * * * *"
+    one-day: "50 59 23 * * *"
+  market: "5 0 0 * * *"

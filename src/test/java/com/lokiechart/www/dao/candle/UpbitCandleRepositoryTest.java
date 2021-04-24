@@ -36,11 +36,11 @@ class UpbitCandleRepositoryTest {
 
     @DisplayName("분 캔들 볼린저 밴드 설정 테스트")
     @Test
-    void setBollingerBandsTest(){
+    void setBollingerBandsTest() {
         final String market = "KRW-BTC";
-        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(21).build());
+        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.ONE).market(market).count(60).build());
         candleResponseList.setUnderBollingerBands(2);
-        System.out.println(candleResponseList);
+//        System.out.println(candleResponseList);
     }
 
     @DisplayName("일 캔들 가져오기 테스트")

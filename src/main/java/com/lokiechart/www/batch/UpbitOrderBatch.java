@@ -20,13 +20,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Component
-public class UpbitOrder {
-    private final Logger logger = LoggerFactory.getLogger(UpbitOrder.class);
+public class UpbitOrderBatch {
+    private final Logger logger = LoggerFactory.getLogger(UpbitOrderBatch.class);
     private final AccountService accountService;
     private final OrderService upbitOrderService;
     private final Map<TradeStrategy, List<AccountResponse>> accountStrategy = new ConcurrentHashMap<>();
 
-    public UpbitOrder(AccountService accountService, OrderService upbitOrderService) {
+    public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService) {
         this.accountService = accountService;
         this.upbitOrderService = upbitOrderService;
         init();
@@ -36,7 +36,7 @@ public class UpbitOrder {
         updateAccountStrategy();
     }
 
-    @Scheduled(cron = "50 59 23 * * *")
+    @Scheduled(cron = "${schedule.order.one-day}")
     private void updateAccountStrategy() {
         logger.info("UPDATE MAP STRATEGY WITH ACCOUNT LIST : " + LocalDateTime.now());
         for (TradeStrategy strategy : TradeStrategy.values()) {
@@ -44,7 +44,7 @@ public class UpbitOrder {
         }
     }
 
-    @Scheduled(cron = "2 * * * * *")
+    @Scheduled(cron = "${schedule.order.one-minute}")
     private void orderOneMinuteTradeStrategy() {
         logger.info("ORDER ONE MINUTE TRADE STRATEGY : " + LocalDateTime.now());
         List<TradeStrategy> strategies = TradeStrategy.getByCandleMinute(CandleMinute.ONE);
