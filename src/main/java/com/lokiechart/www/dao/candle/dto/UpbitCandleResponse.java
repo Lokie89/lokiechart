@@ -32,6 +32,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime candleDateTimeUTC;
 
+    @Getter
     @ApiModelProperty(value = "캔들 기준 시각 (KST)", example = "2018-04-18T00:09:00")
     @JsonProperty("candle_date_time_kst")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
