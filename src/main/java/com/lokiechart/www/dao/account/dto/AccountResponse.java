@@ -1,15 +1,18 @@
 package com.lokiechart.www.dao.account.dto;
 
+import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
-import com.lokiechart.www.batch.OrderStrategy;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +32,7 @@ public class AccountResponse {
 
     public OrderParameters findStrategically() {
         Set<String> markets = new LinkedHashSet<>();
-        CandleResponses buyMatchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>()));
+        CandleResponses buyMatchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
             CandleResponses candleResponses = orderStrategy.match(markets);
             buyMatchedCandleResponses.addAll(candleResponses);

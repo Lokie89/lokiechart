@@ -53,17 +53,17 @@ public class UpbitCandlesBatch {
         updateUpbitMarket();
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-            upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitTenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-            upbitFifteenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-            upbitThirtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-            upbitSixtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-            upbitDayCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitWeekCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
-//            upbitMonthCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
+            upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+//            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+//            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+//            upbitTenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitFifteenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitThirtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitSixtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitDayCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+//            upbitWeekCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+//            upbitMonthCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
         }
         initPreCandles();
     }

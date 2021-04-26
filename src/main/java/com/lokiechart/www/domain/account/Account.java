@@ -20,14 +20,15 @@ import java.util.Set;
 @AllArgsConstructor
 public class Account {
     private String email;
-    private Set<OrderStrategy> orderStrategies;
+    private Set<OrderStrategy> buyTradeStrategies;
+    private Set<OrderStrategy> sellTradeStrategies;
     private Integer onceInvestKRW;
     private OrderType orderType;
     private List<String> excludeMarket;
     private List<String> decidedMarket;
 
     public boolean haveOrderStrategyByCandleMinute(CandleMinute candleMinute) {
-        return orderStrategies.stream()
+        return buyTradeStrategies.stream()
                 .anyMatch(orderStrategy -> orderStrategy.getCandleMinute().equals(candleMinute));
     }
 }

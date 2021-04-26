@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,7 +43,7 @@ class UpbitOrderServiceTest {
             try {
                 Thread.sleep(100);
                 String market = marketResponse.getMarket();
-                upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
+                upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
                 CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 30, LocalDateTime.of(2021, 4, 22, 17, 36, 03));
                 CandleResponses origin = upbitThreeMinuteCandles.get(market);
                 origin.addAll(responses);
