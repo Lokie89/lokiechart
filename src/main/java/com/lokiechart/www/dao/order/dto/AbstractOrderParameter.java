@@ -9,11 +9,13 @@ import java.util.Map;
  * @author SeongRok.Oh
  * @since 2021/04/16
  */
-public class AbstractOrderParameter implements OrderParameter {
+public abstract class AbstractOrderParameter implements OrderParameter {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Map<String, Object> toParameter() {
         return objectMapper.convertValue(this, new TypeReference<>() {});
     }
+
+    public abstract String getMarket();
 }

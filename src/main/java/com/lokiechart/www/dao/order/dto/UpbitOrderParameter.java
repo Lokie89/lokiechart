@@ -38,7 +38,7 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
     private String market;
 
     @NotEmpty
-    private UpbitOrderSide side;
+    private OrderSide side;
 
     @Min(0)
     private Double volume;
@@ -48,11 +48,11 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
 
     @JsonProperty("ord_type")
     @NotEmpty
-    private UpbitOrderType orderType;
+    private OrderType orderType;
 
     @JsonGetter("side")
     private String getSide() {
-        return side.getParameter();
+        return side.getUpbitParameter();
     }
 
     @JsonGetter("ord_type")
@@ -61,7 +61,7 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
     }
 
     @Builder
-    private UpbitOrderParameter(String market, UpbitOrderSide side, Double volume, Double price, UpbitOrderType orderType) {
+    private UpbitOrderParameter(String market, OrderSide side, Double volume, Double price, OrderType orderType) {
         validateMinimumOrderCost(volume, price);
         this.market = market;
         this.side = side;

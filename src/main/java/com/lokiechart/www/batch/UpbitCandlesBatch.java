@@ -65,18 +65,18 @@ public class UpbitCandlesBatch {
 //            upbitWeekCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
 //            upbitMonthCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
         }
-//        initPreCandles();
+        initPreCandles();
     }
 
     private void initPreCandles() {
-        final int howGetCandles = 230;
+        final int howGetCandles = 200;
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             try {
                 Thread.sleep(100);
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get1MinuteCandles(market, howGetCandles);
                 CandleResponses origin = upbitOneMinuteCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -86,7 +86,7 @@ public class UpbitCandlesBatch {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get3MinutesCandles(market, howGetCandles);
                 CandleResponses origin = upbitThreeMinuteCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -97,7 +97,7 @@ public class UpbitCandlesBatch {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get15MinutesCandles(market, howGetCandles);
                 CandleResponses origin = upbitFifteenMinuteCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -108,7 +108,7 @@ public class UpbitCandlesBatch {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get30MinutesCandles(market, howGetCandles);
                 CandleResponses origin = upbitThirtyMinuteCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -119,7 +119,7 @@ public class UpbitCandlesBatch {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get60MinutesCandles(market, howGetCandles);
                 CandleResponses origin = upbitSixtyMinuteCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -130,7 +130,7 @@ public class UpbitCandlesBatch {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get1DayCandles(market, howGetCandles);
                 CandleResponses origin = upbitDayCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -158,7 +158,7 @@ public class UpbitCandlesBatch {
             CandleResponses origin = upbitOneMinuteCandles.get(market);
             int onceCallGetCount = howToGetCandles(origin, 1);
             CandleResponses responses = upbitCandleService.get1MinuteCandles(market, onceCallGetCount);
-            origin.add(responses);
+            origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
             try {
                 Thread.sleep(300);
@@ -177,7 +177,7 @@ public class UpbitCandlesBatch {
             CandleResponses origin = upbitThreeMinuteCandles.get(market);
             int onceCallGetCount = howToGetCandles(origin, 3);
             CandleResponses responses = upbitCandleService.get3MinutesCandles(market, onceCallGetCount);
-            origin.add(responses);
+            origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
             try {
                 Thread.sleep(600);
@@ -196,7 +196,7 @@ public class UpbitCandlesBatch {
             CandleResponses origin = upbitFifteenMinuteCandles.get(market);
             int onceCallGetCount = howToGetCandles(origin, 15);
             CandleResponses responses = upbitCandleService.get15MinutesCandles(market, onceCallGetCount);
-            origin.add(responses);
+            origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
             try {
                 Thread.sleep(1000);
@@ -215,7 +215,7 @@ public class UpbitCandlesBatch {
             CandleResponses origin = upbitThirtyMinuteCandles.get(market);
             int onceCallGetCount = howToGetCandles(origin, 30);
             CandleResponses responses = upbitCandleService.get30MinutesCandles(market, onceCallGetCount);
-            origin.add(responses);
+            origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
             try {
                 Thread.sleep(1000);
@@ -234,7 +234,7 @@ public class UpbitCandlesBatch {
             CandleResponses origin = upbitSixtyMinuteCandles.get(market);
             int onceCallGetCount = howToGetCandles(origin, 60);
             CandleResponses responses = upbitCandleService.get60MinutesCandles(market, onceCallGetCount);
-            origin.add(responses);
+            origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
             try {
                 Thread.sleep(1000);
@@ -253,7 +253,7 @@ public class UpbitCandlesBatch {
             CandleResponses origin = upbitDayCandles.get(market);
             int onceCallGetCount = howToGetCandles(origin, 1440);
             CandleResponses responses = upbitCandleService.get1DayCandles(market, onceCallGetCount);
-            origin.add(responses);
+            origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
             try {
                 Thread.sleep(1000);

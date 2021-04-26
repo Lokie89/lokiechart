@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
-import com.lokiechart.www.dao.order.dto.UpbitOrderSide;
-import com.lokiechart.www.dao.order.dto.UpbitOrderType;
+import com.lokiechart.www.dao.order.dto.OrderSide;
+import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.exception.CannotCompareObjectException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = {"market", "candleDateTimeKST"})
 public abstract class UpbitCandleResponse implements CandleResponse, Comparable<UpbitCandleResponse> {
 
+    @Getter
     @ApiModelProperty(value = "마켓", example = "KRW-BTC")
     @JsonProperty("market")
     private String market;
@@ -74,8 +75,8 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     private double highBollingerBands;
 
     @Override
-    public OrderParameter toOrderParameter(UpbitOrderSide orderSide, Double totalCost) {
-        return UpbitOrderParameter.builder().market(market).side(orderSide).price(tradePrice).volume(totalCost / tradePrice).orderType(UpbitOrderType.LIMIT).build();
+    public OrderParameter toOrderParameter(OrderSide orderSide, Double totalCost, OrderType orderType) {
+        return UpbitOrderParameter.builder().market(market).side(orderSide).price(tradePrice).volume(totalCost / tradePrice).orderType(orderType).build();
     }
 
     @Override

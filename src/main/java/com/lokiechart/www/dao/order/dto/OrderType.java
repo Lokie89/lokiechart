@@ -6,16 +6,16 @@ import lombok.Getter;
  * @author SeongRok.Oh
  * @since 2021/04/16
  */
-public enum UpbitOrderSide {
-    BUY("bid"),
-    SELL("ask"),
+public enum OrderType {
+    LIMIT("limit"),
+    UPPERMARKET("price"),
+    DOWNERMARKET("market"),
     ;
 
     @Getter
     private String parameter;
 
-    UpbitOrderSide(String parameter) {
+    OrderType(String parameter) {
         this.parameter = parameter;
     }
-
 }

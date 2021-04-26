@@ -1,8 +1,5 @@
 package com.lokiechart.www.dao.order;
 
-import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
-import com.lokiechart.www.dao.order.dto.UpbitOrderSide;
-import com.lokiechart.www.dao.order.dto.UpbitOrderType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

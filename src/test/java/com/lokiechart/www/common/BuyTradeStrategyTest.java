@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 @DisplayName("조건 검사 테스트")
 @SpringBootTest
-public class TradeStrategyTest {
+public class BuyTradeStrategyTest {
 
     @Autowired
     ConvertType convertType;

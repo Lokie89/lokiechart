@@ -47,7 +47,7 @@ class UpbitOrderServiceTest {
                 upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(new ArrayList<>())));
                 CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 30, LocalDateTime.of(2021, 4, 22, 17, 36, 03));
                 CandleResponses origin = upbitThreeMinuteCandles.get(market);
-                origin.add(responses);
+                origin.addAll(responses);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

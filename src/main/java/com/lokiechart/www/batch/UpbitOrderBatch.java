@@ -10,8 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,7 +26,7 @@ public class UpbitOrderBatch {
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderBatch.class);
     private final AccountService accountService;
     private final OrderService upbitOrderService;
-    private final Map<TradeStrategy, List<AccountResponse>> accountStrategy = new ConcurrentHashMap<>();
+    private final Map<CandleMinute, Set<AccountResponse>> accountStrategy = new ConcurrentHashMap<>();
 
     public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService) {
         this.accountService = accountService;
@@ -39,17 +41,23 @@ public class UpbitOrderBatch {
     @Scheduled(cron = "${schedule.order.one-day}")
     private void updateAccountStrategy() {
         logger.info("UPDATE MAP STRATEGY WITH ACCOUNT LIST : " + LocalDateTime.now());
-        for (TradeStrategy strategy : TradeStrategy.values()) {
-            accountStrategy.put(strategy, accountService.getAccountsByStrategy(strategy));
+        for (CandleMinute candleMinute : CandleMinute.values()) {
+            Set<AccountResponse> accountResponses = accountService.getAccountsByCandleMinute(candleMinute);
+            if (Objects.isNull(accountResponses) || accountResponses.isEmpty()) {
+                continue;
+            }
+            accountStrategy.put(candleMinute, accountResponses);
         }
     }
 
     @Scheduled(cron = "${schedule.order.one-minute}")
     private void orderOneMinuteTradeStrategy() {
         logger.info("ORDER ONE MINUTE TRADE STRATEGY : " + LocalDateTime.now());
-        List<TradeStrategy> strategies = TradeStrategy.getByCandleMinute(CandleMinute.ONE);
-        for (TradeStrategy strategy : strategies) {
-            List<AccountResponse> accounts = accountStrategy.get(strategy);
+        for (CandleMinute candleMinute : accountStrategy.keySet()) {
+            if (!candleMinute.equals(CandleMinute.ONE)) {
+                continue;
+            }
+            Set<AccountResponse> accounts = accountStrategy.get(candleMinute);
             accounts.forEach(accountResponse -> upbitOrderService.tradeByAccount(accountResponse.getEmail()));
         }
     }

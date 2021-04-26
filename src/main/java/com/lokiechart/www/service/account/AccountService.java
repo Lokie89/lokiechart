@@ -1,5 +1,6 @@
 package com.lokiechart.www.service.account;
 
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.TradeStrategy;
 import com.lokiechart.www.dao.account.AccountRepository;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,8 +28,8 @@ public class AccountService {
         return modelMapper.map(account, AccountResponse.class);
     }
 
-    public List<AccountResponse> getAccountsByStrategy(TradeStrategy strategy) {
-        List<Account> accounts = repository.findByTradeStrategy(strategy);
-        return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
+    public Set<AccountResponse> getAccountsByCandleMinute(CandleMinute candleMinute) {
+        Set<Account> accounts = repository.findByCandleMinute(candleMinute);
+        return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toSet());
     }
 }

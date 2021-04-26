@@ -1,7 +1,8 @@
 package com.lokiechart.www.dao.candle.dto;
 
 import com.lokiechart.www.dao.order.dto.OrderParameter;
-import com.lokiechart.www.dao.order.dto.UpbitOrderSide;
+import com.lokiechart.www.dao.order.dto.OrderSide;
+import com.lokiechart.www.dao.order.dto.OrderType;
 
 import java.time.LocalDateTime;
 
@@ -10,11 +11,12 @@ import java.time.LocalDateTime;
  * @since 2021/04/19
  */
 public interface CandleResponse {
-    OrderParameter toOrderParameter(UpbitOrderSide orderSide, Double totalCost);
+    OrderParameter toOrderParameter(OrderSide orderSide, Double totalCost, OrderType orderType);
     Double compareVolumeReplacePercentage(CandleResponse compare);
     Double compareTradePricePercentage(CandleResponse compare);
     Double compareUnderBollingerBands();
     Double getTradePrice();
+    String getMarket();
     void setBollingerBands(double middle, double deviation);
     LocalDateTime getCandleDateTimeKST();
 }
