@@ -43,6 +43,7 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
     @Min(0)
     private Double volume;
 
+    @Getter
     @Min(0)
     private Double price;
 
@@ -57,7 +58,7 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
 
     @JsonGetter("ord_type")
     private String getOrderType() {
-        return orderType.getParameter();
+        return orderType.getUpbitParameter();
     }
 
     @Builder

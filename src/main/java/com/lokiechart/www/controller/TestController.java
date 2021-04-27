@@ -1,6 +1,7 @@
 package com.lokiechart.www.controller;
 
 import com.lokiechart.www.batch.CandleMinute;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,6 @@ public class TestController {
 
     @GetMapping
     public void test() {
-        upbitOrderService.tradeByAccount("", CandleMinute.ONE);
+        upbitOrderService.buyByAccount(AccountResponse.builder().build(), CandleMinute.ONE, null);
     }
 }

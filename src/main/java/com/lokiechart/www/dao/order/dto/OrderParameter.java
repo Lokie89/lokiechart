@@ -9,4 +9,5 @@ import java.util.Map;
 public interface OrderParameter {
     Map<String, Object> toParameter();
     String getMarket();
+    Double getPrice();
 }

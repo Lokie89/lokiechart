@@ -19,7 +19,7 @@ import lombok.ToString;
  */
 @ToString
 @Getter
-public class UpbitAssetResponse {
+public class UpbitAssetResponse implements AssetResponse {
     private String currency;
     private Double balance;
     private Double locked;
@@ -29,4 +29,14 @@ public class UpbitAssetResponse {
     private Boolean avgBuyPriceModified;
     @JsonProperty("unit_currency")
     private String unitCurrency;
+
+    @Override
+    public boolean isSameMarket(String market) {
+        return market.contains(currency);
+    }
+
+    @Override
+    public Double avgBuyPricePercent(double tradePrice) {
+        return (tradePrice - avgBuyPrice) / avgBuyPrice * 100;
+    }
 }

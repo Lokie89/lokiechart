@@ -32,4 +32,9 @@ public class AccountService {
         Set<Account> accounts = repository.findByCandleMinute(candleMinute);
         return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toSet());
     }
+
+    public List<AccountResponse> getAll() {
+        List<Account> accounts = repository.findAll();
+        return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
+    }
 }

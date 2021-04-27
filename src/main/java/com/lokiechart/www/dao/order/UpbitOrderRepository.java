@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
@@ -46,10 +47,18 @@ public class UpbitOrderRepository implements OrderRepository {
 
     }
 
-    public void orderByStrategy(AccountResponse accountResponse,final CandleMinute candleMinute) {
-        OrderParameters matchMarkets = accountResponse.findStrategically(candleMinute);
+    public void buyByStrategy(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
+        OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            logger.warn(LocalDateTime.now() + " ORDER : " + accountResponse + " : " + parameter);
+            logger.warn(LocalDateTime.now() + " ORDER BUY : " + accountResponse + " : " + parameter);
+//            order(accountResponse.getEmail(), parameter);
+        }
+    }
+
+    public void sellByStrategy(AccountResponse accountResponse, final AssetResponses assetResponses) {
+        OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
+        for (OrderParameter parameter : matchMarkets) {
+            logger.debug(LocalDateTime.now() + " ORDER SELL : " + accountResponse + " : " + parameter);
 //            order(accountResponse.getEmail(), parameter);
         }
     }

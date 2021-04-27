@@ -2,6 +2,7 @@ package com.lokiechart.www.batch;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.service.account.AccountService;
+import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -24,12 +26,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UpbitOrderBatch {
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderBatch.class);
     private final AccountService accountService;
+    private final AssetService upbitAssetService;
     private final OrderService upbitOrderService;
     private final Map<CandleMinute, Set<AccountResponse>> accountStrategy = new ConcurrentHashMap<>();
 
-    public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService) {
+    public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService, AssetService upbitAssetService) {
         this.accountService = accountService;
         this.upbitOrderService = upbitOrderService;
+        this.upbitAssetService = upbitAssetService;
         init();
     }
 
@@ -79,11 +83,26 @@ public class UpbitOrderBatch {
         orderBuyTradeStrategy(candleMinute);
     }
 
+    @Scheduled(cron = "${schedule.order.one-day}")
+    private void orderBuyOneDayTradeStrategy() {
+        final CandleMinute candleMinute = CandleMinute.DAY;
+        orderBuyTradeStrategy(candleMinute);
+    }
+
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
         logger.info("ORDER BUY " + candleMinute.name().toUpperCase() + " MINUTES TRADE STRATEGY : " + LocalDateTime.now());
         Set<AccountResponse> accounts = accountStrategy.get(candleMinute);
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-            accounts.forEach(accountResponse -> upbitOrderService.tradeByAccount(accountResponse.getEmail(), candleMinute));
+            List<AccountResponse> accountResponses = accountService.getAll();
+            accounts.forEach(accountResponse -> upbitOrderService.buyByAccount(accountResponse, candleMinute, upbitAssetService.getAssets(accountResponse)));
+        }
+    }
+
+    @Scheduled(cron = "${schedule.order.one-minute}")
+    private void orderSellTradeStrategy() {
+        List<AccountResponse> accounts = accountService.getAll();
+        if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
+            accounts.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse)));
         }
     }
 }

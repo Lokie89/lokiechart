@@ -1,6 +1,8 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
+import com.lokiechart.www.dao.asset.dto.AssetResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
@@ -27,7 +29,7 @@ public class OrderStrategy {
     private final Integer onceInvestKRW;
     private final OrderType orderType;
 
-    public OrderParameters match() {
+    public OrderParameters matchBuy(AssetResponses assetResponses) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (String key : liveCandles.keySet()) {
@@ -35,11 +37,38 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
+            if (assetResponses.isAlreadyOwnAndNotCheapEnough(matched)) {
+                continue;
+            }
             matchedCandleResponses.add(matched);
         }
         return new OrderParameters(matchedCandleResponses.getCandleResponses()
                 .stream()
                 .map(candleResponse -> candleResponse.toOrderParameter(OrderSide.BUY, onceInvestKRW, orderType))
+                .collect(Collectors.toList())
+        );
+    }
+
+    public OrderParameters matchSell(AssetResponses assetResponses) {
+        Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
+        CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
+        for (AssetResponse assetResponse : assetResponses) {
+            if (assetResponse.getCurrency().equals("KRW")) {
+                continue;
+            }
+            String market = "KRW-" + assetResponse.getCurrency();
+            CandleResponse matched = tradeStrategy.match(liveCandles.get(market));
+            if (Objects.isNull(matched)) {
+                continue;
+            }
+            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < 0.5) {
+                continue;
+            }
+            matchedCandleResponses.add(matched);
+        }
+        return new OrderParameters(matchedCandleResponses.getCandleResponses()
+                .stream()
+                .map(candleResponse -> candleResponse.toOrderParameter(OrderSide.SELL, onceInvestKRW, orderType))
                 .collect(Collectors.toList())
         );
     }

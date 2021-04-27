@@ -2,9 +2,11 @@ package com.lokiechart.www.service.order;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.UpbitMarketRepository;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
+import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,9 @@ class UpbitOrderServiceTest {
     @Autowired
     UpbitCandleService upbitCandleService;
 
+    @Autowired
+    AssetService upbitAssetService;
+
     List<UpbitMarketResponse> upbitMarket;
 
     @DisplayName("Email 의 전략에 맞게 주문 하기")
@@ -52,7 +57,8 @@ class UpbitOrderServiceTest {
                 e.printStackTrace();
             }
         }
-        upbitOrderService.tradeByAccount("tjdfhrdk10@naver.com", CandleMinute.ONE);
+        AccountResponse accountResponse = AccountResponse.builder().email("tjdfhrdk10@naver.com").build();
+        upbitOrderService.buyByAccount(accountResponse, CandleMinute.ONE, upbitAssetService.getAssets(accountResponse));
     }
 
 }

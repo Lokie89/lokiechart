@@ -2,9 +2,9 @@ package com.lokiechart.www.dao.account.dto;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategy;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,10 @@ import java.util.Set;
  * @author SeongRok.Oh
  * @since 2021/04/19
  */
+@Builder
+@AllArgsConstructor
 @ToString
+@NoArgsConstructor
 @Getter
 public class AccountResponse {
     private String email;
@@ -24,11 +27,11 @@ public class AccountResponse {
     private List<String> excludeMarket;
     private List<String> decidedMarket;
 
-    public OrderParameters findStrategically(final CandleMinute candleMinute) {
+    public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
             if (orderStrategy.getCandleMinute().equals(candleMinute)) {
-                matchedOrderParameters.addAll(orderStrategy.match());
+                matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses));
             }
         }
 
@@ -38,6 +41,14 @@ public class AccountResponse {
         }
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
             matchedOrderParameters.exclude(excludeMarket);
+        }
+        return matchedOrderParameters;
+    }
+
+    public OrderParameters findSellStrategically(final AssetResponses assetResponses) {
+        OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
+        for (OrderStrategy orderStrategy : sellTradeStrategies) {
+            matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses));
         }
         return matchedOrderParameters;
     }

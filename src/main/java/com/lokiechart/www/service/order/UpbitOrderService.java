@@ -2,8 +2,8 @@ package com.lokiechart.www.service.order;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.UpbitOrderRepository;
-import com.lokiechart.www.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UpbitOrderService implements OrderService {
     private final UpbitOrderRepository upbitOrderRepository;
-    private final AccountService accountService;
 
     @Override
-    public void tradeByAccount(String email, final CandleMinute candleMinute) {
-        AccountResponse accountResponse = accountService.getAccountByEmail(email);
-        upbitOrderRepository.orderByStrategy(accountResponse, candleMinute);
+    public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
+        upbitOrderRepository.buyByStrategy(accountResponse, candleMinute, assetResponses);
+    }
+
+    @Override
+    public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
+        upbitOrderRepository.sellByStrategy(accountResponse, assetResponses);
     }
 }

@@ -13,9 +13,9 @@ public enum OrderType {
     ;
 
     @Getter
-    private String parameter;
+    private String upbitParameter;
 
-    OrderType(String parameter) {
-        this.parameter = parameter;
+    OrderType(String upbitParameter) {
+        this.upbitParameter = upbitParameter;
     }
 }
