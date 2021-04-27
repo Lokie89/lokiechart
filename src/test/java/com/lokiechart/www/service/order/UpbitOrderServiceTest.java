@@ -1,5 +1,6 @@
 package com.lokiechart.www.service.order;
 
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.UpbitMarketRepository;
@@ -51,7 +52,7 @@ class UpbitOrderServiceTest {
                 e.printStackTrace();
             }
         }
-        upbitOrderService.tradeByAccount("tjdfhrdk10@naver.com");
+        upbitOrderService.tradeByAccount("tjdfhrdk10@naver.com", CandleMinute.ONE);
     }
 
 }

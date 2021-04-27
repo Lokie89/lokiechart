@@ -80,7 +80,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     }
 
     @Override
-    public Double compareVolumeReplacePercentage(CandleResponse compare) {
+    public Double compareVolumePercentage(CandleResponse compare) {
         UpbitCandleResponse other = getCompareInstance(compare);
         return (this.accTradeVolume - other.accTradeVolume) / other.accTradeVolume * 100;
     }
@@ -97,6 +97,14 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
             return null;
         }
         return (tradePrice - lowBollingerBands) / lowBollingerBands * 100;
+    }
+
+    @Override
+    public Double compareOverBollingerBands() {
+        if (highBollingerBands == 0) {
+            return null;
+        }
+        return (highPrice - highBollingerBands) / highBollingerBands * 100;
     }
 
     @Override

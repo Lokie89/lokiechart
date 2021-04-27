@@ -2,6 +2,7 @@ package com.lokiechart.www.dao.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
@@ -45,8 +46,8 @@ public class UpbitOrderRepository implements OrderRepository {
 
     }
 
-    public void orderByStrategy(AccountResponse accountResponse) {
-        OrderParameters matchMarkets = accountResponse.findStrategically();
+    public void orderByStrategy(AccountResponse accountResponse,final CandleMinute candleMinute) {
+        OrderParameters matchMarkets = accountResponse.findStrategically(candleMinute);
         for (OrderParameter parameter : matchMarkets) {
             logger.warn(LocalDateTime.now() + " ORDER : " + accountResponse + " : " + parameter);
 //            order(accountResponse.getEmail(), parameter);

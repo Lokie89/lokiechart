@@ -7,6 +7,10 @@ schedule:
     one-hour: "5 0 * * * *"
     one-day: "5 0 9 * * *"
   order:
-    one-minute: "30 * * * * *"
+    one-minute: "30 * 0-7,10-23 * * *"
+    three-minutes: "30 */3 0-7,10-23 * * *"
+    fifteen-minutes: "30 */15 0-7,10-23 * * *"
+    thirty-minutes: "30 */30 0-8,10-23 * * *"
+    one-hour: "30 0 0-8,10-23 * * *"
     one-day: "50 59 23 * * *"
   market: "5 0 0 * * *"

@@ -1,5 +1,6 @@
 package com.lokiechart.www.controller;
 
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
     private final OrderService upbitOrderService;
+
     @GetMapping
-    public void test(){
-        upbitOrderService.tradeByAccount("");
+    public void test() {
+        upbitOrderService.tradeByAccount("", CandleMinute.ONE);
     }
 }

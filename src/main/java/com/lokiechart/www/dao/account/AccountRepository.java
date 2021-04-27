@@ -7,10 +7,7 @@ import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.domain.account.Account;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -19,17 +16,26 @@ import java.util.stream.Collectors;
  */
 @Component
 public class AccountRepository {
+    private String[] excludeMarkets = {"BTC", "ETH", "XRP", "ADA", "DOGE", "DOT", "LTC", "BCH", "LINK", "VET", "XLM", "THETA", "TRX"};
+
+    private Account.AccountBuilder accountBuilder = Account.builder().email("tjdfhrdk10@naver.com").excludeMarket(Arrays.asList(excludeMarkets));
+
     public Account findByEmail(final String email) {
         Set<OrderStrategy> accountStrategies = new HashSet<>();
-        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.ONE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
-        return Account.builder().email("tjdfhrdk10@naver.com").buyTradeStrategies(accountStrategies).build();
+//        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.FIFTEEN).tradeStrategy(BuyTradeStrategy.TRADEPRICE_KEEPPRICEAFTERFIVETIMESVOL).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
+
+        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(5000).orderType(OrderType.UPPERMARKET).build());
+//        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
+        return accountBuilder.buyTradeStrategies(accountStrategies).build();
     }
 
     public Set<Account> findByCandleMinute(final CandleMinute candleMinute) {
         Set<OrderStrategy> accountStrategies = new HashSet<>();
-        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.ONE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
+//        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.FIFTEEN).tradeStrategy(BuyTradeStrategy.TRADEPRICE_KEEPPRICEAFTERFIVETIMESVOL).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
+        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(5000).orderType(OrderType.UPPERMARKET).build());
+//        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
         List<Account> accounts = new ArrayList<>();
-        accounts.add(Account.builder().email("tjdfhrdk10@naver.com").buyTradeStrategies(accountStrategies).build());
+        accounts.add(accountBuilder.buyTradeStrategies(accountStrategies).build());
         return accounts.stream().filter(account -> account.haveOrderStrategyByCandleMinute(candleMinute)).collect(Collectors.toSet());
     }
 }

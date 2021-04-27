@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
  */
 public interface CandleResponse {
     OrderParameter toOrderParameter(OrderSide orderSide, Integer totalCost, OrderType orderType);
-    Double compareVolumeReplacePercentage(CandleResponse compare);
+    Double compareVolumePercentage(CandleResponse compare);
     Double compareTradePricePercentage(CandleResponse compare);
     Double compareUnderBollingerBands();
+    Double compareOverBollingerBands();
     Double getTradePrice();
     String getMarket();
     void setBollingerBands(double middle, double deviation);

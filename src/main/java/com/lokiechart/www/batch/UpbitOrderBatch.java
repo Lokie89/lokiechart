@@ -50,11 +50,40 @@ public class UpbitOrderBatch {
     }
 
     @Scheduled(cron = "${schedule.order.one-minute}")
-    private void orderOneMinuteTradeStrategy() {
-        logger.info("ORDER ONE MINUTE TRADE STRATEGY : " + LocalDateTime.now());
-        Set<AccountResponse> accounts = accountStrategy.get(CandleMinute.ONE);
-        accounts.forEach(accountResponse -> upbitOrderService.tradeByAccount(accountResponse.getEmail()));
+    private void orderBuyOneMinuteTradeStrategy() {
+        final CandleMinute candleMinute = CandleMinute.ONE;
+        orderBuyTradeStrategy(candleMinute);
     }
 
+    @Scheduled(cron = "${schedule.order.three-minutes}")
+    private void orderBuyThreeMinutesTradeStrategy() {
+        final CandleMinute candleMinute = CandleMinute.THREE;
+        orderBuyTradeStrategy(candleMinute);
+    }
 
+    @Scheduled(cron = "${schedule.order.fifteen-minutes}")
+    private void orderBuyFifteenMinutesTradeStrategy() {
+        final CandleMinute candleMinute = CandleMinute.FIFTEEN;
+        orderBuyTradeStrategy(candleMinute);
+    }
+
+    @Scheduled(cron = "${schedule.order.thirty-minutes}")
+    private void orderBuyThirtyMinutesTradeStrategy() {
+        final CandleMinute candleMinute = CandleMinute.THIRTY;
+        orderBuyTradeStrategy(candleMinute);
+    }
+
+    @Scheduled(cron = "${schedule.order.one-hour}")
+    private void orderBuyOneHourTradeStrategy() {
+        final CandleMinute candleMinute = CandleMinute.SIXTY;
+        orderBuyTradeStrategy(candleMinute);
+    }
+
+    private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
+        logger.info("ORDER BUY " + candleMinute.name().toUpperCase() + " MINUTES TRADE STRATEGY : " + LocalDateTime.now());
+        Set<AccountResponse> accounts = accountStrategy.get(candleMinute);
+        if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
+            accounts.forEach(accountResponse -> upbitOrderService.tradeByAccount(accountResponse.getEmail(), candleMinute));
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.lokiechart.www.dao.account.dto;
 
+import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import lombok.Getter;
@@ -23,10 +24,12 @@ public class AccountResponse {
     private List<String> excludeMarket;
     private List<String> decidedMarket;
 
-    public OrderParameters findStrategically() {
+    public OrderParameters findStrategically(final CandleMinute candleMinute) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
-            matchedOrderParameters.addAll(orderStrategy.match());
+            if (orderStrategy.getCandleMinute().equals(candleMinute)) {
+                matchedOrderParameters.addAll(orderStrategy.match());
+            }
         }
 
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
