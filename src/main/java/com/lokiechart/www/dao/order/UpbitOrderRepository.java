@@ -58,7 +58,7 @@ public class UpbitOrderRepository implements OrderRepository {
     public void sellByStrategy(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            logger.debug(LocalDateTime.now() + " ORDER SELL : " + accountResponse + " : " + parameter);
+            logger.warn(LocalDateTime.now() + " ORDER SELL : " + accountResponse + " : " + parameter);
             order(accountResponse.getEmail(), parameter);
         }
     }
