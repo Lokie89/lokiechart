@@ -30,8 +30,6 @@ public class UpbitOrderRepository implements OrderRepository {
     private final CallByApi api;
     private final ApiHeader upbitHeader;
 
-    private final Logger logger = LoggerFactory.getLogger(UpbitOrderRepository.class);
-
     @Override
     public String order(String account, OrderParameter request) {
         Map<String, Object> params = request.toParameter();
@@ -47,19 +45,4 @@ public class UpbitOrderRepository implements OrderRepository {
 
     }
 
-    public void buyByStrategy(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
-        OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
-        for (OrderParameter parameter : matchMarkets) {
-            logger.warn(LocalDateTime.now() + " ORDER BUY : " + accountResponse + " : " + parameter);
-            order(accountResponse.getEmail(), parameter);
-        }
-    }
-
-    public void sellByStrategy(AccountResponse accountResponse, final AssetResponses assetResponses) {
-        OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
-        for (OrderParameter parameter : matchMarkets) {
-            logger.warn(LocalDateTime.now() + " ORDER SELL : " + accountResponse + " : " + parameter);
-            order(accountResponse.getEmail(), parameter);
-        }
-    }
 }

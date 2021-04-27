@@ -19,11 +19,11 @@ public class OrderParameters implements Iterable<OrderParameter> {
     private List<OrderParameter> orderParameters;
 
     public void exclude(List<String> excludeMarkets) {
-        orderParameters = orderParameters.stream().filter(parameter -> !excludeMarkets.contains(parameter.getMarket())).collect(Collectors.toList());
+        orderParameters = orderParameters.stream().filter(parameter -> !excludeMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
     }
 
     public void filter(List<String> decidedMarkets) {
-        orderParameters = orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket())).collect(Collectors.toList());
+        orderParameters = orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
     }
 
     public void addAll(OrderParameters orderParameters) {

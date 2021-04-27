@@ -50,6 +50,15 @@ public class AccountResponse {
         for (OrderStrategy orderStrategy : sellTradeStrategies) {
             matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses));
         }
+
+        if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
+            matchedOrderParameters.filter(decidedMarket);
+            return matchedOrderParameters;
+        }
+        if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
+            matchedOrderParameters.exclude(excludeMarket);
+        }
         return matchedOrderParameters;
     }
+
 }
