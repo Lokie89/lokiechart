@@ -3,35 +3,28 @@ package com.lokiechart.www.batch;
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author SeongRok.Oh
  * @since 2021/04/25
  */
+@ToString
 @EqualsAndHashCode
 @Builder
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class OrderStrategy {
-    private TradeStrategy tradeStrategy;
-    private CandleMinute candleMinute;
+    private final TradeStrategy tradeStrategy;
+    private final CandleMinute candleMinute;
 
-    public CandleResponses match(final Set<String> markets) {
+    public CandleResponses match() {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
-        final boolean existMarkets = Objects.nonNull(markets) && !markets.isEmpty();
         for (String key : liveCandles.keySet()) {
-            if (existMarkets && !markets.contains(key)) {
-                continue;
-            }
             CandleResponse matched = tradeStrategy.match(liveCandles.get(key));
             if (Objects.isNull(matched)) {
                 continue;

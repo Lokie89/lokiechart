@@ -9,7 +9,6 @@ import com.lokiechart.www.dao.order.dto.OrderType;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -31,12 +30,10 @@ public class AccountResponse {
     private List<String> decidedMarket;
 
     public OrderParameters findStrategically() {
-        Set<String> markets = new LinkedHashSet<>();
         CandleResponses buyMatchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
-            CandleResponses candleResponses = orderStrategy.match(markets);
+            CandleResponses candleResponses = orderStrategy.match();
             buyMatchedCandleResponses.addAll(candleResponses);
-            markets.addAll(candleResponses.getMarkets());
         }
 
         OrderParameters matchedOrderParameters =

@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -53,13 +52,8 @@ public class UpbitOrderBatch {
     @Scheduled(cron = "${schedule.order.one-minute}")
     private void orderOneMinuteTradeStrategy() {
         logger.info("ORDER ONE MINUTE TRADE STRATEGY : " + LocalDateTime.now());
-        for (CandleMinute candleMinute : accountStrategy.keySet()) {
-            if (!candleMinute.equals(CandleMinute.ONE)) {
-                continue;
-            }
-            Set<AccountResponse> accounts = accountStrategy.get(candleMinute);
-            accounts.forEach(accountResponse -> upbitOrderService.tradeByAccount(accountResponse.getEmail()));
-        }
+        Set<AccountResponse> accounts = accountStrategy.get(CandleMinute.ONE);
+        accounts.forEach(accountResponse -> upbitOrderService.tradeByAccount(accountResponse.getEmail()));
     }
 
 
