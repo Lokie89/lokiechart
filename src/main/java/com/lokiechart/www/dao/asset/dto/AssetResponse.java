@@ -8,4 +8,5 @@ public interface AssetResponse {
     boolean isSameMarket(String market);
     Double avgBuyPricePercent(double tradePrice);
     String getCurrency();
+    Double getBalance();
 }

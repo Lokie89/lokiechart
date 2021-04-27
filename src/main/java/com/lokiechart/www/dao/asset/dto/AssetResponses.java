@@ -30,4 +30,9 @@ public class AssetResponses implements Iterable<AssetResponse> {
     public Iterator<AssetResponse> iterator() {
         return assetResponses.iterator();
     }
+
+    public Double getBalanceByMarket(String market) {
+        AssetResponse asset = assetResponses.stream().filter(assetResponse -> market.equals("KRW-" + assetResponse.getCurrency())).findAny().get();
+        return asset.getBalance();
+    }
 }

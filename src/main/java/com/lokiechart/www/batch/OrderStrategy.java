@@ -44,7 +44,7 @@ public class OrderStrategy {
         }
         return new OrderParameters(matchedCandleResponses.getCandleResponses()
                 .stream()
-                .map(candleResponse -> candleResponse.toOrderParameter(OrderSide.BUY, onceInvestKRW, orderType))
+                .map(candleResponse -> candleResponse.toBuyOrderParameter(OrderSide.BUY, onceInvestKRW, orderType))
                 .collect(Collectors.toList())
         );
     }
@@ -68,7 +68,7 @@ public class OrderStrategy {
         }
         return new OrderParameters(matchedCandleResponses.getCandleResponses()
                 .stream()
-                .map(candleResponse -> candleResponse.toOrderParameter(OrderSide.SELL, onceInvestKRW, orderType))
+                .map(candleResponse -> candleResponse.toSellOrderParameter(OrderSide.SELL, assetResponses.getBalanceByMarket(candleResponse.getMarket()), orderType))
                 .collect(Collectors.toList())
         );
     }

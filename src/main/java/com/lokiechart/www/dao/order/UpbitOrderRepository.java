@@ -51,7 +51,7 @@ public class UpbitOrderRepository implements OrderRepository {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
         for (OrderParameter parameter : matchMarkets) {
             logger.warn(LocalDateTime.now() + " ORDER BUY : " + accountResponse + " : " + parameter);
-//            order(accountResponse.getEmail(), parameter);
+            order(accountResponse.getEmail(), parameter);
         }
     }
 
@@ -59,7 +59,7 @@ public class UpbitOrderRepository implements OrderRepository {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
         for (OrderParameter parameter : matchMarkets) {
             logger.debug(LocalDateTime.now() + " ORDER SELL : " + accountResponse + " : " + parameter);
-//            order(accountResponse.getEmail(), parameter);
+            order(accountResponse.getEmail(), parameter);
         }
     }
 }
