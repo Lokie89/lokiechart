@@ -21,15 +21,15 @@ import java.util.stream.Collectors;
 public class AccountRepository {
     public Account findByEmail(final String email) {
         Set<OrderStrategy> accountStrategies = new HashSet<>();
-        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.ONE).tradeStrategy(BuyTradeStrategy.KEEP_TRADEPRICE_UNDERBOLLINGERBANDSTWICE).build());
-        return Account.builder().email("tjdfhrdk10@naver.com").onceInvestKRW(5100).buyTradeStrategies(accountStrategies).orderType(OrderType.LIMIT).build();
+        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.ONE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
+        return Account.builder().email("tjdfhrdk10@naver.com").buyTradeStrategies(accountStrategies).build();
     }
 
     public Set<Account> findByCandleMinute(final CandleMinute candleMinute) {
         Set<OrderStrategy> accountStrategies = new HashSet<>();
-        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.ONE).tradeStrategy(BuyTradeStrategy.KEEP_TRADEPRICE_UNDERBOLLINGERBANDSTWICE).build());
+        accountStrategies.add(OrderStrategy.builder().candleMinute(CandleMinute.ONE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(5000).orderType(OrderType.LIMIT).build());
         List<Account> accounts = new ArrayList<>();
-        accounts.add(Account.builder().email("tjdfhrdk10@naver.com").onceInvestKRW(5100).buyTradeStrategies(accountStrategies).orderType(OrderType.LIMIT).build());
+        accounts.add(Account.builder().email("tjdfhrdk10@naver.com").buyTradeStrategies(accountStrategies).build());
         return accounts.stream().filter(account -> account.haveOrderStrategyByCandleMinute(candleMinute)).collect(Collectors.toSet());
     }
 }

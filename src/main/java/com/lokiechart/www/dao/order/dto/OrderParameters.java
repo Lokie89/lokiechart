@@ -26,6 +26,10 @@ public class OrderParameters implements Iterable<OrderParameter> {
         orderParameters = orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket())).collect(Collectors.toList());
     }
 
+    public void addAll(OrderParameters orderParameters) {
+        this.orderParameters.addAll(orderParameters.orderParameters);
+    }
+
     @Override
     public Iterator<OrderParameter> iterator() {
         return orderParameters.iterator();

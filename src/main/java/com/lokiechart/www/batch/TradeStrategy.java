@@ -9,6 +9,6 @@ import com.lokiechart.www.dao.order.dto.OrderSide;
  * @since 2021/04/26
  */
 public interface TradeStrategy {
-    CandleResponse match(CandleResponses candleResponses);
+    CandleResponse match(CandleResponses candles);
     OrderSide getOrderSide();
 }

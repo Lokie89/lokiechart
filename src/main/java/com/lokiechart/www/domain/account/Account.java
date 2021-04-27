@@ -2,7 +2,6 @@ package com.lokiechart.www.domain.account;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategy;
-import com.lokiechart.www.dao.order.dto.OrderType;
 import lombok.*;
 
 import java.util.List;
@@ -22,8 +21,6 @@ public class Account {
     private String email;
     private Set<OrderStrategy> buyTradeStrategies;
     private Set<OrderStrategy> sellTradeStrategies;
-    private Integer onceInvestKRW;
-    private OrderType orderType;
     private List<String> excludeMarket;
     private List<String> decidedMarket;
 

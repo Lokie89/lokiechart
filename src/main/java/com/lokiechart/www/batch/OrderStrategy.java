@@ -3,10 +3,14 @@ package com.lokiechart.www.batch;
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
+import com.lokiechart.www.dao.order.dto.OrderParameters;
+import com.lokiechart.www.dao.order.dto.OrderSide;
+import com.lokiechart.www.dao.order.dto.OrderType;
 import lombok.*;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author SeongRok.Oh
@@ -20,8 +24,10 @@ import java.util.Objects;
 public class OrderStrategy {
     private final TradeStrategy tradeStrategy;
     private final CandleMinute candleMinute;
+    private final Integer onceInvestKRW;
+    private final OrderType orderType;
 
-    public CandleResponses match() {
+    public OrderParameters match() {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (String key : liveCandles.keySet()) {
@@ -31,6 +37,10 @@ public class OrderStrategy {
             }
             matchedCandleResponses.add(matched);
         }
-        return matchedCandleResponses;
+        return new OrderParameters(matchedCandleResponses.getCandleResponses()
+                .stream()
+                .map(candleResponse -> candleResponse.toOrderParameter(OrderSide.BUY, onceInvestKRW, orderType))
+                .collect(Collectors.toList())
+        );
     }
 }

@@ -75,7 +75,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     private double highBollingerBands;
 
     @Override
-    public OrderParameter toOrderParameter(OrderSide orderSide, Double totalCost, OrderType orderType) {
+    public OrderParameter toOrderParameter(OrderSide orderSide, Integer totalCost, OrderType orderType) {
         return UpbitOrderParameter.builder().market(market).side(orderSide).price(tradePrice).volume(totalCost / tradePrice).orderType(orderType).build();
     }
 
