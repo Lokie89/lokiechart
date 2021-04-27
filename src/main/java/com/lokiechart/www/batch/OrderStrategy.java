@@ -57,7 +57,11 @@ public class OrderStrategy {
                 continue;
             }
             String market = "KRW-" + assetResponse.getCurrency();
-            CandleResponse matched = tradeStrategy.match(liveCandles.get(market));
+            CandleResponses candleResponses = liveCandles.get(market);
+            if(Objects.isNull(candleResponses)){
+                continue;
+            }
+            CandleResponse matched = tradeStrategy.match(candleResponses);
             if (Objects.isNull(matched)) {
                 continue;
             }
