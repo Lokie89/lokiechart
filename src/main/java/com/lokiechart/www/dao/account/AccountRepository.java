@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Component
 public class AccountRepository {
     private final String[] excludeMarkets = {"BTC", "ETH", "XRP", "ADA", "DOGE", "DOT", "LTC", "BCH", "LINK", "VET", "XLM", "THETA", "TRX"};
-    private final String[] decidedMarkets = {"SC"};
+    private final String[] decidedMarkets = {"SC", "MOC", "SOLVE", "STMX", "IQ", "DKA"};
 
     private final Account.AccountBuilder accountBuilder = Account.builder().email("tjdfhrdk10@naver.com").excludeMarket(Arrays.asList(excludeMarkets)).decidedMarket(Arrays.asList(decidedMarkets));
     OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(20000).orderType(OrderType.UPPERMARKET).build();
