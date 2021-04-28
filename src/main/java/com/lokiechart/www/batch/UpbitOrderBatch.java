@@ -97,7 +97,7 @@ public class UpbitOrderBatch {
         }
     }
 
-    @Scheduled(cron = "${schedule.order.one-minute}")
+    @Scheduled(cron = "${schedule.order.all-minute}")
     private void orderSellTradeStrategy() {
         List<AccountResponse> accounts = accountService.getAll();
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
