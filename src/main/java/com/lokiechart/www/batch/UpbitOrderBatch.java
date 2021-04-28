@@ -108,14 +108,14 @@ public class UpbitOrderBatch {
     private void orderCancel() {
         List<AccountResponse> accounts = accountService.getAll();
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-            accounts.forEach(accountResponse -> {
-                List<OrderList> orderLists = upbitOrderService.getOrderedList(accountResponse);
-                orderLists.forEach(orderList -> {
-                    String[] uuids = orderList.getUuids();
-                    Arrays.stream(uuids).forEach(upbitOrderService::cancelNotBought);
-                });
-                ;
-            });
+//            accounts.forEach(accountResponse -> {
+//                List<OrderList> orderLists = upbitOrderService.getOrderedList(accountResponse);
+//                orderLists.forEach(orderList -> {
+//                    String[] uuids = orderList.getUuids();
+//                    Arrays.stream(uuids).forEach(upbitOrderService::cancelNotBought);
+//                });
+//                ;
+//            });
         }
     }
 }

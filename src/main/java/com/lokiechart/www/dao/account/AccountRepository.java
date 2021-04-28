@@ -18,12 +18,16 @@ import java.util.stream.Collectors;
 @Component
 public class AccountRepository {
     private final String[] excludeMarkets = {"BTC", "ETH", "XRP", "ADA", "DOGE", "DOT", "LTC", "BCH", "LINK", "VET", "XLM", "THETA", "TRX"};
-    private final String[] decidedMarkets = {"SC", "MOC", "SOLVE", "STMX", "IQ", "DKA"};
+//    private final String[] decidedMarkets = {"SC", "MOC", "SOLVE", "STMX", "IQ", "DKA"};
 
-    private final Account.AccountBuilder accountBuilder = Account.builder().email("tjdfhrdk10@naver.com").excludeMarket(Arrays.asList(excludeMarkets)).decidedMarket(Arrays.asList(decidedMarkets));
+    private final Account.AccountBuilder accountBuilder = Account.builder()
+            .email("tjdfhrdk10@naver.com")
+            .excludeMarket(Arrays.asList(excludeMarkets))
+//            .decidedMarket(Arrays.asList(decidedMarkets))
+            ;
 //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
     OrderStrategy buy2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(50000).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
-    OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).onceInvestKRW(0).orderType(OrderType.LIMIT).build();
+    OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).onceInvestKRW(0).orderType(OrderType.LIMIT).build();
 
     public Account findByEmail(final String email) {
         Set<OrderStrategy> buyAccountStrategies = new HashSet<>();

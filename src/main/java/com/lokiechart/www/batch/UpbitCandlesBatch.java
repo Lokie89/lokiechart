@@ -99,7 +99,7 @@ public class UpbitCandlesBatch {
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
-                CandleResponses responses = upbitCandleService.get3MinutesCandles(market, howGetCandles);
+                CandleResponses responses = upbitCandleService.get5MinutesCandles(market, howGetCandles);
                 CandleResponses origin = upbitFiveMinuteCandles.get(market);
                 origin.addAll(responses);
                 Thread.sleep(100);
@@ -214,7 +214,7 @@ public class UpbitCandlesBatch {
         upbitMarket.forEach(marketResponse -> {
             String market = marketResponse.getMarket();
             CandleResponses origin = upbitFiveMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 3);
+            int onceCallGetCount = howToGetCandles(origin, 5);
             CandleResponses responses = upbitCandleService.get5MinutesCandles(market, onceCallGetCount);
             origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
