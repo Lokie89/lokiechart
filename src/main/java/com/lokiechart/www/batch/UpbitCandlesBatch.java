@@ -1,6 +1,7 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
+import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.MarketRepository;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,14 +41,16 @@ public class UpbitCandlesBatch {
     static final Map<String, CandleResponses> upbitOneMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitFiveMinuteCandles = new ConcurrentHashMap<>();
-    static final Map<String, CandleResponses> upbitTenMinuteCandles = new ConcurrentHashMap<>();
+    //    static final Map<String, CandleResponses> upbitTenMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitFifteenMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitThirtyMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitSixtyMinuteCandles = new ConcurrentHashMap<>();
-    static final Map<String, CandleResponses> upbitTwoFortyMinuteCandles = new ConcurrentHashMap<>();
+    //    static final Map<String, CandleResponses> upbitTwoFortyMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitDayCandles = new ConcurrentHashMap<>();
-    static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
-    static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
+//    static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
+//    static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
+
+    static final Map<String, Boolean> isAlready20PercentIncreasedInTwoDays = new HashMap<>();
 
     private void init() {
         updateUpbitMarket();
@@ -55,7 +59,7 @@ public class UpbitCandlesBatch {
             upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
 //            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
-//            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
 //            upbitTenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitFifteenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitThirtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
@@ -85,6 +89,18 @@ public class UpbitCandlesBatch {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get3MinutesCandles(market, howGetCandles);
                 CandleResponses origin = upbitThreeMinuteCandles.get(market);
+                origin.addAll(responses);
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (UpbitMarketResponse marketResponse : upbitMarket) {
+            try {
+                String market = marketResponse.getMarket();
+                CandleResponses responses = upbitCandleService.get3MinutesCandles(market, howGetCandles);
+                CandleResponses origin = upbitFiveMinuteCandles.get(market);
                 origin.addAll(responses);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -134,6 +150,11 @@ public class UpbitCandlesBatch {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+        for (String market : upbitDayCandles.keySet()) {
+            CandleResponses candleResponses = upbitDayCandles.get(market);
+            SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
+            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncrease() < 20));
         }
     }
 
@@ -185,6 +206,25 @@ public class UpbitCandlesBatch {
             }
         });
         logger.info("3 MINUTES SIZE " + upbitThreeMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+    }
+
+    @Scheduled(cron = "${schedule.candle.five-minutes}")
+    private void updateUpbitFiveMinuteCandles() {
+        logger.info("Scheduling UPBIT 5 MINUTES CANDLES UPDATE");
+        upbitMarket.forEach(marketResponse -> {
+            String market = marketResponse.getMarket();
+            CandleResponses origin = upbitFiveMinuteCandles.get(market);
+            int onceCallGetCount = howToGetCandles(origin, 3);
+            CandleResponses responses = upbitCandleService.get5MinutesCandles(market, onceCallGetCount);
+            origin.addAll(responses);
+            origin.setUnderBollingerBands(onceCallGetCount);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        logger.info("5 MINUTES SIZE " + upbitFiveMinuteCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
     @Scheduled(cron = "${schedule.candle.fifteen-minutes}")
@@ -254,6 +294,23 @@ public class UpbitCandlesBatch {
             CandleResponses responses = upbitCandleService.get1DayCandles(market, onceCallGetCount);
             origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        logger.info("1 DAY SIZE " + upbitDayCandles.get("KRW-BTC").getCandleResponses().size());
+    }
+
+    @Scheduled(cron = "${schedule.candle.increase-day}")
+    private void updateAlreadyIncreasedCandles() {
+        logger.info("Scheduling UPBIT 1 DAY ALREADY INCREASED CANDLES UPDATE");
+        upbitMarket.forEach(marketResponse -> {
+            String market = marketResponse.getMarket();
+            CandleResponses candleResponses = upbitDayCandles.get(market);
+            SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
+            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncrease() < 20));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

@@ -21,13 +21,13 @@ public class AccountRepository {
     private final String[] decidedMarkets = {"SC", "MOC", "SOLVE", "STMX", "IQ", "DKA"};
 
     private final Account.AccountBuilder accountBuilder = Account.builder().email("tjdfhrdk10@naver.com").excludeMarket(Arrays.asList(excludeMarkets)).decidedMarket(Arrays.asList(decidedMarkets));
-    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(20000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
-    OrderStrategy buy2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(10000).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
+//    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
+    OrderStrategy buy2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(50000).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
     OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).onceInvestKRW(0).orderType(OrderType.LIMIT).build();
 
     public Account findByEmail(final String email) {
         Set<OrderStrategy> buyAccountStrategies = new HashSet<>();
-        buyAccountStrategies.add(buy1);
+//        buyAccountStrategies.add(buy1);
         buyAccountStrategies.add(buy2);
         Set<OrderStrategy> sellAccountStrategies = new HashSet<>();
         sellAccountStrategies.add(sell1);
@@ -36,7 +36,7 @@ public class AccountRepository {
 
     public Set<Account> findByCandleMinute(final CandleMinute candleMinute) {
         Set<OrderStrategy> buyAccountStrategies = new HashSet<>();
-        buyAccountStrategies.add(buy1);
+//        buyAccountStrategies.add(buy1);
         buyAccountStrategies.add(buy2);
         Set<OrderStrategy> sellAccountStrategies = new HashSet<>();
         sellAccountStrategies.add(sell1);
@@ -47,7 +47,7 @@ public class AccountRepository {
 
     public List<Account> findAll() {
         Set<OrderStrategy> buyAccountStrategies = new HashSet<>();
-        buyAccountStrategies.add(buy1);
+//        buyAccountStrategies.add(buy1);
         buyAccountStrategies.add(buy2);
         Set<OrderStrategy> sellAccountStrategies = new HashSet<>();
         sellAccountStrategies.add(sell1);

@@ -2,14 +2,17 @@ schedule:
   candle:
     one-minute: "5 * * * * *"
     three-minutes: "5 */3 * * * *"
+    five-minutes: "5 */5 * * * *"
     fifteen-minutes: "5 */15 * * * *"
     thirty-minutes: "5 */30 * * * *"
     one-hour: "5 0 * * * *"
     one-day: "5 0 9 * * *"
+    increase-day: "5 1 9 * * *"
   order:
     all-minute: "30 * * * * *"
     one-minute: "30 * 0-7,10-23 * * *"
     three-minutes: "30 */3 0-7,10-23 * * *"
+    five-minutes: "30 */5 0-7,10-23 * * *"
     fifteen-minutes: "30 */15 0-7,10-23 * * *"
     thirty-minutes: "30 */30 0-8,10-23 * * *"
     one-hour: "30 0 0-8,10-23 * * *"
