@@ -1,6 +1,9 @@
 package com.lokiechart.www.dao.order;
 
 import com.lokiechart.www.dao.order.dto.OrderParameter;
+import com.lokiechart.www.service.order.dto.OrderList;
+
+import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -8,4 +11,5 @@ import com.lokiechart.www.dao.order.dto.OrderParameter;
  */
 public interface OrderRepository {
     String order(String account, OrderParameter request);
+    List<OrderList> getOrdered(String account);
 }

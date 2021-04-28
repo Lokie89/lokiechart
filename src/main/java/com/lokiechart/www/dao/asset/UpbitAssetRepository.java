@@ -22,9 +22,9 @@ public class UpbitAssetRepository implements AssetRepository {
     private final ApiHeader upbitHeader;
     private final CallByApi api;
 
-    public AssetResponses getAssets(String account) {
+    public AssetResponses getAssets(String email) {
         final String url = "https://api.upbit.com/v1/accounts";
-        UpbitAssetResponse[] assetResponses = convertType.stringToType(api.get(url, upbitHeader.getHeaders(account, null)), UpbitAssetResponse[].class);
+        UpbitAssetResponse[] assetResponses = convertType.stringToType(api.get(url, upbitHeader.getHeaders(email, null)), UpbitAssetResponse[].class);
         return new AssetResponses(Arrays.asList(assetResponses));
     }
 

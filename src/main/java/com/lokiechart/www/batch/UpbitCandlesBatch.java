@@ -154,7 +154,7 @@ public class UpbitCandlesBatch {
         for (String market : upbitDayCandles.keySet()) {
             CandleResponses candleResponses = upbitDayCandles.get(market);
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
-            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncrease() < 20));
+            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 20));
         }
     }
 
@@ -310,7 +310,7 @@ public class UpbitCandlesBatch {
             String market = marketResponse.getMarket();
             CandleResponses candleResponses = upbitDayCandles.get(market);
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
-            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncrease() < 20));
+            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 20));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

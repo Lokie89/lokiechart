@@ -9,5 +9,5 @@ import java.util.Map;
  * @since 2021/04/15
  */
 public interface ApiHeader {
-    HttpHeaders getHeaders(String account, Map<String, Object> params);
+    HttpHeaders getHeaders(String email, Map<String, Object> params);
 }

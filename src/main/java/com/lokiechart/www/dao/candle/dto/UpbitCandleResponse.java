@@ -118,6 +118,11 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
         this.highBollingerBands = middle + deviation * 2;
     }
 
+    @Override
+    public Double getIncreasePercent() {
+        return (this.tradePrice - this.openingPrice) / this.openingPrice * 100;
+    }
+
     private boolean canCompare(final Object other) {
         return other instanceof UpbitCandleResponse;
     }
