@@ -41,14 +41,14 @@ public class UpbitCandlesBatch {
     static final Map<String, CandleResponses> upbitOneMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitFiveMinuteCandles = new ConcurrentHashMap<>();
-    //    static final Map<String, CandleResponses> upbitTenMinuteCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitTenMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitFifteenMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitThirtyMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitSixtyMinuteCandles = new ConcurrentHashMap<>();
-    //    static final Map<String, CandleResponses> upbitTwoFortyMinuteCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitTwoFortyMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitDayCandles = new ConcurrentHashMap<>();
-//    static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
-//    static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
+    static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
 
     static final Map<String, Boolean> isAlready20PercentIncreasedInTwoDays = new HashMap<>();
 

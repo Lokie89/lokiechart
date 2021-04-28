@@ -25,13 +25,13 @@ public enum CandleMinute {
     FIVE(5) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return null;
+            return UpbitCandlesBatch.upbitFiveMinuteCandles;
         }
     },
     TEN(10) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return null;
+            return UpbitCandlesBatch.upbitTenMinuteCandles;
         }
     },
     FIFTEEN(15) {
@@ -49,13 +49,13 @@ public enum CandleMinute {
     SIXTY(60) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return null;
+            return UpbitCandlesBatch.upbitSixtyMinuteCandles;
         }
     },
     TWOFORTY(240) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return null;
+            return UpbitCandlesBatch.upbitTwoFortyMinuteCandles;
         }
     },
     DAY(1440) {
@@ -67,19 +67,19 @@ public enum CandleMinute {
     WEEK(10080) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return null;
+            return UpbitCandlesBatch.upbitWeekCandles;
         }
     },
     MONTH(43200) {
         @Override
         public Map<String, CandleResponses> getLiveCandles() {
-            return null;
+            return UpbitCandlesBatch.upbitMonthCandles;
         }
     },
     ;
 
     @Getter
-    private int number;
+    private final int number;
 
     CandleMinute(int number) {
         this.number = number;
