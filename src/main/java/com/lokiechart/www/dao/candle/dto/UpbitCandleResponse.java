@@ -109,7 +109,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
         if (highBollingerBands == 0) {
             return null;
         }
-        return (highPrice - highBollingerBands) / highBollingerBands * 100;
+        return (tradePrice - highBollingerBands) / highBollingerBands * 100;
     }
 
     @Override
