@@ -18,11 +18,11 @@ import java.util.List;
 public class AssetResponses implements Iterable<AssetResponse> {
     private final List<AssetResponse> assetResponses;
 
-    public boolean isAlreadyOwnAndNotCheapEnough(CandleResponse candleResponse) {
+    public boolean isAlreadyOwnAndNotCheapEnough(CandleResponse candleResponse, final double scaleTradingPercent) {
         return assetResponses.stream()
                 .anyMatch(assetResponse ->
                         assetResponse.isSameMarket(candleResponse.getMarket())
-                                && assetResponse.avgBuyPricePercent(candleResponse.getTradePrice()) > -10)
+                                && assetResponse.avgBuyPricePercent(candleResponse.getTradePrice()) > scaleTradingPercent * -1)
                 ;
     }
 

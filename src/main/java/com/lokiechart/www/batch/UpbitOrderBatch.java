@@ -105,4 +105,12 @@ public class UpbitOrderBatch {
             accounts.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse)));
         }
     }
+
+//    @Scheduled(cron = "${schedule.order.all-minute}")
+//    private void orderCancel() {
+//        List<AccountResponse> accounts = accountService.getAll();
+//        if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
+//
+//        }
+//    }
 }

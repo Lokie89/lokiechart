@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -29,11 +28,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public class OrderStrategy {
+
     private final Logger logger = LoggerFactory.getLogger(OrderStrategy.class);
+
     private final TradeStrategy tradeStrategy;
     private final CandleMinute candleMinute;
     private final Integer onceInvestKRW;
     private final OrderType orderType;
+    private final double scaleTradingPercent;
 
     public OrderParameters matchBuy(AssetResponses assetResponses) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
@@ -43,8 +45,8 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
-            if (assetResponses.isAlreadyOwnAndNotCheapEnough(matched)) {
-                logger.warn(matched + " 이미 가지고 있으며, 평단 -10% 아래여야 구매함");
+            if (assetResponses.isAlreadyOwnAndNotCheapEnough(matched, scaleTradingPercent)) {
+                logger.warn(matched + " 이미 가지고 있으며, 평단 -" + scaleTradingPercent + "% 아래여야 구매함");
                 continue;
             }
             matchedCandleResponses.add(matched);
@@ -72,8 +74,9 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
-            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < 0.5) {
-                logger.warn(matched + " 0.5% 이상 올라야 매도함");
+            final double incomePercent = 0.5;
+            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
+                logger.warn(matched + " " + incomePercent + "% 이상 올라야 매도함");
                 continue;
             }
             matchedCandleResponses.add(matched);

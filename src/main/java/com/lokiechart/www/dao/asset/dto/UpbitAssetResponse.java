@@ -32,7 +32,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isSameMarket(String market) {
-        return market.contains(currency);
+        return market.equals("KRW-" + currency);
     }
 
     @Override
