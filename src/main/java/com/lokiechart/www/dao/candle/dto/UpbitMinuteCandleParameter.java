@@ -8,7 +8,11 @@ import lombok.Builder;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -36,7 +40,7 @@ public class UpbitMinuteCandleParameter implements GetParameterUrl {
         String url = "https://api.upbit.com/v1/candles/minutes/";
         url += candleMinute.getNumber() + "?market=" + market + "&count=" + count;
         if (Objects.nonNull(to)) {
-            url += "&to=" + to.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            url += "&to=" + ZonedDateTime.of(to, ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ISO_INSTANT);
         }
         return url;
     }
