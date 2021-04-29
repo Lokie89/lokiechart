@@ -54,7 +54,7 @@ public class UpbitAssetResponse implements AssetResponse {
         if (currency.equals("KRW")) {
             return balance.intValue();
         }
-        return (int) (balance * avgBuyPrice);
+        return (int) ((balance + locked) * avgBuyPrice);
     }
 
     @Override
