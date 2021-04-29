@@ -57,5 +57,8 @@ public class UpbitAssetResponse implements AssetResponse {
         return (int) (balance * avgBuyPrice);
     }
 
-
+    @Override
+    public boolean isExistBalance() {
+        return balance != 0;
+    }
 }

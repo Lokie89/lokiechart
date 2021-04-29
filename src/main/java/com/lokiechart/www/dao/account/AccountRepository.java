@@ -23,18 +23,22 @@ public class AccountRepository {
     private final Account.AccountBuilder tjdfhr = Account.builder()
             .email("tjdfhrdk10@naver.com")
             .excludeMarket(Arrays.asList(excludeMarkets))
+            .maxBuyMarket(20)
+            .totalSeed(1000000)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
 
     private final Account.AccountBuilder rjsgml = Account.builder()
             .email("dlrjsgmlv@nate.com")
             .excludeMarket(Arrays.asList(excludeMarkets))
+            .maxBuyMarket(5)
+            .scaleTradeCount(0)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
     //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
-    private final OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(50000).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
-    private final OrderStrategy buy2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).onceInvestKRW(10000).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
-    private final OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).onceInvestKRW(0).orderType(OrderType.LIMIT).build();
+    private final OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
+    private final OrderStrategy buy2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).scaleTradingPercent(10).build();
+    private final OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).orderType(OrderType.LIMIT).build();
 
     private final Map<String, Account> accountMap = new HashMap<>();
 

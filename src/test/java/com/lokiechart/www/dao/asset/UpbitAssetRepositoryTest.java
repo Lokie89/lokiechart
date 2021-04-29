@@ -24,4 +24,12 @@ class UpbitAssetRepositoryTest {
         AssetResponses assetResponses = upbitAssetRepository.getAssets(account);
         System.out.println(assetResponses);
     }
+
+    @DisplayName("자산 정보 사이즈 가져오기")
+    @Test
+    void getAssetsSizeTest(){
+        String account = "tjdfhrdk10@naver.com";
+        AssetResponses assetResponses = upbitAssetRepository.getAssets(account);
+        System.out.println(assetResponses.existAssetSize());
+    }
 }

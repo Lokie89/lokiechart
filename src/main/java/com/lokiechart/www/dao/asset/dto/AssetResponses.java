@@ -37,7 +37,11 @@ public class AssetResponses implements Iterable<AssetResponse> {
         return asset.getBalance();
     }
 
-    public Stream<AssetResponse> stream(){
-        return assetResponses.stream();
+    public Integer getTotalSeed() {
+        return assetResponses.stream().mapToInt(AssetResponse::getTotalCost).sum();
+    }
+
+    public int existAssetSize() {
+        return (int) assetResponses.stream().filter(AssetResponse::isExistBalance).count() - 1;
     }
 }

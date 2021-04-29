@@ -26,12 +26,20 @@ public class AccountResponse {
     private Set<OrderStrategy> sellTradeStrategies;
     private List<String> excludeMarket;
     private List<String> decidedMarket;
+    private int totalSeed;
+    private int maxBuyMarket;
+    private int scaleTradeCount;
 
     public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
+        if (assetResponses.existAssetSize() > maxBuyMarket) {
+            return null;
+        }
+        final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
+        final int onceInvestKRW = investSeed / (int) Math.pow(2, scaleTradeCount) / maxBuyMarket;
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
             if (orderStrategy.getCandleMinute().equals(candleMinute)) {
-                matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses));
+                matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses, onceInvestKRW));
             }
         }
 

@@ -30,7 +30,7 @@ public class UpbitAssetRepository implements AssetRepository {
     }
 
     public Integer getTotalSeed(String email) {
-        return getAssets(email).stream().mapToInt(AssetResponse::getTotalCost).sum();
+        return getAssets(email).getTotalSeed();
     }
 
 }

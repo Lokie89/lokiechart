@@ -33,11 +33,10 @@ public class OrderStrategy {
 
     private final TradeStrategy tradeStrategy;
     private final CandleMinute candleMinute;
-    private final Integer onceInvestKRW;
     private final OrderType orderType;
     private final double scaleTradingPercent;
 
-    public OrderParameters matchBuy(AssetResponses assetResponses) {
+    public OrderParameters matchBuy(AssetResponses assetResponses, final int onceInvestKRW) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (String key : liveCandles.keySet()) {

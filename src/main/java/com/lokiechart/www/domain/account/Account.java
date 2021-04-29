@@ -12,17 +12,31 @@ import java.util.Set;
  * @since 2021/04/19
  */
 @EqualsAndHashCode(of = "email")
-@Builder
-@NoArgsConstructor
 @ToString
 @Getter
-@AllArgsConstructor
 public class Account {
-    private String email;
-    private Set<OrderStrategy> buyTradeStrategies;
-    private Set<OrderStrategy> sellTradeStrategies;
-    private List<String> excludeMarket;
-    private List<String> decidedMarket;
+    private final String email;
+    private final Set<OrderStrategy> buyTradeStrategies;
+    private final Set<OrderStrategy> sellTradeStrategies;
+    private final List<String> excludeMarket;
+    private final List<String> decidedMarket;
+    private final int totalSeed;
+    private final int maxBuyMarket;
+    private final int scaleTradeCount;
+
+    @Builder
+    public Account(String email, Set<OrderStrategy> buyTradeStrategies, Set<OrderStrategy> sellTradeStrategies,
+                   List<String> excludeMarket, List<String> decidedMarket, int totalSeed, int maxBuyMarket,
+                   int scaleTradeCount) {
+        this.email = email;
+        this.buyTradeStrategies = buyTradeStrategies;
+        this.sellTradeStrategies = sellTradeStrategies;
+        this.excludeMarket = excludeMarket;
+        this.decidedMarket = decidedMarket;
+        this.totalSeed = totalSeed;
+        this.maxBuyMarket = maxBuyMarket == 0 ? 10 : maxBuyMarket;
+        this.scaleTradeCount = scaleTradeCount == 0 ? 2 : scaleTradeCount;
+    }
 
     public boolean haveOrderStrategyByCandleMinute(CandleMinute candleMinute) {
         return buyTradeStrategies.stream()

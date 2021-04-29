@@ -13,4 +13,5 @@ public interface AssetResponse {
     Double getBalance();
     OrderParameter toSellParameter();
     Integer getTotalCost();
+    boolean isExistBalance();
 }
