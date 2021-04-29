@@ -1,6 +1,10 @@
 package com.lokiechart.www.dao.asset.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lokiechart.www.dao.order.dto.OrderParameter;
+import com.lokiechart.www.dao.order.dto.OrderSide;
+import com.lokiechart.www.dao.order.dto.OrderType;
+import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -38,5 +42,10 @@ public class UpbitAssetResponse implements AssetResponse {
     @Override
     public Double avgBuyPricePercent(double tradePrice) {
         return (tradePrice - avgBuyPrice) / avgBuyPrice * 100;
+    }
+
+    @Override
+    public OrderParameter toSellParameter() {
+        return UpbitOrderParameter.builder().market("KRW-" + currency).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
     }
 }

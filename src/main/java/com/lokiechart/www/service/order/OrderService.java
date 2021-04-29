@@ -13,10 +13,8 @@ import java.util.List;
  */
 public interface OrderService {
     void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses);
-
     void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses);
-
     List<OrderDetail> getOrderDetails(AccountResponse accountResponse);
-
     void cancelNotBought(AccountResponse accountResponse, OrderDetail orderDetail);
+    void sellAllByAccount(AccountResponse accountResponse);
 }

@@ -6,6 +6,7 @@ import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.UpbitOrderRepository;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
+import com.lokiechart.www.service.asset.UpbitAssetService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,13 +24,14 @@ import java.util.List;
 @Service
 public class UpbitOrderService implements OrderService {
     private final UpbitOrderRepository upbitOrderRepository;
+    private final UpbitAssetService upbitAssetService;
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderService.class);
 
     @Override
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            logger.warn(LocalDateTime.now() + " ORDER BUY : " + accountResponse + " : " + parameter);
+            logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter);
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
         }
     }
@@ -38,7 +40,7 @@ public class UpbitOrderService implements OrderService {
     public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            logger.warn(LocalDateTime.now() + " ORDER SELL : " + accountResponse + " : " + parameter);
+            logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter);
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
         }
     }
@@ -55,6 +57,11 @@ public class UpbitOrderService implements OrderService {
         if (createdAt.isBefore(now.minusMinutes(3))) {
             upbitOrderRepository.cancelOrder(accountResponse.getEmail(), orderDetail.getUuid());
         }
+    }
+
+    public void sellAllByAccount(AccountResponse accountResponse) {
+        AssetResponses assetResponses = upbitAssetService.getAssets(accountResponse);
+        assetResponses.forEach(assetResponse -> upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter()));
     }
 
 
