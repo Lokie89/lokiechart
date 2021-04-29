@@ -42,13 +42,14 @@ public class CandleResponses {
     }
 
     public void setUnderBollingerBands(final int setCount) {
-        for (int i = 0; i < setCount; i++) {
-            final int countInvolveMe = this.candleResponses.size() - setCount;
+        for (int i = 1; i <= setCount; i++) {
+            final int countInvolveMe = this.candleResponses.size() - (setCount - i);
             if (countInvolveMe < 20) {
                 continue;
             }
-            CandleResponse setBollingerBandsCandle = candleResponses.get(setCount);
-            SynchronizedNonOverlapList<CandleResponse> copy = this.candleResponses.copyRecent(setCount, 20 + setCount);
+            final int setBollingerBandsIndex = countInvolveMe - 1;
+            CandleResponse setBollingerBandsCandle = candleResponses.get(setBollingerBandsIndex);
+            SynchronizedNonOverlapList<CandleResponse> copy = this.candleResponses.copy(setBollingerBandsIndex - 19, setBollingerBandsIndex);
             final double middle = copy.stream().mapToDouble(CandleResponse::getTradePrice).average().getAsDouble();
             double deviation = Math.sqrt(copy.stream().mapToDouble(candle -> Math.pow(middle - candle.getTradePrice(), 2)).sum() / 20);
             setBollingerBandsCandle.setBollingerBands(middle, deviation);
