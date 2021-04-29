@@ -13,10 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author SeongRok.Oh
@@ -30,8 +27,22 @@ public class UpbitHeader implements ApiHeader {
     @Value("${secretKey}")
     private String secretKey;
 
+    @Value("${accessKey2}")
+    private String accessKey2;
+    @Value("${secretKey2}")
+    private String secretKey2;
+
+    private final Map<String, HeaderProperties> map = new HashMap<>();
+
+    private void init() {
+        map.put("tjdfhrdk10@naver.com", new HeaderProperties(accessKey, secretKey));
+        map.put("dlrjsgmlv@nate.com", new HeaderProperties(accessKey2, secretKey2));
+    }
+
 
     public HttpHeaders getHeaders(String account, Map<String, Object> params) {
+        init();
+        final String accessKey = map.get(account).getAccessKey();
         JWTCreator.Builder tokenCreatorBuilder = JWT.create()
                 .withClaim("access_key", accessKey)
                 .withClaim("nonce", UUID.randomUUID().toString());
@@ -41,7 +52,7 @@ public class UpbitHeader implements ApiHeader {
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
+        final String secretKey = map.get(account).getSecretKey();
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         String jwtToken = tokenCreatorBuilder
                 .withClaim("query_hash_alg", "SHA512")
