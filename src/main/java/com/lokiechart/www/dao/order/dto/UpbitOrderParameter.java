@@ -63,17 +63,17 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
 
     @Builder
     private UpbitOrderParameter(String market, OrderSide side, Double volume, Double price, OrderType orderType) {
-        validateMinimumOrderCost(volume, price);
         this.market = market;
+        this.orderType = orderType;
+        validateMinimumOrderCost(volume, price);
         this.side = side;
         this.volume = volume;
         this.price = price;
-        this.orderType = orderType;
     }
 
     private void validateMinimumOrderCost(double volume, double price) {
         if (!enoughTotalCost(volume * price)) {
-            throw new NotEnoughTotalCostException();
+            throw new NotEnoughTotalCostException(market + " " + orderType.name() + " " + volume + " " + price);
         }
     }
 
