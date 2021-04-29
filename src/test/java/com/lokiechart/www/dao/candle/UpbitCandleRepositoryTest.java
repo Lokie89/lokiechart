@@ -40,7 +40,7 @@ class UpbitCandleRepositoryTest {
         final String market = "KRW-BTC";
         CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.ONE).market(market).count(60).build());
         candleResponseList.setUnderBollingerBands(2);
-//        System.out.println(candleResponseList);
+        System.out.println(candleResponseList.getCandleResponses().copyRecent(0, 3));
     }
 
     @DisplayName("일 캔들 가져오기 테스트")

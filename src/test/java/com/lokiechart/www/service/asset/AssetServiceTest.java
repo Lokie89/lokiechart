@@ -1,7 +1,6 @@
-package com.lokiechart.www.service;
+package com.lokiechart.www.service.asset;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
-import com.lokiechart.www.service.asset.AssetService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

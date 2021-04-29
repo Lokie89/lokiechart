@@ -93,7 +93,7 @@ public class UpbitOrderBatch {
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
         Set<AccountResponse> accounts = accountStrategy.get(candleMinute);
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-            logger.info("ORDER BUY " + candleMinute.name().toUpperCase() + " MINUTES TRADE STRATEGY : " + LocalDateTime.now());
+            logger.info("ORDER BUY " + candleMinute.name().toUpperCase() + " MINUTES TRADE STRATEGY");
             accounts.forEach(accountResponse -> upbitOrderService.buyByAccount(accountResponse, candleMinute, upbitAssetService.getAssets(accountResponse)));
         }
     }
@@ -102,7 +102,7 @@ public class UpbitOrderBatch {
     private void orderSellTradeStrategy() {
         List<AccountResponse> accounts = accountService.getAll();
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-            logger.info("ORDER SELL TRATEGY : " + LocalDateTime.now());
+            logger.info("ORDER SELL STRATEGY");
             accounts.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse)));
         }
     }
