@@ -34,7 +34,7 @@ public class UpbitCandlesBatch {
     public UpbitCandlesBatch(MarketRepository upbitMarketRepository, UpbitCandleService upbitCandleService) {
         this.upbitMarketRepository = upbitMarketRepository;
         this.upbitCandleService = upbitCandleService;
-        init();
+//        init();
     }
 
     static List<UpbitMarketResponse> upbitMarket;
