@@ -1,7 +1,7 @@
 package com.lokiechart.www.dao.order;
 
 import com.lokiechart.www.dao.order.dto.OrderParameter;
-import com.lokiechart.www.service.order.dto.OrderList;
+import com.lokiechart.www.service.order.dto.OrderDetail;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import java.util.List;
  * @since 2021/04/15
  */
 public interface OrderRepository {
-    String order(String account, OrderParameter request);
-    List<OrderList> getOrdered(String account);
+    String order(String email, OrderParameter request);
+    List<OrderDetail> getOrdered(String email);
+    void cancelOrder(String email, String uuid);
 }

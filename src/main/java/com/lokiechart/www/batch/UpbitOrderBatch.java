@@ -4,7 +4,7 @@ import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.service.account.AccountService;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.order.OrderService;
-import com.lokiechart.www.service.order.dto.OrderList;
+import com.lokiechart.www.service.order.dto.OrderDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -108,14 +111,10 @@ public class UpbitOrderBatch {
     private void orderCancel() {
         List<AccountResponse> accounts = accountService.getAll();
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-//            accounts.forEach(accountResponse -> {
-//                List<OrderList> orderLists = upbitOrderService.getOrderedList(accountResponse);
-//                orderLists.forEach(orderList -> {
-//                    String[] uuids = orderList.getUuids();
-//                    Arrays.stream(uuids).forEach(upbitOrderService::cancelNotBought);
-//                });
-//                ;
-//            });
+            accounts.forEach(accountResponse -> {
+                List<OrderDetail> orderDetails = upbitOrderService.getOrderDetails(accountResponse);
+                orderDetails.forEach(orderDetail -> upbitOrderService.cancelNotBought(accountResponse, orderDetail));
+            });
         }
     }
 }

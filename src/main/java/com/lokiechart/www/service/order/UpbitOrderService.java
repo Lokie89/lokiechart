@@ -6,7 +6,7 @@ import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.UpbitOrderRepository;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
-import com.lokiechart.www.service.order.dto.OrderList;
+import com.lokiechart.www.service.order.dto.OrderDetail;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +44,17 @@ public class UpbitOrderService implements OrderService {
     }
 
     @Override
-    public List<OrderList> getOrderedList(AccountResponse accountResponse) {
+    public List<OrderDetail> getOrderDetails(AccountResponse accountResponse) {
         return upbitOrderRepository.getOrdered(accountResponse.getEmail());
     }
 
     @Override
-    public void cancelNotBought(String uuid) {
-
+    public void cancelNotBought(AccountResponse accountResponse, OrderDetail orderDetail) {
+        LocalDateTime createdAt = orderDetail.getCreatedAt();
+        LocalDateTime now = LocalDateTime.now();
+        if (createdAt.isBefore(now.minusMinutes(3)) && orderDetail.isBuyingOrder()) {
+            upbitOrderRepository.cancelOrder(accountResponse.getEmail(), orderDetail.getUuid());
+        }
     }
 
 

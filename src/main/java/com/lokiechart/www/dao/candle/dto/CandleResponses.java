@@ -2,7 +2,6 @@ package com.lokiechart.www.dao.candle.dto;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.util.Set;
@@ -14,10 +13,19 @@ import java.util.stream.Collectors;
  */
 @ToString
 @Getter
-@RequiredArgsConstructor
 public class CandleResponses {
     private final SynchronizedNonOverlapList<CandleResponse> candleResponses;
-    private final int maxSize = 240;
+    private final int maxSize;
+
+    public CandleResponses(SynchronizedNonOverlapList<CandleResponse> candleResponses, int maxSize) {
+        this.candleResponses = candleResponses;
+        this.maxSize = maxSize;
+    }
+
+    public CandleResponses(SynchronizedNonOverlapList<CandleResponse> candleResponses) {
+        this.candleResponses = candleResponses;
+        this.maxSize = 240;
+    }
 
     public void addAll(CandleResponses responses) {
         this.candleResponses.addAll(responses.candleResponses);

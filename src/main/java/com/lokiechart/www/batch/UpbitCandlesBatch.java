@@ -34,7 +34,7 @@ public class UpbitCandlesBatch {
     public UpbitCandlesBatch(MarketRepository upbitMarketRepository, UpbitCandleService upbitCandleService) {
         this.upbitMarketRepository = upbitMarketRepository;
         this.upbitCandleService = upbitCandleService;
-        init();
+//        init();
     }
 
     static List<UpbitMarketResponse> upbitMarket;
@@ -53,18 +53,19 @@ public class UpbitCandlesBatch {
     static final Map<String, Boolean> isAlready15PercentNotIncreasedInTwoDays = new HashMap<>();
 
     private void init() {
+        final int minutesOfDay = 1440;
         updateUpbitMarket();
         for (UpbitMarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
-            upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
-//            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
-            upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
-            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), minutesOfDay));
+            upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), minutesOfDay / 3));
+            upbitFiveMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), minutesOfDay / 5));
 //            upbitTenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitFifteenMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitThirtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitSixtyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
             upbitDayCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+//            upbitTwoFortyMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
 //            upbitWeekCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
 //            upbitMonthCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
         }

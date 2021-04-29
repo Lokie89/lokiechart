@@ -8,6 +8,7 @@ import com.lokiechart.www.dao.market.UpbitMarketRepository;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.candle.UpbitCandleService;
+import com.lokiechart.www.service.order.dto.OrderDetail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,13 @@ class UpbitOrderServiceTest {
         }
         AccountResponse accountResponse = AccountResponse.builder().email("tjdfhrdk10@naver.com").build();
         upbitOrderService.buyByAccount(accountResponse, CandleMinute.ONE, upbitAssetService.getAssets(accountResponse));
+    }
+
+    @DisplayName("미체결 매수 매도 가져오기")
+    @Test
+    void getOrdered(){
+        List<OrderDetail> orderLists = upbitOrderService.getOrderDetails(AccountResponse.builder().email("tjdfhrdk10@naver.com").build());
+        System.out.println(orderLists);
     }
 
 }

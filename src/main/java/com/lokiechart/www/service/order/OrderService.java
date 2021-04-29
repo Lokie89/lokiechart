@@ -3,7 +3,7 @@ package com.lokiechart.www.service.order;
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
-import com.lokiechart.www.service.order.dto.OrderList;
+import com.lokiechart.www.service.order.dto.OrderDetail;
 
 import java.util.List;
 
@@ -13,7 +13,10 @@ import java.util.List;
  */
 public interface OrderService {
     void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses);
+
     void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses);
-    List<OrderList> getOrderedList(AccountResponse accountResponse);
-    void cancelNotBought(String uuid);
+
+    List<OrderDetail> getOrderDetails(AccountResponse accountResponse);
+
+    void cancelNotBought(AccountResponse accountResponse, OrderDetail orderDetail);
 }

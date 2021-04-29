@@ -62,8 +62,6 @@ public class AccountRepository {
     }
 
     public List<Account> findAll() {
-        System.out.println(accountMap);
-        System.out.println(accountMap.values());
         return new ArrayList<>(accountMap.values());
     }
 }
