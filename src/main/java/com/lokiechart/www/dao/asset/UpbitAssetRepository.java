@@ -1,6 +1,7 @@
 package com.lokiechart.www.dao.asset;
 
 import com.lokiechart.www.common.ConvertType;
+import com.lokiechart.www.dao.asset.dto.AssetResponse;
 import com.lokiechart.www.dao.asset.dto.UpbitAssetResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
@@ -26,6 +27,10 @@ public class UpbitAssetRepository implements AssetRepository {
         final String url = "https://api.upbit.com/v1/accounts";
         UpbitAssetResponse[] assetResponses = convertType.stringToType(api.get(url, upbitHeader.getHeaders(email, null)), UpbitAssetResponse[].class);
         return new AssetResponses(Arrays.asList(assetResponses));
+    }
+
+    public Integer getTotalSeed(String email) {
+        return getAssets(email).stream().mapToInt(AssetResponse::getTotalCost).sum();
     }
 
 }

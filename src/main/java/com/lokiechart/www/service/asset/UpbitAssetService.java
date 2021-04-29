@@ -19,4 +19,9 @@ public class UpbitAssetService implements AssetService {
     public AssetResponses getAssets(AccountResponse accountResponse) {
         return upbitAssetRepository.getAssets(accountResponse.getEmail());
     }
+
+    @Override
+    public Integer getTotalSeed(AccountResponse accountResponse) {
+        return upbitAssetRepository.getTotalSeed(accountResponse.getEmail());
+    }
 }

@@ -285,7 +285,7 @@ public class UpbitCandlesBatch {
         logger.info("60 MINUTES SIZE " + upbitSixtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
-    @Scheduled(cron = "${schedule.candle.one-day}")
+    @Scheduled(cron = "${schedule.candle.one-hour}")
     private void updateUpbitDayCandles() {
         logger.info("Scheduling UPBIT 1 DAY CANDLES UPDATE");
         upbitMarket.forEach(marketResponse -> {
@@ -304,14 +304,14 @@ public class UpbitCandlesBatch {
         logger.info("1 DAY SIZE " + upbitDayCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
-    @Scheduled(cron = "${schedule.candle.increase-day}")
+    @Scheduled(cron = "${schedule.candle.one-hour}")
     private void updateAlreadyIncreasedCandles() {
         logger.info("Scheduling UPBIT 1 DAY ALREADY INCREASED CANDLES UPDATE");
         upbitMarket.forEach(marketResponse -> {
             String market = marketResponse.getMarket();
             CandleResponses candleResponses = upbitDayCandles.get(market);
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
-            isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15));
+            isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copyRecent(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15) && candles.getRecent(0).getIncreasePercent() < 10);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

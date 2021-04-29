@@ -12,4 +12,5 @@ public interface AssetResponse {
     String getCurrency();
     Double getBalance();
     OrderParameter toSellParameter();
+    Integer getTotalCost();
 }

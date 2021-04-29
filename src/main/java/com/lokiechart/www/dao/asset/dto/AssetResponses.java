@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author SeongRok.Oh
@@ -34,5 +35,9 @@ public class AssetResponses implements Iterable<AssetResponse> {
     public Double getBalanceByMarket(String market) {
         AssetResponse asset = assetResponses.stream().filter(assetResponse -> market.equals("KRW-" + assetResponse.getCurrency())).findAny().get();
         return asset.getBalance();
+    }
+
+    public Stream<AssetResponse> stream(){
+        return assetResponses.stream();
     }
 }

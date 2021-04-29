@@ -48,4 +48,14 @@ public class UpbitAssetResponse implements AssetResponse {
     public OrderParameter toSellParameter() {
         return UpbitOrderParameter.builder().market("KRW-" + currency).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
     }
+
+    @Override
+    public Integer getTotalCost() {
+        if (currency.equals("KRW")) {
+            return balance.intValue();
+        }
+        return (int) (balance * avgBuyPrice);
+    }
+
+
 }

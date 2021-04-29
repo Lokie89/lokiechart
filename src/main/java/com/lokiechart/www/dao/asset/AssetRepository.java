@@ -7,5 +7,6 @@ import com.lokiechart.www.dao.asset.dto.AssetResponses;
  * @since 2021/04/15
  */
 public interface AssetRepository {
-    AssetResponses getAssets(String account);
+    AssetResponses getAssets(String email);
+    Integer getTotalSeed(String email);
 }
