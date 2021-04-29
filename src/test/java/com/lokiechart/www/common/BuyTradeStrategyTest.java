@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author SeongRok.Oh
  * @since 2021/04/24
  */
-@DisplayName("조건 검사 테스트")
+@DisplayName("매수 조건 검사 테스트")
 @SpringBootTest
 public class BuyTradeStrategyTest {
 
@@ -27,11 +28,22 @@ public class BuyTradeStrategyTest {
     @Autowired
     ConvertType convertType;
 
+    @DisplayName("종가가 두 번 연속 볼린저 밴드 보다 낮음 테스트")
     @Test
-    void test() {
+    void underBollingerBandsTwiceTest() {
         CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-SC", 30, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
         candleResponses.setUnderBollingerBands(3);
         CandleResponse matchedResponse = BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE.match(candleResponses);
-        assertTrue(matchedResponse.compareUnderBollingerBands() < 0);
+        assertTrue(Objects.nonNull(matchedResponse));
     }
+
+    @DisplayName("종가가 여섯 번 중 다섯 번 볼린저 밴드 보다 낮음 테스트")
+    @Test
+    void underBollingerBandsFiveTimesTest() {
+        CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-SC", 30, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
+        candleResponses.setUnderBollingerBands(6);
+        CandleResponse matchedResponse = BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE.match(candleResponses);
+        assertTrue(Objects.nonNull(matchedResponse));
+    }
+
 }

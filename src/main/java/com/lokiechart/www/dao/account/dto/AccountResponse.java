@@ -5,6 +5,9 @@ import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +18,14 @@ import java.util.Set;
  * @author SeongRok.Oh
  * @since 2021/04/19
  */
+@Slf4j
 @Builder
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
 @Getter
 public class AccountResponse {
+    private Logger logger = LoggerFactory.getLogger(AccountResponse.class);
     private String email;
     private Set<OrderStrategy> buyTradeStrategies;
     private Set<OrderStrategy> sellTradeStrategies;
@@ -32,7 +37,8 @@ public class AccountResponse {
 
     public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
-        if (assetResponses.existAssetSize() > maxBuyMarket) {
+        if (assetResponses.existAssetSize() >= maxBuyMarket) {
+            logger.warn(email + " " + maxBuyMarket + " 자산 수에 가득 참");
             return matchedOrderParameters;
         }
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
