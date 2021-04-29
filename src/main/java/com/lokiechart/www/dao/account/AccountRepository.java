@@ -45,8 +45,10 @@ public class AccountRepository {
         buyAccountStrategies1.add(buy1);
         buyAccountStrategies2.add(buy2);
         sellAccountStrategies.add(sell1);
-        tjdfhr.buyTradeStrategies(buyAccountStrategies1).sellTradeStrategies(sellAccountStrategies).build();
-        rjsgml.buyTradeStrategies(buyAccountStrategies2).sellTradeStrategies(sellAccountStrategies).build();
+        Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies1).sellTradeStrategies(sellAccountStrategies).build();
+        Account dlrjsgml = rjsgml.buyTradeStrategies(buyAccountStrategies2).sellTradeStrategies(sellAccountStrategies).build();
+        accountMap.put("tjdfhrdk10@naver.com", dhtjdfhr);
+        accountMap.put("dlrjsgmlv@nate.com", dlrjsgml);
     }
 
 
@@ -60,6 +62,8 @@ public class AccountRepository {
     }
 
     public List<Account> findAll() {
+        System.out.println(accountMap);
+        System.out.println(accountMap.values());
         return new ArrayList<>(accountMap.values());
     }
 }
