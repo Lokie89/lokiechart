@@ -59,6 +59,6 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isExistBalance() {
-        return balance != 0;
+        return (balance + locked) != 0;
     }
 }
