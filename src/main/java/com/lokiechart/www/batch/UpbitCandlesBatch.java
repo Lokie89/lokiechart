@@ -50,7 +50,7 @@ public class UpbitCandlesBatch {
     static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
 
-    static final Map<String, Boolean> isAlready20PercentIncreasedInTwoDays = new HashMap<>();
+    static final Map<String, Boolean> isAlready15PercentNotIncreasedInTwoDays = new HashMap<>();
 
     private void init() {
         updateUpbitMarket();
@@ -154,7 +154,7 @@ public class UpbitCandlesBatch {
         for (String market : upbitDayCandles.keySet()) {
             CandleResponses candleResponses = upbitDayCandles.get(market);
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
-            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 20));
+            isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15));
         }
     }
 
@@ -310,7 +310,7 @@ public class UpbitCandlesBatch {
             String market = marketResponse.getMarket();
             CandleResponses candleResponses = upbitDayCandles.get(market);
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
-            isAlready20PercentIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 20));
+            isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

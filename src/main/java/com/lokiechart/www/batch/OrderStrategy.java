@@ -41,7 +41,7 @@ public class OrderStrategy {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (String key : liveCandles.keySet()) {
-            if (UpbitCandlesBatch.isAlready20PercentIncreasedInTwoDays.get(key)) {
+            if (!UpbitCandlesBatch.isAlready15PercentNotIncreasedInTwoDays.get(key)) {
                 continue;
             }
             CandleResponse matched = tradeStrategy.match(liveCandles.get(key));
