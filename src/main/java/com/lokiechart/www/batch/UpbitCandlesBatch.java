@@ -304,7 +304,7 @@ public class UpbitCandlesBatch {
         logger.info("1 DAY SIZE " + upbitDayCandles.get("KRW-BTC").getCandleResponses().size());
     }
 
-    @Scheduled(cron = "${schedule.candle.one-hour}")
+    @Scheduled(cron = "${schedule.candle.increase-day}")
     private void updateAlreadyIncreasedCandles() {
         logger.info("Scheduling UPBIT 1 DAY ALREADY INCREASED CANDLES UPDATE");
         upbitMarket.forEach(marketResponse -> {
