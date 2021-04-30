@@ -6,8 +6,7 @@ import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @author SeongRok.Oh
@@ -23,6 +22,9 @@ import lombok.ToString;
  * unit_currency : 평단가 기준 화폐
  */
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class UpbitAssetResponse implements AssetResponse {
     private String currency;
@@ -85,7 +87,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isPossibleOrder() {
-        return getTotalCost() < 5000;
+        return getTotalCost() > 5000;
     }
 
 }
