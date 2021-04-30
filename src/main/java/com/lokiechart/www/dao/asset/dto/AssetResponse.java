@@ -14,4 +14,5 @@ public interface AssetResponse {
     OrderParameter toSellParameter();
     Integer getTotalCost();
     boolean isExistBalance();
+    AssetResponse getApplyPrice(Double price);
 }

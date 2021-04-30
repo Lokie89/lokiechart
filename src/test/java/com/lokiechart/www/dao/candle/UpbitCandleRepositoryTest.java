@@ -69,7 +69,7 @@ class UpbitCandleRepositoryTest {
 
     @DisplayName("이미 오른 일 캔들 테스트")
     @Test
-    void alreadyIncreasedCandleTest(){
+    void alreadyIncreasedCandleTest() {
 
     }
 

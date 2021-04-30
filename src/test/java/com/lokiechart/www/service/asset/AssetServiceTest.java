@@ -23,4 +23,11 @@ public class AssetServiceTest {
         System.out.println(assetService.getTotalSeed(AccountResponse.builder().email("tjdfhrdk10@naver.com").build()));
         System.out.println(assetService.getTotalSeed(AccountResponse.builder().email("dlrjsgmlv@nate.com").build()));
     }
+
+    @DisplayName("현 실시간 자산 가져오기 테스트")
+    @Test
+    void getLiveAsset(){
+        System.out.println(assetService.getLiveAssets(AccountResponse.builder().email("tjdfhrdk10@naver.com").build()));
+        System.out.println(assetService.getLiveAssets(AccountResponse.builder().email("dlrjsgmlv@nate.com").build()));
+    }
 }

@@ -10,4 +10,5 @@ import com.lokiechart.www.dao.asset.dto.AssetResponses;
 public interface AssetService {
     AssetResponses getAssets(AccountResponse accountResponse);
     Integer getTotalSeed(AccountResponse accountResponse);
+    AssetResponses getLiveAssets(AccountResponse accountResponse);
 }

@@ -35,6 +35,8 @@ public class AccountResponse {
     private int maxBuyMarket;
     private int scaleTradeCount;
 
+
+    // TODO : 물타는 전략
     public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         if (assetResponses.existAssetSize() >= maxBuyMarket) {

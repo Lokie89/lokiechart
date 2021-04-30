@@ -61,4 +61,16 @@ public class UpbitAssetResponse implements AssetResponse {
     public boolean isExistBalance() {
         return (balance + locked) != 0;
     }
+
+    public UpbitAssetResponse getApplyPrice(Double price){
+        UpbitAssetResponse applyPriceAsset = new UpbitAssetResponse();
+        applyPriceAsset.currency = this.currency;
+        applyPriceAsset.balance = this.balance;
+        applyPriceAsset.locked = this.locked;
+        applyPriceAsset.avgBuyPrice = price;
+        applyPriceAsset.avgBuyPriceModified = this.avgBuyPriceModified;
+        applyPriceAsset.unitCurrency = this.unitCurrency;
+        return applyPriceAsset;
+    }
+
 }

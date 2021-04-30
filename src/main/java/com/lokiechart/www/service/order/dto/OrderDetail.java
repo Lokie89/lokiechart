@@ -10,4 +10,5 @@ public interface OrderDetail {
     String getUuid();
     LocalDateTime getCreatedAt();
     boolean isBuyingOrder();
+    boolean isPossibleReorder();
 }
