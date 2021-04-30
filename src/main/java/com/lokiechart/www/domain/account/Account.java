@@ -22,12 +22,12 @@ public class Account {
     private final List<String> decidedMarket;
     private final int totalSeed;
     private final int maxBuyMarket;
-    private final int scaleTradeCount;
+    private final int totalTradeCount;
 
     @Builder
     public Account(String email, Set<OrderStrategy> buyTradeStrategies, Set<OrderStrategy> sellTradeStrategies,
                    List<String> excludeMarket, List<String> decidedMarket, int totalSeed, int maxBuyMarket,
-                   int scaleTradeCount) {
+                   int totalTradeCount) {
         this.email = email;
         this.buyTradeStrategies = buyTradeStrategies;
         this.sellTradeStrategies = sellTradeStrategies;
@@ -35,7 +35,7 @@ public class Account {
         this.decidedMarket = decidedMarket;
         this.totalSeed = totalSeed;
         this.maxBuyMarket = maxBuyMarket == 0 ? 10 : maxBuyMarket;
-        this.scaleTradeCount = scaleTradeCount == 0 ? 2 : scaleTradeCount;
+        this.totalTradeCount = totalTradeCount == 0 ? 3 : totalTradeCount;
     }
 
     public boolean haveOrderStrategyByCandleMinute(CandleMinute candleMinute) {

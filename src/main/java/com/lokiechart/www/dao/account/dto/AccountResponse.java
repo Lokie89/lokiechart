@@ -33,7 +33,7 @@ public class AccountResponse {
     private List<String> decidedMarket;
     private int totalSeed;
     private int maxBuyMarket;
-    private int scaleTradeCount;
+    private int totalTradeCount;
 
 
     // TODO : 물타는 전략
@@ -44,7 +44,8 @@ public class AccountResponse {
             return matchedOrderParameters;
         }
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
-        final int onceInvestKRW = investSeed / (int) Math.pow(2, scaleTradeCount) / maxBuyMarket;
+        final int onceInvestKRW = investSeed / (int) Math.pow(2, totalTradeCount - 1) / maxBuyMarket;
+
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
             if (orderStrategy.getCandleMinute().equals(candleMinute)) {
                 matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses, onceInvestKRW));

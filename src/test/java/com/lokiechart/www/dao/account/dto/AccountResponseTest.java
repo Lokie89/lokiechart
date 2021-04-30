@@ -25,7 +25,7 @@ class AccountResponseTest {
         Account account = Account.builder().maxBuyMarket(5).build();
         AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
         Assertions.assertEquals(account.getMaxBuyMarket(), accountResponse.getMaxBuyMarket());
-        Assertions.assertEquals(2, accountResponse.getScaleTradeCount());
+        Assertions.assertEquals(2, accountResponse.getTotalTradeCount());
     }
 
 }
