@@ -64,10 +64,13 @@ public class OrderStrategy {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (AssetResponse assetResponse : assetResponses) {
-            if (assetResponse.getCurrency().equals("KRW")) {
+            if (assetResponse.isBaseCurrency()) {
                 continue;
             }
-            String market = "KRW-" + assetResponse.getCurrency();
+            if(!assetResponse.isPossibleOrder()){
+                continue;
+            }
+            String market = assetResponse.getMarketCurrency();
             CandleResponses candleResponses = liveCandles.get(market);
             if (Objects.isNull(candleResponses)) {
                 continue;

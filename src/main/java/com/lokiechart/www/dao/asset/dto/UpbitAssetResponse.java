@@ -1,6 +1,7 @@
 package com.lokiechart.www.dao.asset.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lokiechart.www.dao.market.MarketRepository;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
@@ -51,10 +52,15 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public Integer getTotalCost() {
-        if (currency.equals("KRW")) {
+        if (isBaseCurrency()) {
             return balance.intValue();
         }
         return (int) ((balance + locked) * avgBuyPrice);
+    }
+
+    @Override
+    public String getMarketCurrency() {
+        return "KRW-" + currency;
     }
 
     @Override
@@ -62,7 +68,7 @@ public class UpbitAssetResponse implements AssetResponse {
         return (balance + locked) != 0;
     }
 
-    public UpbitAssetResponse getApplyPrice(Double price){
+    public UpbitAssetResponse getApplyPrice(Double price) {
         UpbitAssetResponse applyPriceAsset = new UpbitAssetResponse();
         applyPriceAsset.currency = this.currency;
         applyPriceAsset.balance = this.balance;
@@ -71,6 +77,15 @@ public class UpbitAssetResponse implements AssetResponse {
         applyPriceAsset.avgBuyPriceModified = this.avgBuyPriceModified;
         applyPriceAsset.unitCurrency = this.unitCurrency;
         return applyPriceAsset;
+    }
+
+    public boolean isBaseCurrency() {
+        return currency.equals("KRW");
+    }
+
+    @Override
+    public boolean isPossibleOrder() {
+        return getTotalCost() < 5000;
     }
 
 }

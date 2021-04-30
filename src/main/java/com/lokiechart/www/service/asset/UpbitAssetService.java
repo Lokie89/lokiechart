@@ -36,8 +36,8 @@ public class UpbitAssetService implements AssetService {
         return new AssetResponses(
                 assetResponses.getAssetResponses().stream()
                         .map(assetResponse -> {
-                            upbitCandleService.
-                            return assetResponse.getApplyPrice();
+//                            upbitCandleService.
+                            return assetResponse.getApplyPrice(null);
                         })
                         .collect(Collectors.toList())
         );

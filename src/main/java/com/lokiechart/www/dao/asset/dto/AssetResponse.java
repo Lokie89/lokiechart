@@ -9,10 +9,12 @@ import com.lokiechart.www.dao.order.dto.OrderParameter;
 public interface AssetResponse {
     boolean isSameMarket(String market);
     Double avgBuyPricePercent(double tradePrice);
-    String getCurrency();
+    String getMarketCurrency();
     Double getBalance();
     OrderParameter toSellParameter();
     Integer getTotalCost();
     boolean isExistBalance();
     AssetResponse getApplyPrice(Double price);
+    boolean isBaseCurrency();
+    boolean isPossibleOrder();
 }
