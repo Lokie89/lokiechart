@@ -81,6 +81,9 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
 
     @Override
     public OrderParameter toSellOrderParameter(OrderSide orderSide, Double volume, OrderType orderType) {
+        if(isPowerfulTicker()){
+            orderType = OrderType.DOWNERMARKET;
+        }
         return UpbitOrderParameter.builder().market(market).side(orderSide).price(tradePrice).volume(volume).orderType(orderType).build();
     }
 
@@ -121,6 +124,10 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     @Override
     public Double getIncreasePercent() {
         return (this.tradePrice - this.openingPrice) / this.openingPrice * 100;
+    }
+
+    private boolean isPowerfulTicker() {
+        return tradePrice < 300;
     }
 
     private boolean canCompare(final Object other) {
