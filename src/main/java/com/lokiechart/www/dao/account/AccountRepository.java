@@ -32,7 +32,7 @@ public class AccountRepository {
             .email("dlrjsgmlv@nate.com")
             .excludeMarket(Arrays.asList(excludeMarkets))
             .maxBuyMarket(5)
-            .scaleTradeCount(1)
+            .totalTradeCount(1)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
     //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
