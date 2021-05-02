@@ -38,7 +38,7 @@ public class CallByApi {
         String response = null;
         try {
             response = restTemplate.exchange(url, httpMethod, new HttpEntity<>(body, httpHeaders), String.class).getBody();
-        } catch (HttpServerErrorException e) {
+        } catch (RuntimeException e) {
             logger.error(url);
             logger.error(httpMethod.toString());
             logger.error(body.toString());
