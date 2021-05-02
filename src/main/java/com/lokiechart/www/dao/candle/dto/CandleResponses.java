@@ -49,7 +49,7 @@ public class CandleResponses {
             }
             CandleResponse setBollingerBandsCandle = candleResponses.get(setBollingerBandsIndex);
             SynchronizedNonOverlapList<CandleResponse> copy = this.candleResponses.copyRecent(i, i + 20);
-            final double middle = copy.stream().mapToDouble(CandleResponse::getTradePrice).average().getAsDouble();
+            final double middle = copy.stream().mapToDouble(CandleResponse::getTradePrice).average().orElseThrow();
             double deviation = Math.sqrt(copy.stream().mapToDouble(candle -> Math.pow(middle - candle.getTradePrice(), 2)).sum() / 20);
             setBollingerBandsCandle.setBollingerBands(middle, deviation);
         }
