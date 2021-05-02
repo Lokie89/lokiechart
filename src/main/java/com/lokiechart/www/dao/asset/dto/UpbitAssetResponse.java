@@ -68,7 +68,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isExistBalance() {
-        return (balance + locked) != 0;
+        return Objects.isNull(avgBuyPrice) || !isPossibleOrder();
     }
 
     public UpbitAssetResponse getApplyPrice(Double price) {
