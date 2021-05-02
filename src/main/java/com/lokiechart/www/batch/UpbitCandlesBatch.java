@@ -5,7 +5,6 @@ import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.MarketRepository;
 import com.lokiechart.www.dao.market.dto.MarketResponse;
-import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
