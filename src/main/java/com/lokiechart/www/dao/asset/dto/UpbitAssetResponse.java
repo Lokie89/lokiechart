@@ -8,6 +8,8 @@ import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import lombok.*;
 
+import java.util.Objects;
+
 /**
  * @author SeongRok.Oh
  * @since 2021/04/13
@@ -21,7 +23,6 @@ import lombok.*;
  * avg_buy_price_modified : 매수평균가 수정 여부
  * unit_currency : 평단가 기준 화폐
  */
-@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +40,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isSameMarket(String market) {
-        return market.equals("KRW-" + currency);
+        return market.equals(unitCurrency + "-" + currency);
     }
 
     @Override
@@ -49,12 +50,12 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public OrderParameter toSellParameter() {
-        return UpbitOrderParameter.builder().market("KRW-" + currency).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
+        return UpbitOrderParameter.builder().market(unitCurrency + "-" + currency).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
     }
 
     @Override
     public Integer getTotalCost() {
-        if (isBaseCurrency()) {
+        if (isBaseCurrency() || Objects.isNull(avgBuyPrice)) {
             return balance.intValue();
         }
         return (int) ((balance + locked) * avgBuyPrice);
@@ -62,7 +63,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public String getMarketCurrency() {
-        return "KRW-" + currency;
+        return unitCurrency + "-" + currency;
     }
 
     @Override
@@ -82,7 +83,7 @@ public class UpbitAssetResponse implements AssetResponse {
     }
 
     public boolean isBaseCurrency() {
-        return currency.equals("KRW");
+        return currency.equals(unitCurrency);
     }
 
     @Override
@@ -90,4 +91,13 @@ public class UpbitAssetResponse implements AssetResponse {
         return getTotalCost() > 5000;
     }
 
+    @Override
+    public String toString() {
+        return currency +
+                "\t|\t" +
+                avgBuyPrice +
+                "\t|\t" +
+                (balance + locked) +
+                "\n";
+    }
 }

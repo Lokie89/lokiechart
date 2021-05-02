@@ -31,7 +31,7 @@ public class SellTradeStrategyTest {
     @DisplayName("종가가 볼린저 밴드보다 높음 테스트")
     @Test
     void underBollingerBandsTwiceTest() {
-        CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-DOGE", 30, LocalDateTime.of(2021, 4, 28, 21, 25, 0));
+        CandleResponses candleResponses = candleService.get5MinutesCandles("KRW-BTT", 30, LocalDateTime.of(2021, 5, 1, 14, 55, 5));
         candleResponses.setUnderBollingerBands(3);
         CandleResponse matchedResponse = SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS.match(candleResponses);
         System.out.println(matchedResponse);

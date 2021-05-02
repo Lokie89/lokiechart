@@ -17,7 +17,7 @@ import lombok.ToString;
  */
 @ToString
 @Getter
-public class UpbitMarketResponse {
+public class UpbitMarketResponse implements MarketResponse {
     private String market;
     @JsonProperty("korean_name")
     private String korean;

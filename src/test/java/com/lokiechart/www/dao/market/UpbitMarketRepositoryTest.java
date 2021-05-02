@@ -1,5 +1,6 @@
 package com.lokiechart.www.dao.market;
 
+import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ class UpbitMarketRepositoryTest {
     @DisplayName("코인 목록 가져오기 테스트")
     @Test
     void getCoinListTest() {
-        List<UpbitMarketResponse> upbitMarketResponses = upbitMarketRepository.getMarkets();
+        List<MarketResponse> upbitMarketResponses = upbitMarketRepository.getMarkets();
         System.out.println(upbitMarketResponses);
     }
 }

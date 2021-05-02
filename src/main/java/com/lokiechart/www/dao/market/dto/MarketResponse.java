@@ -1,5 +1,9 @@
-package com.lokiechart.www.dao.market.dto;/**
+package com.lokiechart.www.dao.market.dto;
+
+/**
  * @author SeongRok.Oh
  * @since 2021/05/01
-*/public class MarketResponse {
+ */
+public interface MarketResponse {
+    String getMarket();
 }

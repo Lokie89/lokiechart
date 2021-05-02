@@ -5,6 +5,7 @@ import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.UpbitMarketRepository;
+import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.candle.UpbitCandleService;
@@ -39,14 +40,14 @@ class UpbitOrderServiceTest {
     @Autowired
     AssetService upbitAssetService;
 
-    List<UpbitMarketResponse> upbitMarket;
+    List<MarketResponse> upbitMarket;
 
     @DisplayName("Email 의 전략에 맞게 주문 하기")
     @Test
     void orderByEmail() {
         final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
         upbitMarket = upbitMarketRepository.getMarkets();
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 Thread.sleep(100);
                 String market = marketResponse.getMarket();

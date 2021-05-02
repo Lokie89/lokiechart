@@ -13,7 +13,6 @@ import java.util.List;
  * @since 2021/04/19
  */
 @RequiredArgsConstructor
-@ToString
 @Getter
 public class AssetResponses implements Iterable<AssetResponse> {
     private final List<AssetResponse> assetResponses;
@@ -43,5 +42,12 @@ public class AssetResponses implements Iterable<AssetResponse> {
 
     public int existAssetSize() {
         return (int) assetResponses.stream().filter(AssetResponse::isExistBalance).count() - 1;
+    }
+
+    @Override
+    public String toString() {
+        return "코인\t|\t매수가\t|\t매수량\n"
+                + assetResponses.toString().replaceAll(",", "").replace("[", "").replace("]", "")
+                + "\t총 \t\t\t\t| \t" + getTotalSeed() + " 원";
     }
 }

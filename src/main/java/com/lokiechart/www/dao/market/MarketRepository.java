@@ -1,6 +1,6 @@
 package com.lokiechart.www.dao.market;
 
-import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
+import com.lokiechart.www.dao.market.dto.MarketResponse;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
  * @since 2021/04/15
  */
 public interface MarketRepository {
-    List<UpbitMarketResponse> getMarkets();
+    List<MarketResponse> getMarkets();
 }

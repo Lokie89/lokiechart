@@ -4,6 +4,7 @@ import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.MarketRepository;
+import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class UpbitCandlesBatch {
         init();
     }
 
-    static List<UpbitMarketResponse> upbitMarket;
+    static List<MarketResponse> upbitMarket;
     static final Map<String, CandleResponses> upbitOneMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitFiveMinuteCandles = new ConcurrentHashMap<>();
@@ -55,7 +56,7 @@ public class UpbitCandlesBatch {
     private void init() {
         final int minutesOfDay = 1440;
         updateUpbitMarket();
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
             upbitOneMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), minutesOfDay));
             upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), minutesOfDay / 3));
@@ -74,7 +75,7 @@ public class UpbitCandlesBatch {
 
     private void initPreCandles() {
         final int howGetCandles = 200;
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 Thread.sleep(100);
                 String market = marketResponse.getMarket();
@@ -85,7 +86,7 @@ public class UpbitCandlesBatch {
                 e.printStackTrace();
             }
         }
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get3MinutesCandles(market, howGetCandles);
@@ -97,7 +98,7 @@ public class UpbitCandlesBatch {
             }
         }
 
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get5MinutesCandles(market, howGetCandles);
@@ -108,7 +109,7 @@ public class UpbitCandlesBatch {
                 e.printStackTrace();
             }
         }
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get15MinutesCandles(market, howGetCandles);
@@ -119,7 +120,7 @@ public class UpbitCandlesBatch {
                 e.printStackTrace();
             }
         }
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get30MinutesCandles(market, howGetCandles);
@@ -130,7 +131,7 @@ public class UpbitCandlesBatch {
                 e.printStackTrace();
             }
         }
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get60MinutesCandles(market, howGetCandles);
@@ -141,7 +142,7 @@ public class UpbitCandlesBatch {
                 e.printStackTrace();
             }
         }
-        for (UpbitMarketResponse marketResponse : upbitMarket) {
+        for (MarketResponse marketResponse : upbitMarket) {
             try {
                 String market = marketResponse.getMarket();
                 CandleResponses responses = upbitCandleService.get1DayCandles(market, howGetCandles);

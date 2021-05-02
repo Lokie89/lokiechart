@@ -1,5 +1,10 @@
-package com.lokiechart.www.dao.ticker.dto;/**
+package com.lokiechart.www.dao.ticker.dto;
+
+/**
  * @author SeongRok.Oh
  * @since 2021/05/01
-*/public interface TickerResponse {
+ */
+public interface TickerResponse {
+    String getMarket();
+    Double getTradePrice();
 }

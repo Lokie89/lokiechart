@@ -1,6 +1,7 @@
 package com.lokiechart.www.dao.market;
 
 import com.lokiechart.www.common.ConvertType;
+import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class UpbitMarketRepository implements MarketRepository {
     private final CallByApi api;
     private final ConvertType convertType;
 
-    public List<UpbitMarketResponse> getMarkets() {
+    public List<MarketResponse> getMarkets() {
         final String prefixUrl = "https://api.upbit.com/v1/market/";
         UpbitMarketResponse[] upbitMarketResponses = convertType.stringToType(api.get(prefixUrl + "all", HttpHeaders.EMPTY), UpbitMarketResponse[].class);
         return Arrays.stream(upbitMarketResponses)

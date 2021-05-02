@@ -36,6 +36,10 @@ public class UpbitCandleService implements CandleService {
         return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(CandleMinute.FIVE).count(candleCount).build());
     }
 
+    public CandleResponses get5MinutesCandles(String market, int candleCount, LocalDateTime to) {
+        return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(CandleMinute.FIVE).count(candleCount).to(to).build());
+    }
+
     public CandleResponses get10MinutesCandles(String market, int candleCount) {
         return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(CandleMinute.TEN).count(candleCount).build());
     }
