@@ -29,8 +29,8 @@ class UpbitCandleRepositoryTest {
     @DisplayName("분 캔들 가져오기 테스트")
     @Test
     void getMinuteCandlesTest() {
-        final String market = "KRW-BTC";
-        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.THIRTY).market(market).count(10).build());
+        final String market = "KRW-AXS";
+        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.FIVE).market(market).count(1).build());
         System.out.println(candleResponseList);
     }
 
