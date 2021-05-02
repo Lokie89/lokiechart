@@ -1,5 +1,6 @@
 package com.lokiechart.www.dao.order.dto;
 
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -33,5 +34,9 @@ public class OrderParameters implements Iterable<OrderParameter> {
     @Override
     public Iterator<OrderParameter> iterator() {
         return orderParameters.iterator();
+    }
+
+    public void filterAlreadyOwn(AssetResponses assetResponses) {
+        orderParameters = orderParameters.stream().filter(parameter -> assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList());
     }
 }

@@ -39,10 +39,7 @@ public class AccountResponse {
     // TODO : 물타는 전략
     public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
-        if (assetResponses.existAssetSize() >= maxBuyMarket) {
-            logger.warn(email + " " + maxBuyMarket + " 자산 수에 가득 참");
-            return matchedOrderParameters;
-        }
+
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
         final int onceInvestKRW = investSeed / (int) Math.pow(2, totalTradeCount - 1) / maxBuyMarket;
 
@@ -51,10 +48,13 @@ public class AccountResponse {
                 matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses, onceInvestKRW));
             }
         }
-
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
             matchedOrderParameters.filter(decidedMarket);
             return matchedOrderParameters;
+        }
+        if (assetResponses.existAssetSize() >= maxBuyMarket) {
+            logger.warn(email + " " + maxBuyMarket + " 자산 수에 가득 참");
+            matchedOrderParameters.filterAlreadyOwn(assetResponses);
         }
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
             matchedOrderParameters.exclude(excludeMarket);

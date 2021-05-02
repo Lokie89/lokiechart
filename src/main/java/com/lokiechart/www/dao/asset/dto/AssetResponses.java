@@ -44,6 +44,10 @@ public class AssetResponses implements Iterable<AssetResponse> {
         return (int) assetResponses.stream().filter(AssetResponse::isExistBalance).count() - 1;
     }
 
+    public boolean containMarket(String market){
+        return assetResponses.stream().anyMatch(assetResponse -> assetResponse.getMarketCurrency().equals(market));
+    }
+
     @Override
     public String toString() {
         return "코인\t|\t매수가\t|\t매수량\n"

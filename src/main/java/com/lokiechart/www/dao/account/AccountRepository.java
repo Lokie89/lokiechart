@@ -36,21 +36,18 @@ public class AccountRepository {
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
     //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
-    private final OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).scaleTradingPercent(10).incomePercent(1).build();
-    private final OrderStrategy buy2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).scaleTradingPercent(10).incomePercent(1).build();
+    private final OrderStrategy buy = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).scaleTradingPercent(10).incomePercent(1).build();
     private final OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).orderType(OrderType.LIMIT).build();
 
     private final Map<String, Account> accountMap = new HashMap<>();
 
     public AccountRepository() {
-        Set<OrderStrategy> buyAccountStrategies1 = new HashSet<>();
-        Set<OrderStrategy> buyAccountStrategies2 = new HashSet<>();
+        Set<OrderStrategy> buyAccountStrategies = new HashSet<>();
         Set<OrderStrategy> sellAccountStrategies = new HashSet<>();
-        buyAccountStrategies1.add(buy1);
-        buyAccountStrategies2.add(buy2);
+        buyAccountStrategies.add(buy);
         sellAccountStrategies.add(sell1);
-        Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies1).sellTradeStrategies(sellAccountStrategies).build();
-        Account dlrjsgml = rjsgml.buyTradeStrategies(buyAccountStrategies2).sellTradeStrategies(sellAccountStrategies).build();
+        Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
+        Account dlrjsgml = rjsgml.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
         accountMap.put("tjdfhrdk10@naver.com", dhtjdfhr);
         accountMap.put("dlrjsgmlv@nate.com", dlrjsgml);
     }
