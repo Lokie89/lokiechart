@@ -113,7 +113,7 @@ public class UpbitOrderBatch {
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
             accounts.forEach(accountResponse -> {
                 List<OrderDetail> orderDetails = upbitOrderService.getOrderDetails(accountResponse);
-                orderDetails.forEach(orderDetail -> upbitOrderService.cancelNotBought(accountResponse, orderDetail));
+                orderDetails.forEach(orderDetail -> upbitOrderService.cancelNotProcess(accountResponse, orderDetail));
             });
         }
     }

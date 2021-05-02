@@ -51,10 +51,11 @@ public class UpbitOrderService implements OrderService {
     }
 
     @Override
-    public void cancelNotBought(AccountResponse accountResponse, OrderDetail orderDetail) {
+    public void cancelNotProcess(AccountResponse accountResponse, OrderDetail orderDetail) {
         LocalDateTime createdAt = orderDetail.getCreatedAt();
         LocalDateTime now = LocalDateTime.now();
         if (createdAt.isBefore(now.minusMinutes(3)) && (orderDetail.isBuyingOrder() || orderDetail.isPossibleReorder())) {
+            logger.warn("ORDER CANCEL : " + accountResponse.getEmail() + " : " + orderDetail);
             upbitOrderRepository.cancelOrder(accountResponse.getEmail(), orderDetail.getUuid());
         }
     }
