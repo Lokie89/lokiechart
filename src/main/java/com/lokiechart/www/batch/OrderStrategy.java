@@ -35,6 +35,7 @@ public class OrderStrategy {
     private final CandleMinute candleMinute;
     private final OrderType orderType;
     private final double scaleTradingPercent;
+    private final double incomePercent;
 
     public OrderParameters matchBuy(AssetResponses assetResponses, final int onceInvestKRW) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
@@ -79,7 +80,6 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
-            final double incomePercent = 0.5;
             if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
                 logger.warn(matched + " " + incomePercent + "% 이상 올라야 매도함");
                 continue;
