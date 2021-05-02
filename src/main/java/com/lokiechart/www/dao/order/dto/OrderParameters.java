@@ -39,4 +39,8 @@ public class OrderParameters implements Iterable<OrderParameter> {
     public void filterAlreadyOwn(AssetResponses assetResponses) {
         orderParameters = orderParameters.stream().filter(parameter -> assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList());
     }
+
+    public boolean isEmpty() {
+        return orderParameters.isEmpty();
+    }
 }

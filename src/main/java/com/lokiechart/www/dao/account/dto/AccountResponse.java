@@ -48,6 +48,11 @@ public class AccountResponse {
                 matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses, onceInvestKRW));
             }
         }
+
+        if (matchedOrderParameters.isEmpty()) {
+            return matchedOrderParameters;
+        }
+
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
             matchedOrderParameters.filter(decidedMarket);
             return matchedOrderParameters;
@@ -66,6 +71,10 @@ public class AccountResponse {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         for (OrderStrategy orderStrategy : sellTradeStrategies) {
             matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses));
+        }
+
+        if (matchedOrderParameters.isEmpty()) {
+            return matchedOrderParameters;
         }
 
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
