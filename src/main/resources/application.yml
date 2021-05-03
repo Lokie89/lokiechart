@@ -7,7 +7,7 @@ schedule:
     thirty-minutes: "5 */30 * * * *"
     one-hour: "5 0 * * * *"
     one-day: "5 0 9 * * *"
-    increase-day: "5 1 * * * *"
+    increase-day: "5 */10 * * * *"
   order:
     all-minute: "1 * * * * *"
     one-minute: "30 * 0-7,10-23 * * *"

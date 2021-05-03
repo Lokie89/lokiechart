@@ -68,6 +68,7 @@ public class UpbitOrderService implements OrderService {
         assetResponses.forEach(assetResponse -> upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter()));
     }
 
+    // TODO 만들기
     public void sellIncomeAsset(AccountResponse accountResponse){
         AssetResponses assetResponses = upbitAssetService.getAssets(accountResponse);
         List<String> markets=assetResponses.getMarkets();
