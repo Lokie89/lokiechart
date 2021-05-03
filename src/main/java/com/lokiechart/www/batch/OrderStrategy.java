@@ -81,7 +81,7 @@ public class OrderStrategy {
                 continue;
             }
             if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
-                logger.warn(matched + " " + incomePercent + "% 이상 올라야 매도함");
+                logger.warn(matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
                 continue;
             }
             matchedCandleResponses.add(matched);
