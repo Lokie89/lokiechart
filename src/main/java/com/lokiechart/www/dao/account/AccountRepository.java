@@ -31,7 +31,7 @@ public class AccountRepository {
     private final Account.AccountBuilder rjsgml = Account.builder()
             .email("dlrjsgmlv@nate.com")
             .excludeMarket(Arrays.asList(excludeMarkets))
-            .maxBuyMarket(5)
+            .maxBuyMarket(10)
             .totalTradeCount(1)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
