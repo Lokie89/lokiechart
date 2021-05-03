@@ -50,6 +50,9 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public OrderParameter toSellParameter() {
+        if (isBaseCurrency()) {
+            return null;
+        }
         return UpbitOrderParameter.builder().market(unitCurrency + "-" + currency).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
     }
 

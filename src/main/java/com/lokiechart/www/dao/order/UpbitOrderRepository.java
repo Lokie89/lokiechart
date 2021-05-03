@@ -11,10 +11,7 @@ import com.lokiechart.www.service.order.dto.UpbitOrderDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author SeongRok.Oh
@@ -32,6 +29,9 @@ public class UpbitOrderRepository implements OrderRepository {
 
     @Override
     public String order(String email, OrderParameter request) {
+        if(Objects.isNull(request)){
+            return null;
+        }
         Map<String, Object> params = request.toParameter();
 
         String url = "https://api.upbit.com/v1/orders";
