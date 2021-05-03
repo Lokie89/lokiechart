@@ -19,4 +19,7 @@ schedule:
     one-day: "50 59 23 * * *"
   market: "5 0 0 * * *"
 logging:
-  level: warn
+  level:
+    com:
+      lokiechart:
+        www: warn
