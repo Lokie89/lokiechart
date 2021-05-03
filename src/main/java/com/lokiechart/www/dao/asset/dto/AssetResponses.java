@@ -21,7 +21,7 @@ public class AssetResponses implements Iterable<AssetResponse> {
         return assetResponses.stream()
                 .anyMatch(assetResponse ->
                         assetResponse.isSameMarket(candleResponse.getMarket())
-                                && assetResponse.isPossibleOrder()
+                                && assetResponse.isPossibleBalanceOrder()
                                 && assetResponse.avgBuyPricePercent(candleResponse.getTradePrice()) > scaleTradingPercent * -1)
                 ;
     }

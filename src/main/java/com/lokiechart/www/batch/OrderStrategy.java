@@ -68,7 +68,7 @@ public class OrderStrategy {
             if (assetResponse.isBaseCurrency()) {
                 continue;
             }
-            if(!assetResponse.isPossibleOrder()){
+            if(!assetResponse.isPossibleBalanceOrder()){
                 continue;
             }
             String market = assetResponse.getMarketCurrency();

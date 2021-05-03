@@ -92,6 +92,11 @@ public class UpbitAssetResponse implements AssetResponse {
     }
 
     @Override
+    public boolean isPossibleBalanceOrder() {
+        return balance * avgBuyPrice > 5000;
+    }
+
+    @Override
     public String toString() {
         return currency +
                 "\t|\t" +
