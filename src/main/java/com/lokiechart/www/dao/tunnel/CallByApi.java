@@ -42,7 +42,6 @@ public class CallByApi {
             logger.error(url);
             logger.error(httpMethod.toString());
             logger.error(body.toString());
-            logger.error(httpHeaders.toString());
             e.printStackTrace();
         }
         return response;
