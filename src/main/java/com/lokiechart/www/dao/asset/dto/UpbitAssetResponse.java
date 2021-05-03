@@ -40,7 +40,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isSameMarket(String market) {
-        return market.equals(unitCurrency + "-" + currency);
+        return market.equals(getMarketCurrency());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UpbitAssetResponse implements AssetResponse {
         if (isBaseCurrency()) {
             return null;
         }
-        return UpbitOrderParameter.builder().market(unitCurrency + "-" + currency).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
+        return UpbitOrderParameter.builder().market(getMarketCurrency()).volume(balance).side(OrderSide.SELL).orderType(OrderType.DOWNERMARKET).build();
     }
 
     @Override

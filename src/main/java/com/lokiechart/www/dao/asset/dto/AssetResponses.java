@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author SeongRok.Oh
@@ -46,6 +47,10 @@ public class AssetResponses implements Iterable<AssetResponse> {
 
     public boolean containMarket(String market){
         return assetResponses.stream().anyMatch(assetResponse -> assetResponse.getMarketCurrency().equals(market));
+    }
+
+    public List<String> getMarkets(){
+        return assetResponses.stream().map(AssetResponse::getMarketCurrency).collect(Collectors.toList());
     }
 
     @Override

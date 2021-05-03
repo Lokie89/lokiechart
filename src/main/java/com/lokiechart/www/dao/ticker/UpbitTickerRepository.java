@@ -1,6 +1,5 @@
 package com.lokiechart.www.dao.ticker;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lokiechart.www.common.ConvertType;
 import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import com.lokiechart.www.dao.ticker.dto.UpbitTickerResponse;
@@ -20,8 +19,6 @@ import java.util.Arrays;
 public class UpbitTickerRepository implements TickerRepository {
     private final CallByApi api;
     private final ConvertType convertType;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public TickerResponses getTicker(String markets) {
