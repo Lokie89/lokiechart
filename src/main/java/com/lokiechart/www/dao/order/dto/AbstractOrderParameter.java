@@ -2,8 +2,10 @@ package com.lokiechart.www.dao.order.dto;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author SeongRok.Oh
@@ -14,7 +16,10 @@ public abstract class AbstractOrderParameter implements OrderParameter {
 
     @Override
     public Map<String, Object> toParameter() {
-        return objectMapper.convertValue(this, new TypeReference<>() {});
+        Map<String, Object> params = objectMapper.convertValue(this, new TypeReference<>() {});
+        params = Maps.filterValues(params, Objects::nonNull);
+        System.out.println(params);
+        return params;
     }
 
     public abstract String getMarket();
