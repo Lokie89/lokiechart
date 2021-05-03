@@ -18,7 +18,6 @@ public abstract class AbstractOrderParameter implements OrderParameter {
     public Map<String, Object> toParameter() {
         Map<String, Object> params = objectMapper.convertValue(this, new TypeReference<>() {});
         params = Maps.filterValues(params, Objects::nonNull);
-        System.out.println(params);
         return params;
     }
 
