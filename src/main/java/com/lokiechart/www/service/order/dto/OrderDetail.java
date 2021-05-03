@@ -11,4 +11,5 @@ public interface OrderDetail {
     LocalDateTime getCreatedAt();
     boolean isBuyingOrder();
     boolean isPossibleReorder();
+    String toLog();
 }

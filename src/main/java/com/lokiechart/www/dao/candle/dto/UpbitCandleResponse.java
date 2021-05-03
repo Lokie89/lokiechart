@@ -151,4 +151,9 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
             return 1;
         }
     }
+
+    @Override
+    public String toLog() {
+        return candleDateTimeKST + " " + market + " " + tradePrice;
+    }
 }

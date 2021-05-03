@@ -49,7 +49,7 @@ public class OrderStrategy {
                 continue;
             }
             if (assetResponses.isAlreadyOwnAndNotCheapEnough(matched, scaleTradingPercent)) {
-                logger.warn(matched + " 이미 가지고 있으며, 평단 -" + scaleTradingPercent + "% 아래여야 구매함");
+                logger.warn(matched.toLog() + " 이미 가지고 있으며, 평단 -" + scaleTradingPercent + "% 아래여야 구매함");
                 continue;
             }
             matchedCandleResponses.add(matched);

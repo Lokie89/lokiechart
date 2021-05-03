@@ -25,7 +25,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 public class AccountResponse {
-    private Logger logger = LoggerFactory.getLogger(AccountResponse.class);
+    private final Logger logger = LoggerFactory.getLogger(AccountResponse.class);
     private String email;
     private Set<OrderStrategy> buyTradeStrategies;
     private Set<OrderStrategy> sellTradeStrategies;

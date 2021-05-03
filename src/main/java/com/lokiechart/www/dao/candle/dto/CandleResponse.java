@@ -22,4 +22,5 @@ public interface CandleResponse {
     void setBollingerBands(double middle, double deviation);
     LocalDateTime getCandleDateTimeKST();
     Double getIncreasePercent();
+    String toLog();
 }

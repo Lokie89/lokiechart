@@ -31,7 +31,7 @@ public class UpbitOrderService implements OrderService {
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter);
+            logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
         }
     }
@@ -40,7 +40,7 @@ public class UpbitOrderService implements OrderService {
     public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter);
+            logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
         }
     }
@@ -55,7 +55,7 @@ public class UpbitOrderService implements OrderService {
         LocalDateTime createdAt = orderDetail.getCreatedAt();
         LocalDateTime now = LocalDateTime.now();
         if (createdAt.isBefore(now.minusMinutes(3)) && (orderDetail.isBuyingOrder() || orderDetail.isPossibleReorder())) {
-            logger.warn("ORDER CANCEL : " + accountResponse.getEmail() + " : " + orderDetail);
+            logger.warn("ORDER CANCEL : " + accountResponse.getEmail() + " : " + orderDetail.toLog());
             upbitOrderRepository.cancelOrder(accountResponse.getEmail(), orderDetail.getUuid());
         }
     }

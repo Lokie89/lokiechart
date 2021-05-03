@@ -80,4 +80,9 @@ public class UpbitOrderDetail implements OrderDetail {
     public boolean isPossibleReorder() {
         return remainingVolume * price > 5000;
     }
+
+    @Override
+    public String toLog() {
+        return uuid + " " + market + " " + side.name() + " " + orderType.name() + " " + price + " 주문 양 : " + volume + " 취소 양 : " + remainingVolume;
+    }
 }

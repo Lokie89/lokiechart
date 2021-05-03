@@ -81,4 +81,8 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
         return totalCost >= 5000;
     }
 
+    @Override
+    public String toLog() {
+        return market + " " + side.name() + " " + volume + " " + price + " " + orderType.name();
+    }
 }
