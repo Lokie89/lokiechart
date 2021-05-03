@@ -18,3 +18,5 @@ schedule:
     one-hour: "30 0 0-8,10-23 * * *"
     one-day: "50 59 23 * * *"
   market: "5 0 0 * * *"
+logging:
+  level: warn
