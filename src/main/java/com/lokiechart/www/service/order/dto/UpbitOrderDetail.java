@@ -59,7 +59,7 @@ public class UpbitOrderDetail implements OrderDetail {
 
     @JsonSetter("ord_type")
     public void setOrderType(String orderType) {
-        this.orderType = OrderType.valueOf(orderType.toUpperCase());
+        this.orderType = OrderType.getByUpbitParameter(orderType);
     }
 
     @JsonSetter("side")
