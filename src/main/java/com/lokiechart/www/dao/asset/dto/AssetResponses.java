@@ -42,7 +42,7 @@ public class AssetResponses implements Iterable<AssetResponse> {
     }
 
     public int existAssetSize() {
-        return (int) assetResponses.stream().filter(AssetResponse::isExistBalance).count() - 1;
+        return (int) assetResponses.stream().filter(assetResponse -> !assetResponse.isBaseCurrency() && assetResponse.isExistBalance()).count();
     }
 
     public boolean containMarket(String market){
