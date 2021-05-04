@@ -10,6 +10,7 @@ import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
+import com.lokiechart.www.service.order.dto.OrderDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,14 @@ class UpbitOrderServiceTest {
     @DisplayName("미체결 매수 매도 가져오기")
     @Test
     void getOrdered() {
-        List<OrderDetail> orderLists = upbitOrderService.getOrderDetails(AccountResponse.builder().email("tjdfhrdk10@naver.com").build());
+        OrderDetails orderLists = upbitOrderService.getOrderDetails(AccountResponse.builder().email("tjdfhrdk10@naver.com").build());
         System.out.println(orderLists);
+    }
+
+    @DisplayName("자산 이득 순으로 정렬")
+    @Test
+    void sellIncomeAsset(){
+        upbitOrderService.sellIncomeAsset(AccountResponse.builder().email("tjdfhrdk10@naver.com").build());
     }
 
 }

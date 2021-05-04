@@ -7,6 +7,7 @@ import com.lokiechart.www.dao.order.dto.OrderParameter;
 import com.lokiechart.www.dao.tunnel.ApiHeader;
 import com.lokiechart.www.dao.tunnel.CallByApi;
 import com.lokiechart.www.service.order.dto.OrderDetail;
+import com.lokiechart.www.service.order.dto.OrderDetails;
 import com.lokiechart.www.service.order.dto.UpbitOrderDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -46,12 +47,12 @@ public class UpbitOrderRepository implements OrderRepository {
     }
 
     @Override
-    public List<OrderDetail> getOrdered(String email) {
+    public OrderDetails getOrdered(String email) {
         String url = "https://api.upbit.com/v1/orders?state=wait";
         Map<String, Object> param = new HashMap<>();
         param.put("state", "wait");
         UpbitOrderDetail[] upbitOrderDetails = convertType.stringToType(api.get(url, upbitHeader.getHeaders(email, param)), UpbitOrderDetail[].class);
-        return Arrays.asList(upbitOrderDetails);
+        return new OrderDetails(Arrays.asList(upbitOrderDetails));
     }
 
     @Override

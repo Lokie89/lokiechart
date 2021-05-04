@@ -111,10 +111,8 @@ public class UpbitOrderBatch {
     private void orderCancel() {
         List<AccountResponse> accounts = accountService.getAll();
         if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-            accounts.forEach(accountResponse -> {
-                List<OrderDetail> orderDetails = upbitOrderService.getOrderDetails(accountResponse);
-                orderDetails.forEach(orderDetail -> upbitOrderService.cancelNotProcess(accountResponse, orderDetail));
-            });
+            logger.info("ORDER CANCEL");
+            accounts.forEach(accountResponse -> upbitOrderService.cancelNotProcess(accountResponse, upbitOrderService.getOrderDetails(accountResponse)));
         }
     }
 }

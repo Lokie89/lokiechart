@@ -10,6 +10,7 @@ import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import com.lokiechart.www.service.asset.UpbitAssetService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
+import com.lokiechart.www.service.order.dto.OrderDetails;
 import com.lokiechart.www.service.ticker.TickerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -34,10 +35,11 @@ public class UpbitOrderService implements OrderService {
     @Override
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
+        int possibleOrder = assetResponses.existAssetSize();
         for (OrderParameter parameter : matchMarkets) {
-            ThreadSleep.doSleep(125);
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
+            ThreadSleep.doSleep(125);
         }
     }
 
@@ -45,24 +47,27 @@ public class UpbitOrderService implements OrderService {
     public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
         for (OrderParameter parameter : matchMarkets) {
-            ThreadSleep.doSleep(125);
             logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
+            ThreadSleep.doSleep(125);
         }
     }
 
     @Override
-    public List<OrderDetail> getOrderDetails(AccountResponse accountResponse) {
+    public OrderDetails getOrderDetails(AccountResponse accountResponse) {
         return upbitOrderRepository.getOrdered(accountResponse.getEmail());
     }
 
     @Override
-    public void cancelNotProcess(AccountResponse accountResponse, OrderDetail orderDetail) {
-        LocalDateTime createdAt = orderDetail.getCreatedAt();
-        LocalDateTime now = LocalDateTime.now();
-        if (createdAt.isBefore(now.minusMinutes(3)) && (orderDetail.isBuyingOrder() || orderDetail.isPossibleReorder())) {
-            logger.warn("ORDER CANCEL : " + accountResponse.getEmail() + " : " + orderDetail.toLog());
-            upbitOrderRepository.cancelOrder(accountResponse.getEmail(), orderDetail.getUuid());
+    public void cancelNotProcess(AccountResponse accountResponse, OrderDetails orderDetails) {
+        for (OrderDetail orderDetail : orderDetails) {
+            LocalDateTime createdAt = orderDetail.getCreatedAt();
+            LocalDateTime now = LocalDateTime.now();
+            if (createdAt.isBefore(now.minusMinutes(3)) && (orderDetail.isBuyingOrder() || orderDetail.isPossibleReorder())) {
+                logger.warn("ORDER CANCEL : " + accountResponse.getEmail() + " : " + orderDetail.toLog());
+                upbitOrderRepository.cancelOrder(accountResponse.getEmail(), orderDetail.getUuid());
+            }
+            ThreadSleep.doSleep(125);
         }
     }
 
