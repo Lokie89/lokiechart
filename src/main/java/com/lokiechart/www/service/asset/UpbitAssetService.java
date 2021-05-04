@@ -34,7 +34,6 @@ public class UpbitAssetService implements AssetService {
         return upbitAssetRepository.getTotalSeed(accountResponse.getEmail());
     }
 
-    // TODO : getLiveAssets
     @Override
     public AssetResponses getLiveAssets(AccountResponse accountResponse) {
         AssetResponses assetResponses = getAssets(accountResponse);
