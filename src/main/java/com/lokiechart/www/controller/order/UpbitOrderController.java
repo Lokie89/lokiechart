@@ -29,7 +29,7 @@ public class UpbitOrderController {
     private long randomNumber;
 
     @GetMapping("/meomchwo")
-    public String meomchwo(@NotNull @RequestParam String email, @RequestParam Double profit, @RequestParam Long random) {
+    public String meomchwo(@RequestParam String email, @RequestParam(required = false) Double profit, @RequestParam(required = false) Long random) {
         if (Objects.isNull(profit) && random.doubleValue() != this.randomNumber) {
             randomNumber = new Random().nextLong();
             return "random=" + randomNumber;
