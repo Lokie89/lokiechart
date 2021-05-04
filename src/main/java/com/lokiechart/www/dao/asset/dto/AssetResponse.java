@@ -17,5 +17,4 @@ public interface AssetResponse {
     AssetResponse getApplyPrice(Double price);
     boolean isBaseCurrency();
     boolean isPossibleOrder();
-    boolean isPossibleBalanceOrder();
 }
