@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Random;
 
@@ -34,8 +33,8 @@ public class UpbitOrderController {
             randomNumber = new Random().nextLong();
             return "random=" + randomNumber;
         }
-//        AccountResponse accountResponse = upbitAccountService.getAccountByEmail(email);
-//        upbitOrderService.sellAssetByAccount(accountResponse, profit);
+        AccountResponse accountResponse = upbitAccountService.getAccountByEmail(email);
+        upbitOrderService.sellAssetByAccount(accountResponse, profit);
         return "올 매도";
     }
 }
