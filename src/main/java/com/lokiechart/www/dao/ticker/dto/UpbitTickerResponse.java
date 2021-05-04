@@ -7,10 +7,7 @@ package com.lokiechart.www.dao.ticker.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -46,6 +43,7 @@ import java.time.format.DateTimeFormatter;
  * lowest_52_week_date	52주 신저가 달성일	String
  * timestamp	타임스탬프	Long
  */
+@ToString
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor

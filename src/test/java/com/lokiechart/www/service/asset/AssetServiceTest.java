@@ -28,6 +28,6 @@ public class AssetServiceTest {
     @Test
     void getLiveAsset(){
         System.out.println(assetService.getLiveAssets(AccountResponse.builder().email("tjdfhrdk10@naver.com").build()));
-//        System.out.println(assetService.getLiveAssets(AccountResponse.builder().email("dlrjsgmlv@nate.com").build()));
+        System.out.println(assetService.getLiveAssets(AccountResponse.builder().email("dlrjsgmlv@nate.com").build()));
     }
 }

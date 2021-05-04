@@ -3,6 +3,7 @@ package com.lokiechart.www.service.order;
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.common.ThreadSleep;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.UpbitOrderRepository;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
@@ -32,10 +33,11 @@ public class UpbitOrderService implements OrderService {
     private final TickerService upbitTickerService;
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderService.class);
 
+    // TODO : 19개일때 3개가 한꺼번에 주문 됨
     @Override
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
-        int possibleOrder = assetResponses.existAssetSize();
+//        final int possibleOrder = assetResponses.existAssetSize();
         for (OrderParameter parameter : matchMarkets) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
@@ -76,11 +78,15 @@ public class UpbitOrderService implements OrderService {
         assetResponses.forEach(assetResponse -> upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter()));
     }
 
-    // TODO 만들기
-    public void sellIncomeAsset(AccountResponse accountResponse){
+    @Override
+    public void sellIncomeAsset(AccountResponse accountResponse, final double profitPercent) {
         AssetResponses assetResponses = upbitAssetService.getAssets(accountResponse);
-        List<String> markets=assetResponses.getMarkets();
-        TickerResponses tickerResponses = upbitTickerService.getTickersByMarkets(markets.toString().replace("[","").replace("]","").replaceAll(" ",""));
+        List<String> markets = assetResponses.getMarkets();
+        TickerResponses tickerResponses = upbitTickerService.getTickersByMarkets(markets.toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
+        AssetResponses sorted = assetResponses.sortProfitLiveTradePrice(tickerResponses, profitPercent);
+        for (AssetResponse assetResponse : sorted) {
+            upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter());
+        }
     }
 
 }

@@ -67,10 +67,10 @@ class UpbitOrderServiceTest {
         System.out.println(orderLists);
     }
 
-    @DisplayName("자산 이득 순으로 정렬")
+    @DisplayName("profitPercent 만큼 이익 중인 마켓 매도")
     @Test
-    void sellIncomeAsset(){
-        upbitOrderService.sellIncomeAsset(AccountResponse.builder().email("tjdfhrdk10@naver.com").build());
+    void sellIncomeAsset() {
+//        upbitOrderService.sellIncomeAsset(AccountResponse.builder().email("tjdfhrdk10@naver.com").build(), 2);
     }
 
 }
