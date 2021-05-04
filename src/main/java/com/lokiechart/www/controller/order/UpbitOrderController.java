@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author SeongRok.Oh
@@ -24,10 +26,16 @@ public class UpbitOrderController {
 
     private final OrderService upbitOrderService;
     private final AccountService upbitAccountService;
+    private long randomNumber;
 
     @GetMapping("/meomchwo")
-    public void meomchwo(@NotNull @RequestParam String email) {
-        AccountResponse accountResponse = upbitAccountService.getAccountByEmail(email);
-        upbitOrderService.sellAllByAccount(accountResponse);
+    public String meomchwo(@NotNull @RequestParam String email, @RequestParam Double profit, @RequestParam Long random) {
+        if (Objects.isNull(profit) && random.doubleValue() != this.randomNumber) {
+            randomNumber = new Random().nextLong();
+            return "random=" + randomNumber;
+        }
+//        AccountResponse accountResponse = upbitAccountService.getAccountByEmail(email);
+//        upbitOrderService.sellAssetByAccount(accountResponse, profit);
+        return "올 매도";
     }
 }

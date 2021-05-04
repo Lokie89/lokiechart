@@ -14,6 +14,5 @@ public interface OrderService {
     void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses);
     OrderDetails getOrderDetails(AccountResponse accountResponse);
     void cancelNotProcess(AccountResponse accountResponse, OrderDetails orderDetails);
-    void sellAllByAccount(AccountResponse accountResponse);
-    void sellIncomeAsset(AccountResponse accountResponse,final double profitPercent);
+    void sellAssetByAccount(AccountResponse accountResponse, Double profitPercent);
 }

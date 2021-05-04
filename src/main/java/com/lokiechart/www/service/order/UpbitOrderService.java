@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author SeongRok.Oh
@@ -73,20 +74,22 @@ public class UpbitOrderService implements OrderService {
         }
     }
 
-    public void sellAllByAccount(AccountResponse accountResponse) {
-        AssetResponses assetResponses = upbitAssetService.getAssets(accountResponse);
-        assetResponses.forEach(assetResponse -> upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter()));
+    @Override
+    public void sellAssetByAccount(AccountResponse accountResponse, Double profitPercent) {
+        if (Objects.isNull(profitPercent)) {
+            profitPercent = -100.0;
+        }
+        AssetResponses sortedProfitAsset = getProfitAsset(accountResponse, profitPercent);
+        for (AssetResponse assetResponse : sortedProfitAsset) {
+            upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter());
+        }
     }
 
-    @Override
-    public void sellIncomeAsset(AccountResponse accountResponse, final double profitPercent) {
+    private AssetResponses getProfitAsset(AccountResponse accountResponse, final double profitPercent) {
         AssetResponses assetResponses = upbitAssetService.getAssets(accountResponse);
         List<String> markets = assetResponses.getMarkets();
         TickerResponses tickerResponses = upbitTickerService.getTickersByMarkets(markets.toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
-        AssetResponses sorted = assetResponses.sortProfitLiveTradePrice(tickerResponses, profitPercent);
-        for (AssetResponse assetResponse : sorted) {
-            upbitOrderRepository.order(accountResponse.getEmail(), assetResponse.toSellParameter());
-        }
+        return assetResponses.sortProfitLiveTradePrice(tickerResponses, profitPercent);
     }
 
 }
