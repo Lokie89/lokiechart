@@ -13,7 +13,8 @@ public interface AssetResponse {
     Double getBalance();
     OrderParameter toSellParameter();
     Integer getTotalCost();
-    boolean isExistBalance();
+    boolean isExistTotalBalance();
+    boolean isExistSellBalance();
     AssetResponse getApplyPrice(Double price);
     boolean isBaseCurrency();
     boolean isPossibleOrder();

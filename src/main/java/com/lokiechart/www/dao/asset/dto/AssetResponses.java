@@ -22,7 +22,7 @@ public class AssetResponses implements Iterable<AssetResponse> {
         return assetResponses.stream()
                 .anyMatch(assetResponse ->
                         assetResponse.isSameMarket(candleResponse.getMarket())
-                                && assetResponse.isExistBalance()
+                                && assetResponse.isExistTotalBalance()
                                 && assetResponse.avgBuyPricePercent(candleResponse.getTradePrice()) > scaleTradingPercent * -1)
                 ;
     }
@@ -42,7 +42,7 @@ public class AssetResponses implements Iterable<AssetResponse> {
     }
 
     public int existAssetSize() {
-        return (int) assetResponses.stream().filter(assetResponse -> !assetResponse.isBaseCurrency() && assetResponse.isExistBalance()).count();
+        return (int) assetResponses.stream().filter(assetResponse -> !assetResponse.isBaseCurrency() && assetResponse.isExistTotalBalance()).count();
     }
 
     public boolean containMarket(String market){

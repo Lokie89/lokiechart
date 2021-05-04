@@ -70,7 +70,7 @@ public class UpbitAssetResponse implements AssetResponse {
     }
 
     @Override
-    public boolean isExistBalance() {
+    public boolean isExistTotalBalance() {
         return Objects.nonNull(avgBuyPrice) && isPossibleOrder();
     }
 
@@ -92,6 +92,11 @@ public class UpbitAssetResponse implements AssetResponse {
     @Override
     public boolean isPossibleOrder() {
         return getTotalCost() > 5000;
+    }
+
+    @Override
+    public boolean isExistSellBalance() {
+        return balance > 0;
     }
 
     @Override

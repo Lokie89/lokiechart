@@ -16,7 +16,7 @@ public class TickerResponses {
     private final List<TickerResponse> tickerResponses;
 
     public Double getTradePriceByMarket(AssetResponse assetResponse) {
-        if (assetResponse.isBaseCurrency() || assetResponse.getMarketCurrency().equals("KRW-XVG")) {
+        if (assetResponse.isBaseCurrency() || !assetResponse.isExistTotalBalance()) {
             return null;
         }
         TickerResponse ticker = tickerResponses.stream()
