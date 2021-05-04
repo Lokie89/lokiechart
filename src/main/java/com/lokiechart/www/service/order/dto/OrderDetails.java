@@ -19,6 +19,6 @@ public class OrderDetails implements Iterable<OrderDetail>{
 
     @Override
     public Iterator<OrderDetail> iterator() {
-        return null;
+        return orderDetails.iterator();
     }
 }
