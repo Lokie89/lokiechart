@@ -1,6 +1,7 @@
 package com.lokiechart.www.service.order;
 
 import com.lokiechart.www.batch.CandleMinute;
+import com.lokiechart.www.common.ThreadSleep;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.UpbitOrderRepository;
@@ -34,6 +35,9 @@ public class UpbitOrderService implements OrderService {
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
         for (OrderParameter parameter : matchMarkets) {
+            if (matchMarkets.cannotOnceRequest()) {
+                ThreadSleep.doSleep(125);
+            }
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
         }
@@ -43,6 +47,9 @@ public class UpbitOrderService implements OrderService {
     public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
         for (OrderParameter parameter : matchMarkets) {
+            if (matchMarkets.cannotOnceRequest()) {
+                ThreadSleep.doSleep(125);
+            }
             logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
         }

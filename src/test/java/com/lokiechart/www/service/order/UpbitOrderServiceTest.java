@@ -2,11 +2,11 @@ package com.lokiechart.www.service.order;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
+import com.lokiechart.www.common.ThreadSleep;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.UpbitMarketRepository;
 import com.lokiechart.www.dao.market.dto.MarketResponse;
-import com.lokiechart.www.dao.market.dto.UpbitMarketResponse;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
@@ -48,16 +48,12 @@ class UpbitOrderServiceTest {
         final Map<String, CandleResponses> upbitThreeMinuteCandles = new ConcurrentHashMap<>();
         upbitMarket = upbitMarketRepository.getMarkets();
         for (MarketResponse marketResponse : upbitMarket) {
-            try {
-                Thread.sleep(100);
-                String market = marketResponse.getMarket();
-                upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
-                CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 30, LocalDateTime.of(2021, 4, 22, 17, 36, 03));
-                CandleResponses origin = upbitThreeMinuteCandles.get(market);
-                origin.addAll(responses);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            ThreadSleep.doSleep(100);
+            String market = marketResponse.getMarket();
+            upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
+            CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 30, LocalDateTime.of(2021, 4, 22, 17, 36, 03));
+            CandleResponses origin = upbitThreeMinuteCandles.get(market);
+            origin.addAll(responses);
         }
         AccountResponse accountResponse = AccountResponse.builder().email("tjdfhrdk10@naver.com").build();
         upbitOrderService.buyByAccount(accountResponse, CandleMinute.ONE, upbitAssetService.getAssets(accountResponse));
@@ -65,7 +61,7 @@ class UpbitOrderServiceTest {
 
     @DisplayName("미체결 매수 매도 가져오기")
     @Test
-    void getOrdered(){
+    void getOrdered() {
         List<OrderDetail> orderLists = upbitOrderService.getOrderDetails(AccountResponse.builder().email("tjdfhrdk10@naver.com").build());
         System.out.println(orderLists);
     }

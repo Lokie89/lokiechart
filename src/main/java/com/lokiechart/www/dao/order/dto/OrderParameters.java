@@ -43,4 +43,8 @@ public class OrderParameters implements Iterable<OrderParameter> {
     public boolean isEmpty() {
         return orderParameters.isEmpty();
     }
+
+    public boolean cannotOnceRequest() {
+        return orderParameters.size() > 8;
+    }
 }
