@@ -39,7 +39,7 @@ public class AccountRepository {
     //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
     private final OrderStrategy buy = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).scaleTradingPercent(10).incomePercent(1).build();
     private final OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).orderType(OrderType.LIMIT).incomePercent(1).build();
-    private final OrderStrategy sell2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDSTWICE).orderType(OrderType.DOWNERMARKET).incomePercent(1).build();
+//    private final OrderStrategy sell2 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDSTWICE).orderType(OrderType.DOWNERMARKET).incomePercent(1).build();
 
     private final Map<String, Account> accountMap = new HashMap<>();
 
@@ -49,7 +49,7 @@ public class AccountRepository {
         Set<OrderStrategy> sellAccountStrategies2 = new HashSet<>();
         buyAccountStrategies.add(buy);
         sellAccountStrategies.add(sell1);
-        sellAccountStrategies2.add(sell2);
+        sellAccountStrategies2.add(sell1);
         Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
         Account dlrjsgml = rjsgml.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies2).build();
         accountMap.put("tjdfhrdk10@naver.com", dhtjdfhr);
