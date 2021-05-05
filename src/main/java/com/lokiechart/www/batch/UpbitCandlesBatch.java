@@ -128,7 +128,7 @@ public class UpbitCandlesBatch {
         for (String market : upbitDayCandles.keySet()) {
             CandleResponses candleResponses = upbitDayCandles.get(market);
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
-            isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copy(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15 && candles.getRecent(0).getIncreasePercent() < 10));
+            isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copyRecent(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15 && candles.getRecent(0).getIncreasePercent() < 10));
         }
     }
 
