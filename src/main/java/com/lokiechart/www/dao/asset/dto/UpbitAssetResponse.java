@@ -96,7 +96,7 @@ public class UpbitAssetResponse implements AssetResponse {
 
     @Override
     public boolean isExistSellBalance() {
-        return balance > 0;
+        return balance * avgBuyPrice > 5000;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class UpbitAssetResponse implements AssetResponse {
                 "\t|\t" +
                 (balance + locked) +
                 "\t|\t" +
-                (int)(Objects.isNull(avgBuyPrice) ? (balance + locked) : (balance + locked) * avgBuyPrice) +
+                (int) (Objects.isNull(avgBuyPrice) ? (balance + locked) : (balance + locked) * avgBuyPrice) +
                 "\n";
     }
 }

@@ -1,6 +1,6 @@
-package com.lokiechart.www.common;
+package com.lokiechart.www.batch;
 
-import com.lokiechart.www.batch.BuyTradeStrategy;
+import com.lokiechart.www.common.ConvertType;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.service.candle.UpbitCandleService;
