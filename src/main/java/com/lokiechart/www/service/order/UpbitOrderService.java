@@ -38,7 +38,6 @@ public class UpbitOrderService implements OrderService {
     @Override
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
-//        final int possibleOrder = assetResponses.existAssetSize();
         for (OrderParameter parameter : matchMarkets) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);

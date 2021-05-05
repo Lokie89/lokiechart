@@ -36,15 +36,22 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return orderParameters.iterator();
     }
 
-    public void filterAlreadyOwn(AssetResponses assetResponses) {
-        orderParameters = orderParameters.stream().filter(parameter -> assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList());
+    public void filterAlreadyOwnAndAddCount(AssetResponses assetResponses, int addCount) {
+        List<OrderParameter> filterOwn = orderParameters.stream().filter(parameter -> assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList());
+        if (orderParameters.size() - filterOwn.size() < addCount) {
+            addCount = orderParameters.size() - filterOwn.size();
+        }
+        List<OrderParameter> copyAddCountNotOwn = orderParameters.stream().filter(parameter -> !assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList()).subList(0, addCount);
+        filterOwn.addAll(copyAddCountNotOwn);
+        orderParameters = filterOwn;
     }
 
     public boolean isEmpty() {
         return orderParameters.isEmpty();
     }
 
-    public boolean cannotOnceRequest() {
-        return orderParameters.size() > 8;
+    public int size() {
+        return orderParameters.size();
     }
+
 }
