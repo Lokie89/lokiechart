@@ -41,7 +41,7 @@ public class AccountResponse {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
 
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
-        final int onceInvestKRW = investSeed / (int) Math.pow(2, totalTradeCount - 1) / maxBuyMarket;
+        final int onceInvestKRW = investSeed / totalTradeCount / maxBuyMarket;
 
         for (OrderStrategy orderStrategy : buyTradeStrategies) {
             if (orderStrategy.getCandleMinute().equals(candleMinute)) {

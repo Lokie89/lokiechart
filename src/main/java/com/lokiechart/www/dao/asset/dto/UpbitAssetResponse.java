@@ -106,6 +106,8 @@ public class UpbitAssetResponse implements AssetResponse {
                 avgBuyPrice +
                 "\t|\t" +
                 (balance + locked) +
+                "\t|\t" +
+                (int)(Objects.isNull(avgBuyPrice) ? (balance + locked) : (balance + locked) * avgBuyPrice) +
                 "\n";
     }
 }

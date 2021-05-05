@@ -24,7 +24,8 @@ public class AccountRepository {
             .email("tjdfhrdk10@naver.com")
             .excludeMarket(Arrays.asList(excludeMarkets))
             .maxBuyMarket(20)
-            .totalSeed(8000000)
+            .totalSeed(6000000)
+            .totalTradeCount(2)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
 

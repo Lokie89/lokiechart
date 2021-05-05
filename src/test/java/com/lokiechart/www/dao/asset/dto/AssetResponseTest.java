@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class AssetResponseTest {
 
+    @DisplayName("주문 가능 테스트")
     @Test
     void test(){
         AssetResponse assetResponse = UpbitAssetResponse.builder().currency("SC").avgBuyPrice(5510.0).balance(0.00000001).locked(0.0).build();

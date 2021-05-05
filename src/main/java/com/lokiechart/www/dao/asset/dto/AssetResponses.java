@@ -57,7 +57,7 @@ public class AssetResponses implements Iterable<AssetResponse> {
     public String toString() {
         return "코인\t|\t매수가\t|\t매수량\n"
                 + assetResponses.toString().replaceAll(",", "").replace("[", "").replace("]", "")
-                + "\t총 \t\t\t\t| \t" + getTotalSeed() + " 원";
+                + "\t총 " + getMarkets().size() + "\t\t\t| \t" + getTotalSeed() + " 원";
     }
 
     public AssetResponses sortProfitLiveTradePrice(TickerResponses tickerResponses, final double profitPercent) {

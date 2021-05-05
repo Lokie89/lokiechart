@@ -51,7 +51,7 @@ public class UpbitCandlesBatch {
     static final Map<String, CandleResponses> upbitWeekCandles = new ConcurrentHashMap<>();
     static final Map<String, CandleResponses> upbitMonthCandles = new ConcurrentHashMap<>();
 
-    static final Map<String, Boolean> isAlready15PercentNotIncreasedInTwoDays = new HashMap<>();
+    static final Map<String, Boolean> isAlready15PercentNotIncreasedInTwoDays = new ConcurrentHashMap<>();
 
     private void init() {
         final int minutesOfDay = 1440;
