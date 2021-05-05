@@ -18,13 +18,24 @@ public class CandleResponses {
     private final int maxSize;
 
     public CandleResponses(SynchronizedNonOverlapList<CandleResponse> candleResponses, int maxSize) {
-        this.candleResponses = candleResponses;
+        this.candleResponses = sortedCandleResponses(candleResponses);
         this.maxSize = maxSize;
     }
 
     public CandleResponses(SynchronizedNonOverlapList<CandleResponse> candleResponses) {
-        this.candleResponses = candleResponses;
+        this.candleResponses = sortedCandleResponses(candleResponses);
         this.maxSize = 240;
+    }
+
+    private SynchronizedNonOverlapList<CandleResponse> sortedCandleResponses(SynchronizedNonOverlapList<CandleResponse> candleResponses) {
+        return new SynchronizedNonOverlapList<>(candleResponses.stream().sorted((o1, o2) -> {
+            if (o1.getCandleDateTimeKST().isBefore(o2.getCandleDateTimeKST())) {
+                return -1;
+            } else if (o1.getCandleDateTimeKST().isAfter(o2.getCandleDateTimeKST())) {
+                return 1;
+            }
+            return 0;
+        }).collect(Collectors.toList()));
     }
 
     public void addAll(CandleResponses responses) {
@@ -58,4 +69,5 @@ public class CandleResponses {
     public Set<String> getMarkets() {
         return candleResponses.stream().map(CandleResponse::getMarket).collect(Collectors.toSet());
     }
+
 }

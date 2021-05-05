@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,14 +26,13 @@ public class CandleBatchTest {
 
     @DisplayName("이미 올랐던 종목 테스트")
     @Test
-    void isAlreadyIncreasedTest(){
+    void isAlreadyIncreasedTest() {
         final Map<String, Boolean> isAlready15PercentNotIncreasedInTwoDays = new ConcurrentHashMap<>();
         String market = "KRW-ETC";
-        CandleResponses candleResponses = upbitCandleService.get1DayCandles(market,10);
+        CandleResponses candleResponses = upbitCandleService.get1DayCandles(market, 10, LocalDateTime.of(2021,5,1,0,0,5));
         SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
         isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copyRecent(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15 && candles.getRecent(0).getIncreasePercent() < 10));
         System.out.println(isAlready15PercentNotIncreasedInTwoDays);
     }
-
 
 }

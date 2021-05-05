@@ -26,7 +26,7 @@ import lombok.ToString;
  * change_rate : 전일 종가 대비 변화량
  * converted_trade_price : 종가 환산 화폐 단위로 환산된 가격(요청에 convertingPriceUnit 파라미터 없을 시 해당 필드 포함되지 않음.)
  */
-@ToString
+@ToString(callSuper = true)
 @Getter
 public class UpbitDayCandleResponse extends UpbitCandleResponse {
 

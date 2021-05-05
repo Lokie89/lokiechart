@@ -13,7 +13,7 @@ import java.time.LocalDate;
  * @author SeongRok.Oh
  * @since 2021/04/19
  */
-@ToString
+@ToString(callSuper = true)
 @Getter
 public class UpbitWeekCandleResponse extends UpbitCandleResponse {
 

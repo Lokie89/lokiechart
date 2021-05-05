@@ -30,7 +30,7 @@ class UpbitCandleRepositoryTest {
     @Test
     void getMinuteCandlesTest() {
         final String market = "KRW-AXS";
-        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.FIVE).market(market).count(1).build());
+        CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.FIVE).market(market).count(5).build());
         System.out.println(candleResponseList);
     }
 
