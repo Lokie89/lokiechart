@@ -34,10 +34,10 @@ public class UpbitOrderService implements OrderService {
     private final TickerService upbitTickerService;
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderService.class);
 
-    // TODO : 19개일때 3개가 한꺼번에 주문 됨
     @Override
     public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
+        matchMarkets.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
         for (OrderParameter parameter : matchMarkets) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
@@ -48,6 +48,7 @@ public class UpbitOrderService implements OrderService {
     @Override
     public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
+        matchMarkets.filterAlreadySellOrdered(getOrderDetails(accountResponse));
         for (OrderParameter parameter : matchMarkets) {
             logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);

@@ -1,6 +1,7 @@
 package com.lokiechart.www.dao.order.dto;
 
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
+import com.lokiechart.www.service.order.dto.OrderDetails;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -23,8 +24,12 @@ public class OrderParameters implements Iterable<OrderParameter> {
         orderParameters = orderParameters.stream().filter(parameter -> !excludeMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
     }
 
-    public void filter(List<String> decidedMarkets) {
+    public void filterMarkets(List<String> decidedMarkets) {
         orderParameters = orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
+    }
+
+    public void filterAlreadyBuyOrdered(OrderDetails orderDetails){
+        orderParameters = orderParameters.stream().filter((match) -> orderDetails.getOrderDetails().stream().noneMatch(orderDetail -> orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))).collect(Collectors.toList());
     }
 
     public void addAll(OrderParameters orderParameters) {
@@ -54,4 +59,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return orderParameters.size();
     }
 
+    public void filterAlreadySellOrdered(OrderDetails orderDetails) {
+        orderParameters = orderParameters.stream().filter((match) -> orderDetails.getOrderDetails().stream().noneMatch(orderDetail -> !orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))).collect(Collectors.toList());
+    }
 }

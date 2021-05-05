@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public interface OrderDetail {
     String getUuid();
     LocalDateTime getCreatedAt();
+    boolean isSameMarket(String market);
     boolean isBuyingOrder();
     boolean isPossibleReorder();
     String toLog();

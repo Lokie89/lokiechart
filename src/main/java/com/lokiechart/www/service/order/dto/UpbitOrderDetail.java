@@ -72,6 +72,11 @@ public class UpbitOrderDetail implements OrderDetail {
         this.createdAt = LocalDateTime.parse(createdAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
+    @Override
+    public boolean isSameMarket(String market) {
+        return this.market.equals(market);
+    }
+
     public boolean isBuyingOrder() {
         return side.equals(OrderSide.BUY);
     }

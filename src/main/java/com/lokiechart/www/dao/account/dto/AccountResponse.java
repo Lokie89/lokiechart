@@ -54,7 +54,7 @@ public class AccountResponse {
         }
 
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
-            matchedOrderParameters.filter(decidedMarket);
+            matchedOrderParameters.filterMarkets(decidedMarket);
             return matchedOrderParameters;
         }
 
@@ -80,7 +80,7 @@ public class AccountResponse {
         }
 
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
-            matchedOrderParameters.filter(decidedMarket);
+            matchedOrderParameters.filterMarkets(decidedMarket);
             return matchedOrderParameters;
         }
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
