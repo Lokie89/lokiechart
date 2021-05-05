@@ -28,7 +28,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         orderParameters = orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
     }
 
-    public void filterAlreadyBuyOrdered(OrderDetails orderDetails){
+    public void filterAlreadyBuyOrdered(OrderDetails orderDetails) {
         orderParameters = orderParameters.stream().filter((match) -> orderDetails.getOrderDetails().stream().noneMatch(orderDetail -> orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))).collect(Collectors.toList());
     }
 
@@ -61,5 +61,9 @@ public class OrderParameters implements Iterable<OrderParameter> {
 
     public void filterAlreadySellOrdered(OrderDetails orderDetails) {
         orderParameters = orderParameters.stream().filter((match) -> orderDetails.getOrderDetails().stream().noneMatch(orderDetail -> !orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))).collect(Collectors.toList());
+    }
+
+    public OrderParameters copy(int startIndex, int endIndex) {
+        return new OrderParameters(orderParameters.subList(startIndex, endIndex));
     }
 }

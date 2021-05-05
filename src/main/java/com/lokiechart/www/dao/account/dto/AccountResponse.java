@@ -61,12 +61,14 @@ public class AccountResponse {
         final int alreadyExistAndPlusSize = assetResponses.existAssetSize() + matchedOrderParameters.size();
         if (alreadyExistAndPlusSize > maxBuyMarket) {
             logger.warn(email + " " + maxBuyMarket + " 자산 수에 가득 참");
-            matchedOrderParameters.filterAlreadyOwnAndAddCount(assetResponses,maxBuyMarket - assetResponses.existAssetSize());
+            matchedOrderParameters.filterAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
         }
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
             matchedOrderParameters.exclude(excludeMarket);
         }
-        return matchedOrderParameters;
+        final double remainBaseCurrency = assetResponses.getBaseCurrency() == null ? 0 : assetResponses.getBaseCurrency();
+        final int possiblePurchaseCount = (int) (remainBaseCurrency / onceInvestKRW);
+        return matchedOrderParameters.copy(0, Integer.min(matchedOrderParameters.size(), possiblePurchaseCount));
     }
 
     public OrderParameters findSellStrategically(final AssetResponses assetResponses) {

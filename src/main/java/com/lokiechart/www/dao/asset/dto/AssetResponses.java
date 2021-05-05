@@ -75,4 +75,8 @@ public class AssetResponses implements Iterable<AssetResponse> {
                     return 0;
                 }).collect(Collectors.toList()));
     }
+
+    public Double getBaseCurrency(){
+        return assetResponses.stream().filter(AssetResponse::isBaseCurrency).findFirst().map(AssetResponse::getBalance).orElse(null);
+    }
 }

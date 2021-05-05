@@ -88,6 +88,6 @@ public class UpbitOrderDetail implements OrderDetail {
 
     @Override
     public String toLog() {
-        return uuid + " " + market + " " + side.name() + " " + orderType.name() + " " + price + " 주문 양 : " + volume + " 취소 양 : " + remainingVolume;
+        return market + " " + side.name() + " " + orderType.name() + " " + price + " 주문 양 : " + volume + " 취소 양 : " + remainingVolume;
     }
 }
