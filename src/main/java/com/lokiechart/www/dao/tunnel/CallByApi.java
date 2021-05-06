@@ -37,7 +37,7 @@ public class CallByApi {
     }
 
     private String callApiEndpoint(String url, HttpMethod httpMethod, HttpHeaders httpHeaders, Object body) {
-        httpHeaders.setContentType(new MediaType("application","json", StandardCharsets.UTF_8));
+//        httpHeaders.setContentType(new MediaType("application","json", StandardCharsets.UTF_8));
         String response = null;
         try {
             response = restTemplate.exchange(url, httpMethod, new HttpEntity<>(body, httpHeaders), String.class).getBody();
