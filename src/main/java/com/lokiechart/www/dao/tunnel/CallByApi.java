@@ -8,8 +8,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 
 /**
  * @author SeongRok.Oh
@@ -35,6 +37,7 @@ public class CallByApi {
     }
 
     private String callApiEndpoint(String url, HttpMethod httpMethod, HttpHeaders httpHeaders, Object body) {
+        httpHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
         String response = null;
         try {
             response = restTemplate.exchange(url, httpMethod, new HttpEntity<>(body, httpHeaders), String.class).getBody();
