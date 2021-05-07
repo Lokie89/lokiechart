@@ -1,11 +1,15 @@
 package com.lokiechart.www.dao.candle;
 
 import com.lokiechart.www.batch.CandleMinute;
+import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -49,6 +53,15 @@ class UpbitCandleRepositoryTest {
         final String market = "KRW-BTC";
         CandleResponses candleResponseList = upbitDayCandleRepository.getCandles(UpbitDayCandleParameter.builder().market(market).count(10).build());
         System.out.println(candleResponseList);
+    }
+
+    @DisplayName("일 캔들 RSI 설정 테스트")
+    @Test
+    void setRsiTest() {
+        final String market = "KRW-CBK";
+        CandleResponses candleResponses = upbitDayCandleRepository.getCandles(UpbitDayCandleParameter.builder().market(market).count(200).build());
+        candleResponses.setRsi(200);
+        System.out.println(candleResponses.getCandleResponses().copyRecent(0, 5));
     }
 
     @DisplayName("주 캔들 가져오기 테스트")

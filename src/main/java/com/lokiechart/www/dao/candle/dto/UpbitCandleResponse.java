@@ -11,6 +11,7 @@ import com.lokiechart.www.exception.CannotCompareObjectException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -71,8 +72,27 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     @ApiModelProperty(value = "아래 볼린저 밴드", example = "7.99672811")
     private double lowBollingerBands;
 
+    @ApiModelProperty(value = "중간 볼린저 밴드", example = "7.99672811")
+    private double middleBands;
+
     @ApiModelProperty(value = "위 볼린저 밴드", example = "7.99672811")
     private double highBollingerBands;
+
+
+    @Getter
+    @Setter
+    @ApiModelProperty(value = "14일 동안 상승의 합", example = "978.3")
+    private double averageUp;
+
+    @Getter
+    @Setter
+    @ApiModelProperty(value = "14일 동안 하락의 합", example = "634.1")
+    private double averageDown;
+
+    @Getter
+    @Setter
+    @ApiModelProperty(value = "rsi", example = "70.23")
+    private double rsi;
 
     @Override
     public OrderParameter toBuyOrderParameter(OrderSide orderSide, Integer totalCost, OrderType orderType) {
@@ -133,12 +153,18 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     @Override
     public void setBollingerBands(double middle, double deviation) {
         this.lowBollingerBands = middle - deviation * 2;
+        this.middleBands = middle;
         this.highBollingerBands = middle + deviation * 2;
     }
 
     @Override
-    public Double getIncreasePercent() {
-        return (this.tradePrice - this.openingPrice) / this.openingPrice * 100;
+    public double getIncreasePercent() {
+        return getChangePrice() / this.openingPrice * 100;
+    }
+
+    @Override
+    public double getChangePrice() {
+        return this.tradePrice - this.openingPrice;
     }
 
     private boolean isPowerfulTicker() {

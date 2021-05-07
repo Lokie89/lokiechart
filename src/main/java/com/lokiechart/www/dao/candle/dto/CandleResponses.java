@@ -66,6 +66,54 @@ public class CandleResponses {
         }
     }
 
+    private double calRsi(double averageUp, double averageDown) {
+        double rsi = Math.round(averageUp / (averageUp + averageDown) * 10000) / 100.0;
+        return rsi;
+    }
+
+    public void setRsi(final int setCount) {
+        for (int i = setCount - 1; i >= 0; i--) {
+            final int setRsiIndex = this.candleResponses.size() - (i + 1);
+            if (setRsiIndex < 14) {
+                continue;
+            }
+            CandleResponse setRsiCandle = candleResponses.getRecent(i);
+            CandleResponse beforeCandle = candleResponses.getRecent(i + 1);
+            double beforeAU = beforeCandle.getAverageUp() * 13;
+            double beforeAD = beforeCandle.getAverageDown() * 13;
+            if (beforeAD > 0 && beforeAU > 0) {
+                double changePrice = setRsiCandle.getChangePrice();
+                if (changePrice > 0) {
+                    beforeAU += changePrice;
+                } else {
+                    beforeAD += (changePrice * -1);
+                }
+                double averageDown = beforeAD / 14;
+                double averageUp = beforeAU / 14;
+                setRsiCandle.setAverageDown(averageDown);
+                setRsiCandle.setAverageUp(averageUp);
+                setRsiCandle.setRsi(calRsi(averageUp, averageDown));
+                continue;
+            }
+            SynchronizedNonOverlapList<CandleResponse> copy = this.candleResponses.copyRecent(i, i + 14);
+            double upSum = 0;
+            double downSum = 0;
+            for (CandleResponse candleResponse : copy) {
+                final double change = candleResponse.getChangePrice();
+                if (change >= 0) {
+                    upSum += change;
+                    continue;
+                }
+                downSum += (change * -1);
+            }
+            final double averageUp = upSum / 14;
+            final double averageDown = downSum / 14;
+            setRsiCandle.setAverageUp(averageUp);
+            setRsiCandle.setAverageDown(averageDown);
+            setRsiCandle.setRsi(calRsi(averageUp, averageDown));
+        }
+    }
+
     public Set<String> getMarkets() {
         return candleResponses.stream().map(CandleResponse::getMarket).collect(Collectors.toSet());
     }

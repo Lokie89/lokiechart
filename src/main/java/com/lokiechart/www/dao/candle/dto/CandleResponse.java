@@ -21,6 +21,13 @@ public interface CandleResponse {
     String getMarket();
     void setBollingerBands(double middle, double deviation);
     LocalDateTime getCandleDateTimeKST();
-    Double getIncreasePercent();
+    double getIncreasePercent();
     String toLog();
+    void setRsi(double rsi);
+    double getRsi();
+    void setAverageUp(double averageUp);
+    double getAverageUp();
+    void setAverageDown(double averageDown);
+    double getAverageDown();
+    double getChangePrice();
 }

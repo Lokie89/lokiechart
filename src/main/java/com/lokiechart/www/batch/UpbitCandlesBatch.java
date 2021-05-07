@@ -120,6 +120,7 @@ public class UpbitCandlesBatch {
         for (MarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
             CandleResponses responses = upbitCandleService.get1DayCandles(market, howGetCandles);
+            responses.setRsi(howGetCandles);
             CandleResponses origin = upbitDayCandles.get(market);
             origin.addAll(responses);
             ThreadSleep.doSleep(100);
@@ -243,6 +244,7 @@ public class UpbitCandlesBatch {
             CandleResponses responses = upbitCandleService.get1DayCandles(market, onceCallGetCount);
             origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
+            origin.setRsi(onceCallGetCount);
             ThreadSleep.doSleep(1000);
         });
         logger.info("1 DAY SIZE " + upbitDayCandles.get("KRW-BTC").getCandleResponses().size());
