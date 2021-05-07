@@ -44,7 +44,6 @@ public class CallByApi {
             logger.error(body.toString());
             e.printStackTrace();
         }
-        logger.error("ERROR ::::::: " + response);
         return response;
     }
 
