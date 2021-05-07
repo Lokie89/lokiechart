@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -61,8 +60,7 @@ public class UpbitHeader implements ApiHeader {
 
         String authenticationToken = "Bearer " + jwtToken;
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-//        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 //        headers.add("Content-Type", "application/json");
         headers.add("Authorization", authenticationToken);
         return headers;
