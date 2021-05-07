@@ -7,11 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author SeongRok.Oh
@@ -47,6 +44,7 @@ public class CallByApi {
             logger.error(body.toString());
             e.printStackTrace();
         }
+        logger.error("ERROR ::::::: " + response);
         return response;
     }
 
