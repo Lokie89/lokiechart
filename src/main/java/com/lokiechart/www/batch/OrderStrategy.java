@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public class OrderStrategy {
-
+    // TODO : Buy, Sell OrderStrategy 로 분리
     private final Logger logger = LoggerFactory.getLogger(OrderStrategy.class);
 
     private final TradeStrategy tradeStrategy;

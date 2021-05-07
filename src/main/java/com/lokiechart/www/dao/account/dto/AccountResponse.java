@@ -36,7 +36,7 @@ public class AccountResponse {
     private int totalTradeCount;
 
 
-    // TODO : 물타는 전략
+    // TODO : 물타는 전략 : 최근 매수 * 2
     public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
 
