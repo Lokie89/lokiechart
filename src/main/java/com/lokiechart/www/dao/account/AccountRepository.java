@@ -29,11 +29,12 @@ public class AccountRepository {
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
 
-    private final Account.AccountBuilder rjsgml = Account.builder()
-            .email("dlrjsgmlv@nate.com")
+    private final Account.AccountBuilder tjdals = Account.builder()
+            .email("01099589323@hanmail.net")
             .excludeMarket(Arrays.asList(excludeMarkets))
-            .maxBuyMarket(10)
-            .totalTradeCount(1)
+            .totalSeed(1600000)
+            .maxBuyMarket(20)
+            .totalTradeCount(2)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
     //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
@@ -46,14 +47,12 @@ public class AccountRepository {
     public AccountRepository() {
         Set<OrderStrategy> buyAccountStrategies = new HashSet<>();
         Set<OrderStrategy> sellAccountStrategies = new HashSet<>();
-        Set<OrderStrategy> sellAccountStrategies2 = new HashSet<>();
         buyAccountStrategies.add(buy);
         sellAccountStrategies.add(sell1);
-        sellAccountStrategies2.add(sell1);
         Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
-        Account dlrjsgml = rjsgml.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies2).build();
-        accountMap.put("tjdfhrdk10@naver.com", dhtjdfhr);
-        accountMap.put("dlrjsgmlv@nate.com", dlrjsgml);
+        Account dhtjdals = tjdals.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
+        accountMap.put(dhtjdfhr.getEmail(), dhtjdfhr);
+        accountMap.put(dhtjdals.getEmail(), dhtjdals);
     }
 
 
