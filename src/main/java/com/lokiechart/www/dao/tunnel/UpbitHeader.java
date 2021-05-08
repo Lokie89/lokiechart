@@ -22,11 +22,15 @@ import java.util.*;
 @PropertySource("classpath:application-secret.yml")
 @Component
 public class UpbitHeader implements ApiHeader {
+    @Value("${email}")
+    private String email;
     @Value("${accessKey}")
     private String accessKey;
     @Value("${secretKey}")
     private String secretKey;
 
+    @Value("${email2}")
+    private String email2;
     @Value("${accessKey2}")
     private String accessKey2;
     @Value("${secretKey2}")
@@ -35,8 +39,8 @@ public class UpbitHeader implements ApiHeader {
     private final Map<String, HeaderProperties> map = new HashMap<>();
 
     private void init() {
-        map.put("tjdfhrdk10@naver.com", new HeaderProperties(accessKey, secretKey));
-        map.put("dlrjsgmlv@nate.com", new HeaderProperties(accessKey2, secretKey2));
+        map.put(email, new HeaderProperties(accessKey, secretKey));
+        map.put(email2, new HeaderProperties(accessKey2, secretKey2));
     }
 
 
