@@ -20,7 +20,7 @@ class UpbitAssetRepositoryTest {
     @DisplayName("자산 정보 가져오기")
     @Test
     void getAssetsTest() {
-        String account = "dlrjsgmlv@nate.com";
+        String account = "01099589323@hanmail.net";
         AssetResponses assetResponses = upbitAssetRepository.getAssets(account);
         System.out.println(assetResponses);
     }
@@ -28,7 +28,7 @@ class UpbitAssetRepositoryTest {
     @DisplayName("자산 정보 사이즈 가져오기")
     @Test
     void getAssetsSizeTest() {
-        String account = "dlrjsgmlv@nate.com";
+        String account = "01099589323@hanmail.net";
         AssetResponses assetResponses = upbitAssetRepository.getAssets(account);
         System.out.println(assetResponses.existAssetSize());
     }

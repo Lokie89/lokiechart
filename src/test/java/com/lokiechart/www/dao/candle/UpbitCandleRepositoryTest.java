@@ -58,10 +58,10 @@ class UpbitCandleRepositoryTest {
     @DisplayName("일 캔들 RSI 설정 테스트")
     @Test
     void setRsiTest() {
-        final String market = "KRW-CBK";
+        final String market = "KRW-BTC";
         CandleResponses candleResponses = upbitDayCandleRepository.getCandles(UpbitDayCandleParameter.builder().market(market).count(200).build());
         candleResponses.setRsi(200);
-        System.out.println(candleResponses.getCandleResponses().copyRecent(0, 5));
+        System.out.println(candleResponses.getCandleResponses().copyRecent(0, 1));
     }
 
     @DisplayName("주 캔들 가져오기 테스트")
