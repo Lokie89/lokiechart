@@ -34,11 +34,16 @@ public class AccountResponse {
     private int totalSeed;
     private int maxBuyMarket;
     private int totalTradeCount;
+    private boolean buyFlag;
+    private boolean sellFlag;
 
 
     // TODO : 물타는 전략 : 최근 매수 * 2
     public OrderParameters findBuyStrategically(final CandleMinute candleMinute, final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
+        if (!buyFlag) {
+            return matchedOrderParameters;
+        }
 
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
         final int onceInvestKRW = investSeed / totalTradeCount / maxBuyMarket;
@@ -73,6 +78,9 @@ public class AccountResponse {
 
     public OrderParameters findSellStrategically(final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
+        if (!sellFlag) {
+            return matchedOrderParameters;
+        }
         for (OrderStrategy orderStrategy : sellTradeStrategies) {
             matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses));
         }

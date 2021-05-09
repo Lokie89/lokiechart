@@ -15,19 +15,23 @@ import java.util.Set;
 @ToString
 @Getter
 public class Account {
-    private final String email;
-    private final Set<OrderStrategy> buyTradeStrategies;
-    private final Set<OrderStrategy> sellTradeStrategies;
-    private final List<String> excludeMarket;
-    private final List<String> decidedMarket;
-    private final int totalSeed;
-    private final int maxBuyMarket;
-    private final int totalTradeCount;
+    private String email;
+    private Set<OrderStrategy> buyTradeStrategies;
+    private Set<OrderStrategy> sellTradeStrategies;
+    private List<String> excludeMarket;
+    private List<String> decidedMarket;
+    private int totalSeed;
+    private int maxBuyMarket;
+    private int totalTradeCount;
+    @Builder.Default
+    private boolean buyFlag = true;
+    @Builder.Default
+    private boolean sellFlag = true;
 
     @Builder
     public Account(String email, Set<OrderStrategy> buyTradeStrategies, Set<OrderStrategy> sellTradeStrategies,
                    List<String> excludeMarket, List<String> decidedMarket, int totalSeed, int maxBuyMarket,
-                   int totalTradeCount) {
+                   int totalTradeCount, boolean buyFlag, boolean sellFlag) {
         this.email = email;
         this.buyTradeStrategies = buyTradeStrategies;
         this.sellTradeStrategies = sellTradeStrategies;
@@ -36,6 +40,8 @@ public class Account {
         this.totalSeed = totalSeed;
         this.maxBuyMarket = maxBuyMarket == 0 ? 10 : maxBuyMarket;
         this.totalTradeCount = totalTradeCount == 0 ? 3 : totalTradeCount;
+        this.buyFlag = buyFlag;
+        this.sellFlag = sellFlag;
     }
 
     public boolean haveOrderStrategyByCandleMinute(CandleMinute candleMinute) {
