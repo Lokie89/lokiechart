@@ -13,7 +13,11 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author SeongRok.Oh
@@ -36,7 +40,7 @@ public class UpbitHeader implements ApiHeader {
     @Value("${secretKey2}")
     private String secretKey2;
 
-    private final Map<String, HeaderProperties> map = new HashMap<>();
+    private final Map<String, HeaderProperties> map = new ConcurrentHashMap<>();
 
     private void init() {
         map.put(email, new HeaderProperties(accessKey, secretKey));
@@ -46,6 +50,8 @@ public class UpbitHeader implements ApiHeader {
 
     public HttpHeaders getHeaders(String account, Map<String, Object> params) {
         init();
+        System.out.println(email+" "+accessKey + " "+secretKey);
+        System.out.println(email2+" "+accessKey2 + " "+secretKey2);
         final String accessKey = map.get(account).getAccessKey();
         JWTCreator.Builder tokenCreatorBuilder = JWT.create()
                 .withClaim("access_key", accessKey)
