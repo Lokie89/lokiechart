@@ -22,7 +22,7 @@ logging:
   level:
     com:
       lokiechart:
-        www: info
+        www: warn
 
 server:
   port: 3420
