@@ -23,10 +23,8 @@ public class Account {
     private int totalSeed;
     private int maxBuyMarket;
     private int totalTradeCount;
-    @Builder.Default
-    private boolean buyFlag = true;
-    @Builder.Default
-    private boolean sellFlag = true;
+    private boolean buyFlag;
+    private boolean sellFlag;
 
     @Builder
     public Account(String email, Set<OrderStrategy> buyTradeStrategies, Set<OrderStrategy> sellTradeStrategies,

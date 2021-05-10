@@ -26,6 +26,8 @@ public class AccountRepository {
             .maxBuyMarket(20)
             .totalSeed(6000000)
             .totalTradeCount(2)
+            .buyFlag(true)
+            .sellFlag(true)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
 
@@ -35,6 +37,8 @@ public class AccountRepository {
             .totalSeed(1600000)
             .maxBuyMarket(20)
             .totalTradeCount(2)
+            .buyFlag(true)
+            .sellFlag(true)
 //            .decidedMarket(Arrays.asList(decidedMarkets))
             ;
     //    OrderStrategy buy1 = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFIVETIMESINSIX).onceInvestKRW(200000).orderType(OrderType.UPPERMARKET).scaleTradingPercent(10).build();
