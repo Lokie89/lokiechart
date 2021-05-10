@@ -50,8 +50,6 @@ public class UpbitHeader implements ApiHeader {
 
     public HttpHeaders getHeaders(String account, Map<String, Object> params) {
         init();
-        System.out.println(email+" "+accessKey + " "+secretKey);
-        System.out.println(email2+" "+accessKey2 + " "+secretKey2);
         final String accessKey = map.get(account).getAccessKey();
         JWTCreator.Builder tokenCreatorBuilder = JWT.create()
                 .withClaim("access_key", accessKey)
