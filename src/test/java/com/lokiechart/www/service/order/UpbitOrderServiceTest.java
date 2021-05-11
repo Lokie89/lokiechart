@@ -11,6 +11,7 @@ import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
 import com.lokiechart.www.service.order.dto.OrderDetails;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,13 @@ class UpbitOrderServiceTest {
             ThreadSleep.doSleep(100);
             String market = marketResponse.getMarket();
             upbitThreeMinuteCandles.put(market, new CandleResponses(new SynchronizedNonOverlapList<>()));
-            CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 30, LocalDateTime.of(2021, 4, 22, 17, 36, 03));
+            CandleResponses responses = upbitCandleService.get3MinutesCandles(market, 30, LocalDateTime.of(2021, 4, 22, 17, 36, 3));
             CandleResponses origin = upbitThreeMinuteCandles.get(market);
             origin.addAll(responses);
         }
         AccountResponse accountResponse = AccountResponse.builder().email("tjdfhrdk10@naver.com").build();
-        upbitOrderService.buyByAccount(accountResponse, CandleMinute.ONE, upbitAssetService.getAssets(accountResponse));
+        AccountStrategyResponse accountStrategyResponse = AccountStrategyResponse.builder().accountResponse(accountResponse).build();
+        upbitOrderService.buyByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountResponse));
     }
 
     @DisplayName("미체결 매수 매도 가져오기")

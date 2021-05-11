@@ -53,10 +53,10 @@ public class AccountRepository {
         Set<OrderStrategy> sellAccountStrategies = new HashSet<>();
         buyAccountStrategies.add(buy);
         sellAccountStrategies.add(sell1);
-        Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
-        Account dhtjdals = tjdals.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
-        accountMap.put(dhtjdfhr.getEmail(), dhtjdfhr);
-        accountMap.put(dhtjdals.getEmail(), dhtjdals);
+//        Account dhtjdfhr = tjdfhr.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
+//        Account dhtjdals = tjdals.buyTradeStrategies(buyAccountStrategies).sellTradeStrategies(sellAccountStrategies).build();
+//        accountMap.put(dhtjdfhr.getEmail(), dhtjdfhr);
+//        accountMap.put(dhtjdals.getEmail(), dhtjdals);
     }
 
 
@@ -66,7 +66,8 @@ public class AccountRepository {
 
     public Set<Account> findByCandleMinute(final CandleMinute candleMinute) {
         List<Account> accounts = new ArrayList<>(accountMap.values());
-        return accounts.stream().filter(account -> account.haveOrderStrategyByCandleMinute(candleMinute)).collect(Collectors.toSet());
+//        return accounts.stream().filter(account -> account.haveOrderStrategyByCandleMinute(candleMinute)).collect(Collectors.toSet());
+        return null;
     }
 
     public List<Account> findAll() {

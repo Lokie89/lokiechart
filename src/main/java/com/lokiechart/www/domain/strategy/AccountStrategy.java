@@ -5,6 +5,7 @@ import com.lokiechart.www.domain.account.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,9 +15,12 @@ import java.util.Set;
  * @author SeongRok.Oh
  * @since 2021/05/10
  */
+@ToString
 @Getter
 public class AccountStrategy {
+
     private Account account;
+    //TODO : OrderStrategy 의 OrderType 이 다르면 안됨 validate
     private Set<OrderStrategy> orderStrategies;
 
     private AccountStrategy(Account account, Set<OrderStrategy> orderStrategies) {

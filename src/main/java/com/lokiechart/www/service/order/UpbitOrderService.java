@@ -12,6 +12,7 @@ import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import com.lokiechart.www.service.asset.UpbitAssetService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
 import com.lokiechart.www.service.order.dto.OrderDetails;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.ticker.TickerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,8 +36,12 @@ public class UpbitOrderService implements OrderService {
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderService.class);
 
     @Override
-    public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
-        OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
+    public void buyByAccount(final AccountStrategyResponse accountStrategyResponse, final AssetResponses assetResponses) {
+        if (Objects.isNull(accountStrategyResponse)) {
+            return;
+        }
+        AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
+        OrderParameters matchMarkets = accountStrategyResponse.findBuyStrategically(assetResponses);
         matchMarkets.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
         for (OrderParameter parameter : matchMarkets) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());

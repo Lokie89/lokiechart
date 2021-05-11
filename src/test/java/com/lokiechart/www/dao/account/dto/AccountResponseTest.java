@@ -2,6 +2,8 @@ package com.lokiechart.www.dao.account.dto;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.domain.account.Account;
+import com.lokiechart.www.domain.strategy.AccountStrategy;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,10 +33,11 @@ class AccountResponseTest {
 
     @DisplayName("BuyFlag 로직 테스트")
     @Test
-    void buyFlagTest(){
+    void buyFlagTest() {
         Account account = Account.builder().maxBuyMarket(5).buyFlag(false).build();
-        AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
-        accountResponse.findBuyStrategically(CandleMinute.THREE,null);
+        AccountStrategy accountStrategy = AccountStrategy.builder().account(account).build();
+        AccountStrategyResponse accountStrategyResponse = modelMapper.map(accountStrategy, AccountStrategyResponse.class);
+        accountStrategyResponse.findBuyStrategically(null);
     }
 
 }
