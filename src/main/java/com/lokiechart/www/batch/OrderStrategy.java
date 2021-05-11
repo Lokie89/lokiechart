@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @ToString
-@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute"})
+@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute", "orderType"})
 @Builder
 @RequiredArgsConstructor
 @Getter
@@ -96,11 +96,11 @@ public class OrderStrategy {
         );
     }
 
-    public boolean equalsByCandleMinute(final CandleMinute candleMinute){
+    public boolean equalsByCandleMinute(final CandleMinute candleMinute) {
         return this.candleMinute.equals(candleMinute);
     }
 
-    public boolean equalsByOrderSide(final OrderSide orderSide){
+    public boolean equalsByOrderSide(final OrderSide orderSide) {
         return this.tradeStrategy.getOrderSide().equals(orderSide);
     }
 

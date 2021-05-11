@@ -1,11 +1,12 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
-import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
+import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.service.account.AccountService;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.order.OrderService;
 import com.lokiechart.www.service.strategy.AccountStrategyService;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,6 @@ public class UpbitOrderBatch {
     private final AssetService upbitAssetService;
     private final OrderService upbitOrderService;
     private final AccountStrategyService upbitAccountStrategyService;
-//    private final Map<CandleMinute, Set<AccountResponse>> accountStrategy = new ConcurrentHashMap<>();
     private AccountStrategyResponses accountStrategyResponses;
 
     public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService, AssetService upbitAssetService,
@@ -36,24 +36,12 @@ public class UpbitOrderBatch {
         this.upbitOrderService = upbitOrderService;
         this.upbitAssetService = upbitAssetService;
         this.upbitAccountStrategyService = upbitAccountStrategyService;
-//        init();
+        init();
     }
 
     private void init() {
         updateAccountStrategy();
     }
-
-//    @Scheduled(cron = "${schedule.order.one-day}")
-//    private void updateAccountStrategy() {
-//        logger.info("UPDATE MAP STRATEGY WITH ACCOUNT LIST : " + LocalDateTime.now());
-//        for (CandleMinute candleMinute : CandleMinute.values()) {
-//            Set<AccountResponse> accountResponses = accountService.getAccountsByCandleMinute(candleMinute);
-//            if (Objects.isNull(accountResponses) || accountResponses.isEmpty()) {
-//                continue;
-//            }
-//            accountStrategy.put(candleMinute, accountResponses);
-//        }
-//    }
 
     @Scheduled(cron = "${schedule.order.one-minute}")
     private void orderBuyOneMinuteTradeStrategy() {
@@ -92,10 +80,10 @@ public class UpbitOrderBatch {
     }
 
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
-        AccountStrategyResponses filterCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute);
-        if (Objects.nonNull(filterCandleMinuteResponses) && !filterCandleMinuteResponses.isEmpty()) {
+        AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
+        if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
             logger.info("ORDER BUY " + candleMinute.name().toUpperCase() + " MINUTES TRADE STRATEGY");
-            filterCandleMinuteResponses.forEach(accountStrategyResponse -> upbitOrderService.buyByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse())));
+            filterBuyCandleMinuteResponses.forEach(accountStrategyResponse -> upbitOrderService.buyByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse())));
         }
     }
 

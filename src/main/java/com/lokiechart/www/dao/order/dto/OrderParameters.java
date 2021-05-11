@@ -66,4 +66,12 @@ public class OrderParameters implements Iterable<OrderParameter> {
     public OrderParameters copy(int startIndex, int endIndex) {
         return new OrderParameters(orderParameters.subList(startIndex, endIndex));
     }
+
+    public void intersect(OrderParameters other) {
+        if (orderParameters.isEmpty()) {
+            orderParameters.addAll(other.orderParameters);
+            return;
+        }
+        orderParameters = orderParameters.stream().filter(match -> other.orderParameters.contains(match)).collect(Collectors.toList());
+    }
 }

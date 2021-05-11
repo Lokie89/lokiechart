@@ -39,4 +39,29 @@ class OrderParametersTest {
 
         System.out.println(orderParameters.size());
     }
+
+    @DisplayName("교차 파라미터 필터링 테스트")
+    @Test
+    void intersectTest(){
+        List<OrderParameter> orderParameterList = new ArrayList<>();
+        OrderParameters orderParameters1 = new OrderParameters(orderParameterList);
+
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-BTC").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-XTZ").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-MTL").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SOLVE").build());
+        OrderParameters orderParameters = new OrderParameters(orderParameterList);
+
+        List<OrderParameter> orderParameterList2 = new ArrayList<>();
+        orderParameterList2.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-BTC").build());
+        orderParameterList2.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SC").build());
+        orderParameterList2.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SOLVE").build());
+        OrderParameters orderParameters2 = new OrderParameters(orderParameterList2);
+
+        orderParameters1.intersect(orderParameters);
+        orderParameters1.intersect(orderParameters2);
+
+        System.out.println(orderParameters1);
+
+    }
 }

@@ -6,6 +6,7 @@ import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.order.dto.OrderSide;
+import com.lokiechart.www.service.order.dto.OrderStrategyCandleTime;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class AccountStrategyResponse {
     // TODO : 물타는 전략 : 최근 매수 * 2
     public OrderParameters findBuyStrategically(final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
-        if (!accountResponse.isBuyFlag()) {
+        if (!accountResponse.isBuyFlag() || orderStrategies.isEmpty()) {
             return matchedOrderParameters;
         }
 
@@ -52,9 +53,8 @@ public class AccountStrategyResponse {
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
         final int onceInvestKRW = investSeed / totalTradeCount / maxBuyMarket;
 
-        // TODO : filter 로 수정
         for (OrderStrategy orderStrategy : orderStrategies) {
-            matchedOrderParameters.addAll(orderStrategy.matchBuy(assetResponses, onceInvestKRW));
+            matchedOrderParameters.intersect(orderStrategy.matchBuy(assetResponses, onceInvestKRW));
         }
 
         if (matchedOrderParameters.isEmpty()) {
@@ -81,5 +81,9 @@ public class AccountStrategyResponse {
         final double remainBaseCurrency = assetResponses.getBaseCurrency() == null ? 0 : assetResponses.getBaseCurrency();
         final int possiblePurchaseCount = (int) (remainBaseCurrency / onceInvestKRW);
         return matchedOrderParameters.copy(0, Integer.min(matchedOrderParameters.size(), possiblePurchaseCount));
+    }
+
+    public OrderStrategyCandleTime toOrderStrategyCandleTime() {
+        return new OrderStrategyCandleTime(this.orderStrategies);
     }
 }
