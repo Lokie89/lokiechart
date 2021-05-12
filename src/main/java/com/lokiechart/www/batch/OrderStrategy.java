@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute", "orderType"})
 @Builder
 @RequiredArgsConstructor
 @Getter
@@ -34,35 +34,6 @@ public class OrderStrategy {
     private final TradeStrategy tradeStrategy;
     private final CandleMinute candleMinute;
     private final OrderType orderType;
-    private final double scaleTradingPercent;
-    private final double incomePercent;
-
-    public OrderParameters matchBuy(AssetResponses assetResponses, final int onceInvestKRW) {
-        Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
-        CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
-        for (String key : liveCandles.keySet()) {
-            if (UpbitCandlesBatch.upbitDayCandles.get(key).getCandleResponses().getRecent(0).getRsi() > 65) {
-                continue;
-            }
-            if (!UpbitCandlesBatch.isAlready15PercentNotIncreasedInTwoDays.get(key)) {
-                continue;
-            }
-            CandleResponse matched = tradeStrategy.match(liveCandles.get(key));
-            if (Objects.isNull(matched)) {
-                continue;
-            }
-            if (assetResponses.isAlreadyOwnAndNotCheapEnough(matched, scaleTradingPercent)) {
-                logger.warn(matched.toLog() + " 이미 가지고 있으며, 평단 -" + scaleTradingPercent + "% 아래여야 구매함");
-                continue;
-            }
-            matchedCandleResponses.add(matched);
-        }
-        return new OrderParameters(matchedCandleResponses.getCandleResponses()
-                .stream()
-                .map(candleResponse -> candleResponse.toBuyOrderParameter(OrderSide.BUY, onceInvestKRW, orderType))
-                .collect(Collectors.toList())
-        );
-    }
 
     public OrderParameters matchSell(AssetResponses assetResponses) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
@@ -83,15 +54,43 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
-            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
-                logger.warn(matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
+//            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
+//                logger.warn(matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
+//                continue;
+//            }
+            matchedCandleResponses.add(matched);
+        }
+        return new OrderParameters(matchedCandleResponses.getCandleResponses()
+                .stream()
+                .map(candleResponse -> candleResponse.toSellOrderParameter(assetResponses.getBalanceByMarket(candleResponse.getMarket()), orderType))
+                .collect(Collectors.toList())
+        );
+    }
+
+    public boolean equalsByCandleMinute(final CandleMinute candleMinute) {
+        return this.candleMinute.equals(candleMinute);
+    }
+
+    public boolean equalsByOrderSide(final OrderSide orderSide) {
+        return this.tradeStrategy.getOrderSide().equals(orderSide);
+    }
+
+    public OrderParameters matchBuying(){
+        Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
+        CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
+        for (String key : liveCandles.keySet()) {
+            if (!UpbitCandlesBatch.isAlready15PercentNotIncreasedInTwoDays.get(key)) {
+                continue;
+            }
+            CandleResponse matched = tradeStrategy.match(liveCandles.get(key));
+            if (Objects.isNull(matched)) {
                 continue;
             }
             matchedCandleResponses.add(matched);
         }
         return new OrderParameters(matchedCandleResponses.getCandleResponses()
                 .stream()
-                .map(candleResponse -> candleResponse.toSellOrderParameter(OrderSide.SELL, assetResponses.getBalanceByMarket(candleResponse.getMarket()), orderType))
+                .map(candleResponse -> candleResponse.toBuyOrderParameter(orderType))
                 .collect(Collectors.toList())
         );
     }

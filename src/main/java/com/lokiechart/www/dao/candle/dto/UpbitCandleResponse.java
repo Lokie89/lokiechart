@@ -95,20 +95,12 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     private double rsi;
 
     @Override
-    public OrderParameter toBuyOrderParameter(OrderSide orderSide, Integer totalCost, OrderType orderType) {
-        Double buyVolume = totalCost / tradePrice;
-        Double buyTradePrice = tradePrice;
-        if (orderType.equals(OrderType.DOWNERMARKET)) {
-            buyTradePrice = null;
-        }
-        if (orderType.equals(OrderType.UPPERMARKET)) {
-            buyVolume = null;
-        }
-        return UpbitOrderParameter.builder().market(market).side(orderSide).price(buyTradePrice).volume(buyVolume).orderType(orderType).build();
+    public OrderParameter toBuyOrderParameter(OrderType orderType) {
+        return UpbitOrderParameter.builder().market(market).side(OrderSide.BUY).price(tradePrice).orderType(orderType).build();
     }
 
     @Override
-    public OrderParameter toSellOrderParameter(OrderSide orderSide, Double volume, OrderType orderType) {
+    public OrderParameter toSellOrderParameter(Double volume, OrderType orderType) {
         Double sellTradePrice = tradePrice;
         if (isPowerfulTicker()) {
             orderType = OrderType.DOWNERMARKET;
@@ -119,7 +111,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
         if (orderType.equals(OrderType.UPPERMARKET)) {
             volume = null;
         }
-        return UpbitOrderParameter.builder().market(market).side(orderSide).price(sellTradePrice).volume(volume).orderType(orderType).build();
+        return UpbitOrderParameter.builder().market(market).side(OrderSide.SELL).price(sellTradePrice).volume(volume).orderType(orderType).build();
     }
 
     @Override

@@ -1,26 +1,35 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.order.dto.OrderParameters;
+import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.service.account.AccountService;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.order.OrderService;
-import com.lokiechart.www.service.order.dto.OrderDetail;
+import com.lokiechart.www.service.order.dto.OrderStrategyCandleTime;
+import com.lokiechart.www.service.strategy.AccountStrategyService;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author SeongRok.Oh
  * @since 2021/04/21
+ */
+
+/**
+ * 1. AccountStrategy 가져옴
+ * 2. AccountStrategy 와 CandleMinute 에 맞는 OrderParameters 추출, 캐시
+ * 3. AccountStrategy 가 동일한 계정은 캐시된 OrderParameters 로 주문
  */
 @Slf4j
 @Component
@@ -29,29 +38,20 @@ public class UpbitOrderBatch {
     private final AccountService accountService;
     private final AssetService upbitAssetService;
     private final OrderService upbitOrderService;
-    private final Map<CandleMinute, Set<AccountResponse>> accountStrategy = new ConcurrentHashMap<>();
+    private final AccountStrategyService upbitAccountStrategyService;
+    private AccountStrategyResponses accountStrategyResponses;
 
-    public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService, AssetService upbitAssetService) {
+    public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService, AssetService upbitAssetService,
+                           AccountStrategyService upbitAccountStrategyService) {
         this.accountService = accountService;
         this.upbitOrderService = upbitOrderService;
         this.upbitAssetService = upbitAssetService;
+        this.upbitAccountStrategyService = upbitAccountStrategyService;
         init();
     }
 
     private void init() {
         updateAccountStrategy();
-    }
-
-    @Scheduled(cron = "${schedule.order.one-day}")
-    private void updateAccountStrategy() {
-        logger.info("UPDATE MAP STRATEGY WITH ACCOUNT LIST : " + LocalDateTime.now());
-        for (CandleMinute candleMinute : CandleMinute.values()) {
-            Set<AccountResponse> accountResponses = accountService.getAccountsByCandleMinute(candleMinute);
-            if (Objects.isNull(accountResponses) || accountResponses.isEmpty()) {
-                continue;
-            }
-            accountStrategy.put(candleMinute, accountResponses);
-        }
     }
 
     @Scheduled(cron = "${schedule.order.one-minute}")
@@ -90,11 +90,26 @@ public class UpbitOrderBatch {
         orderBuyTradeStrategy(candleMinute);
     }
 
+    private final Map<OrderStrategyCandleTime, OrderParameters> cache = new ConcurrentHashMap<>();
+
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
-        Set<AccountResponse> accounts = accountStrategy.get(candleMinute);
-        if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
-            logger.info("ORDER BUY " + candleMinute.name().toUpperCase() + " MINUTES TRADE STRATEGY");
-            accounts.forEach(accountResponse -> upbitOrderService.buyByAccount(accountResponse, candleMinute, upbitAssetService.getAssets(accountResponse)));
+        AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
+        if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
+            // TODO : 이부분 자동 캐시로 구현할 수 있는 프레임 워크가 분명히 있을 것 이다. 나중에 찾아 볼것
+            filterBuyCandleMinuteResponses.getOrderStrategies().forEach(orderStrategies -> {
+                OrderParameters matchedOrderParameters = orderStrategies.getMatchedOrderParameters();
+                cache.put(new OrderStrategyCandleTime(orderStrategies), matchedOrderParameters);
+            });
+
+            for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
+                OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
+                OrderParameters matchParameters = cache.get(candleTime);
+                if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
+                    continue;
+                }
+                OrderParameters filterAccountOrderParameters = matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
+                upbitOrderService.buyByAccount(accountStrategyResponse, filterAccountOrderParameters);
+            }
         }
     }
 
@@ -114,5 +129,11 @@ public class UpbitOrderBatch {
             logger.info("ORDER CANCEL");
             accounts.forEach(accountResponse -> upbitOrderService.cancelNotProcess(accountResponse, upbitOrderService.getOrderDetails(accountResponse)));
         }
+    }
+
+    @Scheduled(cron = "${schedule.order.one-day}")
+    private void updateAccountStrategy() {
+        logger.info("UPDATE ACCOUNT STRATEGY LIST");
+        accountStrategyResponses = upbitAccountStrategyService.getAll();
     }
 }

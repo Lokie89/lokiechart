@@ -36,6 +36,5 @@ class AssetResponsesTest {
         candleResponses.setUnderBollingerBands(5);
         CandleResponse candleResponse = candleResponses.getCandleResponses().getRecent(0);
 
-        Assertions.assertFalse(assetResponses.isAlreadyOwnAndNotCheapEnough(candleResponse, 10));
     }
 }

@@ -1,11 +1,11 @@
 package com.lokiechart.www.domain.account;
 
-import com.lokiechart.www.batch.CandleMinute;
-import com.lokiechart.www.batch.OrderStrategy;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author SeongRok.Oh
@@ -16,8 +16,6 @@ import java.util.Set;
 @Getter
 public class Account {
     private String email;
-    private Set<OrderStrategy> buyTradeStrategies;
-    private Set<OrderStrategy> sellTradeStrategies;
     private List<String> excludeMarket;
     private List<String> decidedMarket;
     private int totalSeed;
@@ -25,14 +23,13 @@ public class Account {
     private int totalTradeCount;
     private boolean buyFlag;
     private boolean sellFlag;
+    private double scaleTradingPercent;
+    private double incomePercent;
 
     @Builder
-    public Account(String email, Set<OrderStrategy> buyTradeStrategies, Set<OrderStrategy> sellTradeStrategies,
-                   List<String> excludeMarket, List<String> decidedMarket, int totalSeed, int maxBuyMarket,
-                   int totalTradeCount, boolean buyFlag, boolean sellFlag) {
+    public Account(String email, List<String> excludeMarket, List<String> decidedMarket, int totalSeed, int maxBuyMarket,
+                   int totalTradeCount, boolean buyFlag, boolean sellFlag, double scaleTradingPercent, double incomePercent) {
         this.email = email;
-        this.buyTradeStrategies = buyTradeStrategies;
-        this.sellTradeStrategies = sellTradeStrategies;
         this.excludeMarket = excludeMarket;
         this.decidedMarket = decidedMarket;
         this.totalSeed = totalSeed;
@@ -40,10 +37,8 @@ public class Account {
         this.totalTradeCount = totalTradeCount == 0 ? 3 : totalTradeCount;
         this.buyFlag = buyFlag;
         this.sellFlag = sellFlag;
+        this.scaleTradingPercent = scaleTradingPercent;
+        this.incomePercent = incomePercent;
     }
 
-    public boolean haveOrderStrategyByCandleMinute(CandleMinute candleMinute) {
-        return buyTradeStrategies.stream()
-                .anyMatch(orderStrategy -> orderStrategy.getCandleMinute().equals(candleMinute));
-    }
 }

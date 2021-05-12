@@ -1,5 +1,7 @@
 package com.lokiechart.www.dao.order.dto;
 
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
+
 import java.util.Map;
 
 /**
@@ -11,4 +13,6 @@ public interface OrderParameter {
     String getMarket();
     Double getPrice();
     String toLog();
+    void setOrderParams(final int onceInvestKRW);
+    boolean isAlreadyOwnAndNotCheapEnough(AssetResponses assetResponses, double scaleTradingPercent);
 }

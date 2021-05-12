@@ -1,6 +1,5 @@
 package com.lokiechart.www.service.order;
 
-import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.common.ThreadSleep;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponse;
@@ -12,6 +11,7 @@ import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import com.lokiechart.www.service.asset.UpbitAssetService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
 import com.lokiechart.www.service.order.dto.OrderDetails;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.ticker.TickerService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,10 +35,13 @@ public class UpbitOrderService implements OrderService {
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderService.class);
 
     @Override
-    public void buyByAccount(AccountResponse accountResponse, final CandleMinute candleMinute, final AssetResponses assetResponses) {
-        OrderParameters matchMarkets = accountResponse.findBuyStrategically(candleMinute, assetResponses);
-        matchMarkets.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
-        for (OrderParameter parameter : matchMarkets) {
+    public void buyByAccount(final AccountStrategyResponse accountStrategyResponse, final OrderParameters matchParameters) {
+        if (Objects.isNull(accountStrategyResponse)) {
+            return;
+        }
+        AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
+        OrderParameters filterAlreadyOrderedParameters = matchParameters.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
+        for (OrderParameter parameter : filterAlreadyOrderedParameters) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
             ThreadSleep.doSleep(125);
@@ -48,8 +51,8 @@ public class UpbitOrderService implements OrderService {
     @Override
     public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
         OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
-        matchMarkets.filterAlreadySellOrdered(getOrderDetails(accountResponse));
-        for (OrderParameter parameter : matchMarkets) {
+        OrderParameters alreadySellOrderedParameters = matchMarkets.filterAlreadySellOrdered(getOrderDetails(accountResponse));
+        for (OrderParameter parameter : alreadySellOrderedParameters) {
             logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
             ThreadSleep.doSleep(125);
