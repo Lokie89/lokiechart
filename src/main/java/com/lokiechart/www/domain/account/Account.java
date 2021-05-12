@@ -23,10 +23,12 @@ public class Account {
     private int totalTradeCount;
     private boolean buyFlag;
     private boolean sellFlag;
+    private double scaleTradingPercent;
+    private double incomePercent;
 
     @Builder
     public Account(String email, List<String> excludeMarket, List<String> decidedMarket, int totalSeed, int maxBuyMarket,
-                   int totalTradeCount, boolean buyFlag, boolean sellFlag) {
+                   int totalTradeCount, boolean buyFlag, boolean sellFlag, double scaleTradingPercent, double incomePercent) {
         this.email = email;
         this.excludeMarket = excludeMarket;
         this.decidedMarket = decidedMarket;
@@ -35,6 +37,8 @@ public class Account {
         this.totalTradeCount = totalTradeCount == 0 ? 3 : totalTradeCount;
         this.buyFlag = buyFlag;
         this.sellFlag = sellFlag;
+        this.scaleTradingPercent = scaleTradingPercent;
+        this.incomePercent = incomePercent;
     }
 
 }

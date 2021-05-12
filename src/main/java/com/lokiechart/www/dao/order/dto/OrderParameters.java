@@ -1,13 +1,20 @@
 package com.lokiechart.www.dao.order.dto;
 
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.service.order.dto.OrderDetails;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -18,14 +25,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 public class OrderParameters implements Iterable<OrderParameter> {
+    private final Logger logger = LoggerFactory.getLogger(OrderParameters.class);
     private List<OrderParameter> orderParameters;
 
     public void exclude(List<String> excludeMarkets) {
         orderParameters = orderParameters.stream().filter(parameter -> !excludeMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
     }
 
-    public void filterMarkets(List<String> decidedMarkets) {
-        orderParameters = orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
+    public OrderParameters filterMarkets(List<String> decidedMarkets) {
+        return new OrderParameters(orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList()));
     }
 
     public void filterAlreadyBuyOrdered(OrderDetails orderDetails) {
@@ -55,6 +63,10 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return orderParameters.isEmpty();
     }
 
+    public void filter(Predicate<OrderParameter> predicate) {
+        this.orderParameters = this.orderParameters.stream().filter(predicate).collect(Collectors.toList());
+    }
+
     public int size() {
         return orderParameters.size();
     }
@@ -74,4 +86,45 @@ public class OrderParameters implements Iterable<OrderParameter> {
         }
         orderParameters = orderParameters.stream().filter(match -> other.orderParameters.contains(match)).collect(Collectors.toList());
     }
+
+    // TODO : 물타는 전략 : 최근 매수 * 2
+    public OrderParameters filterByAccount(AccountStrategyResponse accountStrategyResponse, AssetResponses assetResponses) {
+
+        AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
+        if (!accountResponse.isBuyFlag()) {
+            return new OrderParameters(Collections.emptyList());
+        }
+        final double scaleTradingPercent = accountResponse.getScaleTradingPercent();
+
+        this.orderParameters = this.orderParameters.stream().filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent)).collect(Collectors.toList());
+
+        final int totalSeed = accountResponse.getTotalSeed();
+        final int totalTradeCount = accountResponse.getTotalTradeCount();
+        final int maxBuyMarket = accountResponse.getMaxBuyMarket();
+        final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
+        final int onceInvestKRW = investSeed / totalTradeCount / maxBuyMarket;
+
+        this.orderParameters.forEach(orderParameter -> orderParameter.setOrderParams(onceInvestKRW));
+
+        final List<String> decidedMarket = accountResponse.getDecidedMarket();
+
+        if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
+            return filterMarkets(decidedMarket);
+        }
+
+        final int alreadyExistAndPlusSize = assetResponses.existAssetSize() + size();
+        if (alreadyExistAndPlusSize > maxBuyMarket) {
+            logger.warn(accountResponse.getEmail() + " " + maxBuyMarket + " 자산 수에 가득 참");
+            filterAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
+        }
+
+        final List<String> excludeMarket = accountResponse.getExcludeMarket();
+        if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
+            exclude(excludeMarket);
+        }
+        final double remainBaseCurrency = assetResponses.getBaseCurrency() == null ? 0 : assetResponses.getBaseCurrency();
+        final int possiblePurchaseCount = (int) (remainBaseCurrency / onceInvestKRW);
+        return copy(0, Integer.min(size(), possiblePurchaseCount));
+    }
+
 }

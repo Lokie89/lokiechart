@@ -31,7 +31,8 @@ public class AccountResponse {
     private int totalTradeCount;
     private boolean buyFlag;
     private boolean sellFlag;
-
+    private double scaleTradingPercent;
+    private double incomePercent;
 
     public OrderParameters findSellStrategically(final AssetResponses assetResponses) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
@@ -47,8 +48,7 @@ public class AccountResponse {
         }
 
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
-            matchedOrderParameters.filterMarkets(decidedMarket);
-            return matchedOrderParameters;
+            return matchedOrderParameters.filterMarkets(decidedMarket);
         }
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
             matchedOrderParameters.exclude(excludeMarket);

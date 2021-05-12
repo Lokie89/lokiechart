@@ -1,6 +1,8 @@
 package com.lokiechart.www.service.strategy.dto;
 
 import com.lokiechart.www.batch.CandleMinute;
+import com.lokiechart.www.batch.OrderStrategies;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.ToString;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +46,10 @@ public class AccountStrategyResponses implements Iterable<AccountStrategyRespons
 
     public boolean isEmpty() {
         return accountStrategyResponses.isEmpty();
+    }
+
+    public Set<OrderStrategies> getOrderStrategies(){
+        return accountStrategyResponses.stream().map(AccountStrategyResponse::getOrderStrategies).collect(Collectors.toSet());
     }
 
     @Override

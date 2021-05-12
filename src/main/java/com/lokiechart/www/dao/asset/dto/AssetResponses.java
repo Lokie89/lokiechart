@@ -1,6 +1,5 @@
 package com.lokiechart.www.dao.asset.dto;
 
-import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author SeongRok.Oh
@@ -18,13 +18,8 @@ import java.util.stream.Collectors;
 public class AssetResponses implements Iterable<AssetResponse> {
     private final List<AssetResponse> assetResponses;
 
-    public boolean isAlreadyOwnAndNotCheapEnough(CandleResponse candleResponse, final double scaleTradingPercent) {
-        return assetResponses.stream()
-                .anyMatch(assetResponse ->
-                        assetResponse.isSameMarket(candleResponse.getMarket())
-                                && assetResponse.isExistTotalBalance()
-                                && assetResponse.avgBuyPricePercent(candleResponse.getTradePrice()) > scaleTradingPercent * -1)
-                ;
+    public Stream<AssetResponse> stream() {
+        return assetResponses.stream();
     }
 
     @Override
@@ -76,7 +71,7 @@ public class AssetResponses implements Iterable<AssetResponse> {
                 }).collect(Collectors.toList()));
     }
 
-    public Double getBaseCurrency(){
+    public Double getBaseCurrency() {
         return assetResponses.stream().filter(AssetResponse::isBaseCurrency).findFirst().map(AssetResponse::getBalance).orElse(null);
     }
 }

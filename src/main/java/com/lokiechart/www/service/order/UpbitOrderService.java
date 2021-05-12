@@ -11,7 +11,6 @@ import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import com.lokiechart.www.service.asset.UpbitAssetService;
 import com.lokiechart.www.service.order.dto.OrderDetail;
 import com.lokiechart.www.service.order.dto.OrderDetails;
-import com.lokiechart.www.service.order.dto.OrderStrategyCandleTime;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.ticker.TickerService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author SeongRok.Oh
@@ -37,19 +34,14 @@ public class UpbitOrderService implements OrderService {
     private final TickerService upbitTickerService;
     private final Logger logger = LoggerFactory.getLogger(UpbitOrderService.class);
 
-    // TODO : 캐쉬 구현 해볼것
-    private final static Map<OrderStrategyCandleTime, OrderParameters> strategyCache = new ConcurrentHashMap<>();
-
     @Override
-    public void buyByAccount(final AccountStrategyResponse accountStrategyResponse, final AssetResponses assetResponses) {
+    public void buyByAccount(final AccountStrategyResponse accountStrategyResponse, final OrderParameters matchParameters) {
         if (Objects.isNull(accountStrategyResponse)) {
             return;
         }
         AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
-//        OrderStrategyCandleTime orderStrategyCandleTime = accountStrategyResponse.toOrderStrategyCandleTime();
-        OrderParameters matchMarkets = accountStrategyResponse.findBuyStrategically(assetResponses);
-        matchMarkets.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
-        for (OrderParameter parameter : matchMarkets) {
+        matchParameters.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
+        for (OrderParameter parameter : matchParameters) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
             ThreadSleep.doSleep(125);

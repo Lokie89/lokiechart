@@ -2,6 +2,7 @@ package com.lokiechart.www.dao.order.dto;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.exception.order.NotEnoughTotalCostException;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -79,6 +80,20 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
         }
     }
 
+    @Override
+    public void setOrderParams(int onceInvestKRW) {
+        Double buyVolume = onceInvestKRW / price;
+        Double buyTradePrice = price;
+        if (orderType.equals(OrderType.DOWNERMARKET)) {
+            buyTradePrice = null;
+        }
+        if (orderType.equals(OrderType.UPPERMARKET)) {
+            buyVolume = null;
+        }
+        this.price = buyTradePrice;
+        this.volume = buyVolume;
+    }
+
     private boolean enoughTotalCost(double totalCost) {
         return totalCost >= 5000;
     }
@@ -86,5 +101,13 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
     @Override
     public String toLog() {
         return market + " " + side.name() + " " + volume + " " + price + " " + orderType.name();
+    }
+
+    @Override
+    public boolean isAlreadyOwnAndNotCheapEnough(AssetResponses assetResponses, double scaleTradingPercent) {
+        return assetResponses.stream().anyMatch(assetResponse ->
+                assetResponse.isSameMarket(market)
+                        && assetResponse.isExistTotalBalance()
+                        && assetResponse.avgBuyPricePercent(price) > scaleTradingPercent * -1);
     }
 }

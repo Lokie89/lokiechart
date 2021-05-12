@@ -1,20 +1,19 @@
 package com.lokiechart.www.service.order.dto;
 
-import com.lokiechart.www.batch.OrderStrategy;
+import com.lokiechart.www.batch.OrderStrategies;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @EqualsAndHashCode
 @Getter
 public class OrderStrategyCandleTime {
     private LocalDateTime localDateTime;
-    private Set<OrderStrategy> orderStrategy;
+    private OrderStrategies orderStrategies;
 
-    public OrderStrategyCandleTime(Set<OrderStrategy> orderStrategy) {
+    public OrderStrategyCandleTime(OrderStrategies orderStrategies) {
         this.localDateTime = LocalDateTime.now().withSecond(0);
-        this.orderStrategy = orderStrategy;
+        this.orderStrategies = orderStrategies;
     }
 }

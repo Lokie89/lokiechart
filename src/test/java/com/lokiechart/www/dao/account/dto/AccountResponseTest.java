@@ -1,6 +1,5 @@
 package com.lokiechart.www.dao.account.dto;
 
-import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.domain.account.Account;
 import com.lokiechart.www.domain.strategy.AccountStrategy;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
@@ -37,7 +36,6 @@ class AccountResponseTest {
         Account account = Account.builder().maxBuyMarket(5).buyFlag(false).build();
         AccountStrategy accountStrategy = AccountStrategy.builder().account(account).build();
         AccountStrategyResponse accountStrategyResponse = modelMapper.map(accountStrategy, AccountStrategyResponse.class);
-        accountStrategyResponse.findBuyStrategically(null);
     }
 
 }

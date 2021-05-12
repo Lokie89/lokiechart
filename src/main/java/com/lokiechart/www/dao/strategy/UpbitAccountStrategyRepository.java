@@ -47,8 +47,6 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             = OrderStrategy.builder()
             .tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE)
             .candleMinute(CandleMinute.THREE)
-            .incomePercent(1)
-            .scaleTradingPercent(8)
             .orderType(OrderType.LIMIT)
             .build();
 
@@ -57,8 +55,6 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             = OrderStrategy.builder()
             .tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS)
             .candleMinute(CandleMinute.FIVE)
-            .incomePercent(1)
-            .scaleTradingPercent(8)
             .orderType(OrderType.LIMIT)
             .build();
 

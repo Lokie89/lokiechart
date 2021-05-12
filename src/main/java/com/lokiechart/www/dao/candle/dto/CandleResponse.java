@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
  * @since 2021/04/19
  */
 public interface CandleResponse {
-    OrderParameter toBuyOrderParameter(OrderSide orderSide, Integer totalCost, OrderType orderType);
-    OrderParameter toSellOrderParameter(OrderSide orderSide, Double volume, OrderType orderType);
+    OrderParameter toBuyOrderParameter(OrderType orderType);
+    OrderParameter toSellOrderParameter(Double volume, OrderType orderType);
     Double compareVolumePercentage(CandleResponse compare);
     Double compareTradePricePercentage(CandleResponse compare);
     Double compareUnderBollingerBands();

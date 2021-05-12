@@ -59,7 +59,7 @@ class UpbitOrderServiceTest {
         }
         AccountResponse accountResponse = AccountResponse.builder().email("tjdfhrdk10@naver.com").build();
         AccountStrategyResponse accountStrategyResponse = AccountStrategyResponse.builder().accountResponse(accountResponse).build();
-        upbitOrderService.buyByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountResponse));
+//        upbitOrderService.buyByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountResponse));
     }
 
     @DisplayName("미체결 매수 매도 가져오기")
