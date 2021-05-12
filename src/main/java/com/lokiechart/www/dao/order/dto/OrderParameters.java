@@ -105,7 +105,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
 
     // TODO : 물타는 전략 : 최근 매수 * 2
     public OrderParameters filterByAccount(AccountStrategyResponse accountStrategyResponse, AssetResponses assetResponses) {
-
+        OrderParameters matchedOrderAccount = new OrderParameters(this.orderParameters);
         AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
         if (!accountResponse.isBuyFlag()) {
             return new OrderParameters(Collections.emptyList());
@@ -119,8 +119,8 @@ public class OrderParameters implements Iterable<OrderParameter> {
         final int investSeed = totalSeed == 0 ? assetResponses.getTotalSeed() : totalSeed;
         final int onceInvestKRW = investSeed / totalTradeCount / maxBuyMarket;
 
-        this.orderParameters.forEach(orderParameter -> orderParameter.setOrderParams(onceInvestKRW));
-        this.orderParameters = this.orderParameters.stream().filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent)).collect(Collectors.toList());
+        matchedOrderAccount.forEach(orderParameter -> orderParameter.setOrderParams(onceInvestKRW));
+        matchedOrderAccount.orderParameters = matchedOrderAccount.orderParameters.stream().filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent)).collect(Collectors.toList());
 
         final List<String> decidedMarket = accountResponse.getDecidedMarket();
 
@@ -130,7 +130,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
 
         final int alreadyExistAndPlusSize = assetResponses.existAssetSize() + size();
         if (alreadyExistAndPlusSize > maxBuyMarket) {
-            logger.warn(accountResponse.getEmail() + " " + maxBuyMarket + " 자산 수에 가득 참");
+            logger.warn(accountResponse.getEmail() + " " + maxBuyMarket + " 자산 수에 가득 참" + matchedOrderAccount.orderParameters.stream().map(OrderParameter::getMarket).collect(Collectors.toList()));
             dropAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
         }
 
@@ -140,7 +140,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         }
         final double remainBaseCurrency = assetResponses.getBaseCurrency() == null ? 0 : assetResponses.getBaseCurrency();
         final int possiblePurchaseCount = (int) (remainBaseCurrency / onceInvestKRW);
-        return copy(0, Integer.min(size(), possiblePurchaseCount));
+        return matchedOrderAccount.copy(0, Integer.min(size(), possiblePurchaseCount));
     }
 
 }
