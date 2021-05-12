@@ -12,7 +12,7 @@ import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
  */
 public interface OrderService {
     void buyByAccount(AccountStrategyResponse accountStrategyResponse, final OrderParameters matchParameters);
-    void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses);
+    void sellByAccount(AccountStrategyResponse accountStrategyResponse, final AssetResponses assetResponses);
     OrderDetails getOrderDetails(AccountResponse accountResponse);
     void cancelNotProcess(AccountResponse accountResponse, OrderDetails orderDetails);
     void sellAssetByAccount(AccountResponse accountResponse, Double profitPercent);

@@ -35,7 +35,7 @@ public class OrderStrategy {
     private final CandleMinute candleMinute;
     private final OrderType orderType;
 
-    public OrderParameters matchSell(AssetResponses assetResponses) {
+    public OrderParameters matchSell(AssetResponses assetResponses, final double incomePercent) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (AssetResponse assetResponse : assetResponses) {
@@ -54,10 +54,10 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
-//            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
-//                logger.warn(matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
-//                continue;
-//            }
+            if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
+                logger.warn(matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
+                continue;
+            }
             matchedCandleResponses.add(matched);
         }
         return new OrderParameters(matchedCandleResponses.getCandleResponses()
@@ -75,7 +75,7 @@ public class OrderStrategy {
         return this.tradeStrategy.getOrderSide().equals(orderSide);
     }
 
-    public OrderParameters matchBuying(){
+    public OrderParameters matchBuying() {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (String key : liveCandles.keySet()) {

@@ -49,8 +49,9 @@ public class UpbitOrderService implements OrderService {
     }
 
     @Override
-    public void sellByAccount(AccountResponse accountResponse, final AssetResponses assetResponses) {
-        OrderParameters matchMarkets = accountResponse.findSellStrategically(assetResponses);
+    public void sellByAccount(final AccountStrategyResponse accountStrategyResponse, final AssetResponses assetResponses) {
+        AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
+        OrderParameters matchMarkets = accountStrategyResponse.findSellStrategically(assetResponses);
         OrderParameters alreadySellOrderedParameters = matchMarkets.filterAlreadySellOrdered(getOrderDetails(accountResponse));
         for (OrderParameter parameter : alreadySellOrderedParameters) {
             logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());

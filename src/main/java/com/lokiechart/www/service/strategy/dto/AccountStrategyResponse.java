@@ -28,14 +28,38 @@ public class AccountStrategyResponse {
     private AccountResponse accountResponse;
     private OrderStrategies orderStrategies;
 
-    public boolean filterByCandleMinute(CandleMinute candleMinute) {
+    public boolean isContainsCandleMinute(CandleMinute candleMinute) {
         return orderStrategies.stream()
                 .anyMatch(orderStrategy -> orderStrategy.equalsByCandleMinute(candleMinute));
     }
 
-    public boolean filterByOrderSide(OrderSide orderSide) {
+    public boolean isContainsOrderSide(OrderSide orderSide) {
         return orderStrategies.stream()
                 .anyMatch(orderStrategy -> orderStrategy.equalsByOrderSide(orderSide));
     }
 
+    public OrderParameters findSellStrategically(AssetResponses assetResponses) {
+        OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
+        if (!accountResponse.isSellFlag()) {
+            return matchedOrderParameters;
+        }
+
+        for (OrderStrategy orderStrategy : orderStrategies) {
+            matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses, accountResponse.getIncomePercent()));
+        }
+
+        if (matchedOrderParameters.isEmpty()) {
+            return matchedOrderParameters;
+        }
+
+        List<String> decidedMarket = accountResponse.getDecidedMarket();
+        if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
+            return matchedOrderParameters.filterMarkets(decidedMarket);
+        }
+        List<String> excludeMarket = accountResponse.getDecidedMarket();
+        if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
+            matchedOrderParameters.exclude(excludeMarket);
+        }
+        return matchedOrderParameters;
+    }
 }

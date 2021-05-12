@@ -2,7 +2,6 @@ package com.lokiechart.www.service.strategy.dto;
 
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategies;
-import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class AccountStrategyResponses implements Iterable<AccountStrategyRespons
     public AccountStrategyResponses filterCandleMinute(final CandleMinute candleMinute) {
         return new AccountStrategyResponses(
                 accountStrategyResponses.stream()
-                        .filter(accountStrategyResponse -> accountStrategyResponse.filterByCandleMinute(candleMinute))
+                        .filter(accountStrategyResponse -> accountStrategyResponse.isContainsCandleMinute(candleMinute))
                         .collect(Collectors.toList())
         );
     }
@@ -39,7 +38,7 @@ public class AccountStrategyResponses implements Iterable<AccountStrategyRespons
     public AccountStrategyResponses filterOrderSide(OrderSide orderSide) {
         return new AccountStrategyResponses(
                 accountStrategyResponses.stream()
-                        .filter(accountStrategyResponse -> accountStrategyResponse.filterByOrderSide(orderSide))
+                        .filter(accountStrategyResponse -> accountStrategyResponse.isContainsOrderSide(orderSide))
                         .collect(Collectors.toList())
         );
     }

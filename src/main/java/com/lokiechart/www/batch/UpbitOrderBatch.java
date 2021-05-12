@@ -96,10 +96,10 @@ public class UpbitOrderBatch {
         AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
         if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
             // TODO : 이부분 자동 캐시로 구현할 수 있는 프레임 워크가 분명히 있을 것 이다. 나중에 찾아 볼것
-            filterBuyCandleMinuteResponses.getOrderStrategies().forEach(orderStrategies -> {
-                OrderParameters matchedOrderParameters = orderStrategies.getMatchedOrderParameters();
-                cache.put(new OrderStrategyCandleTime(orderStrategies), matchedOrderParameters);
-            });
+            // TODO : 멀티 쓰레드
+            filterBuyCandleMinuteResponses.getOrderStrategies().forEach(orderStrategies ->
+                    cache.put(new OrderStrategyCandleTime(orderStrategies), orderStrategies.getMatchedOrderParameters())
+            );
 
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
                 OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
@@ -111,14 +111,16 @@ public class UpbitOrderBatch {
                 upbitOrderService.buyByAccount(accountStrategyResponse, filterAccountOrderParameters);
             }
         }
+
     }
 
     @Scheduled(cron = "${schedule.order.all-minute}")
     private void orderSellTradeStrategy() {
-        List<AccountResponse> accounts = accountService.getAll();
-        if (Objects.nonNull(accounts) && !accounts.isEmpty()) {
+        // TODO Response 의 메서드 분리
+        AccountStrategyResponses accountStrategyResponses = upbitAccountStrategyService.getAll();
+        if (Objects.nonNull(accountStrategyResponses) && !accountStrategyResponses.isEmpty()) {
             logger.info("ORDER SELL STRATEGY");
-            accounts.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse)));
+            accountStrategyResponses.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse.getAccountResponse())));
         }
     }
 

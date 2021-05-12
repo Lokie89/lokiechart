@@ -143,4 +143,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return matchedOrderAccount.copy(0, Integer.min(size(), possiblePurchaseCount));
     }
 
+    public void addAll(OrderParameters other) {
+        this.orderParameters.addAll(other.orderParameters);
+    }
 }
