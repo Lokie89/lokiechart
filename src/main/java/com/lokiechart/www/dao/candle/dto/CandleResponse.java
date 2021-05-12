@@ -30,4 +30,6 @@ public interface CandleResponse {
     void setAverageDown(double averageDown);
     double getAverageDown();
     double getChangePrice();
+    Double compareUnderMiddleBands();
+    Double compareOverMiddleBands();
 }

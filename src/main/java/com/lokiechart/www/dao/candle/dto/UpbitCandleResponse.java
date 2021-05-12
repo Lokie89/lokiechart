@@ -151,6 +151,22 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     }
 
     @Override
+    public Double compareOverMiddleBands() {
+        if (middleBands == 0) {
+            return null;
+        }
+        return (tradePrice - middleBands) / middleBands * 100;
+    }
+
+    @Override
+    public Double compareUnderMiddleBands() {
+        if (middleBands == 0) {
+            return null;
+        }
+        return (tradePrice - middleBands) / middleBands * 100;
+    }
+
+    @Override
     public void setBollingerBands(double middle, double deviation) {
         this.lowBollingerBands = middle - deviation * 2;
         this.middleBands = middle;
