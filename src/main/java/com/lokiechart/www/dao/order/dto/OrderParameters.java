@@ -28,20 +28,30 @@ public class OrderParameters implements Iterable<OrderParameter> {
     private final Logger logger = LoggerFactory.getLogger(OrderParameters.class);
     private List<OrderParameter> orderParameters;
 
-    public void exclude(List<String> excludeMarkets) {
-        orderParameters = orderParameters.stream().filter(parameter -> !excludeMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList());
+    public OrderParameters exclude(List<String> excludeMarkets) {
+        return new OrderParameters(
+                orderParameters.stream()
+                        .filter(parameter -> !excludeMarkets.contains(parameter.getMarket().replaceFirst("KRW-", "")))
+                        .collect(Collectors.toList())
+        );
     }
 
     public OrderParameters filterMarkets(List<String> decidedMarkets) {
-        return new OrderParameters(orderParameters.stream().filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", ""))).collect(Collectors.toList()));
+        return new OrderParameters(
+                orderParameters.stream()
+                        .filter(parameter -> decidedMarkets.contains(parameter.getMarket().replaceFirst("KRW-", "")))
+                        .collect(Collectors.toList())
+        );
     }
 
-    public void filterAlreadyBuyOrdered(OrderDetails orderDetails) {
-        orderParameters = orderParameters.stream().filter((match) -> orderDetails.getOrderDetails().stream().noneMatch(orderDetail -> orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))).collect(Collectors.toList());
-    }
-
-    public void addAll(OrderParameters orderParameters) {
-        this.orderParameters.addAll(orderParameters.orderParameters);
+    public OrderParameters filterAlreadyBuyOrdered(OrderDetails orderDetails) {
+        return new OrderParameters(
+                orderParameters.stream()
+                        .filter((match) -> orderDetails.getOrderDetails().stream()
+                                .noneMatch(orderDetail -> orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))
+                        )
+                        .collect(Collectors.toList())
+        );
     }
 
     @Override
@@ -49,30 +59,36 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return orderParameters.iterator();
     }
 
-    public void filterAlreadyOwnAndAddCount(AssetResponses assetResponses, int addCount) {
+    public void dropAlreadyOwnAndAddCount(AssetResponses assetResponses, int addCount) {
         List<OrderParameter> filterOwn = orderParameters.stream().filter(parameter -> assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList());
         if (orderParameters.size() - filterOwn.size() < addCount) {
             addCount = orderParameters.size() - filterOwn.size();
         }
         List<OrderParameter> copyAddCountNotOwn = orderParameters.stream().filter(parameter -> !assetResponses.containMarket(parameter.getMarket())).collect(Collectors.toList()).subList(0, addCount);
         filterOwn.addAll(copyAddCountNotOwn);
-        orderParameters = filterOwn;
+        this.orderParameters = filterOwn;
     }
 
     public boolean isEmpty() {
         return orderParameters.isEmpty();
     }
 
-    public void filter(Predicate<OrderParameter> predicate) {
-        this.orderParameters = this.orderParameters.stream().filter(predicate).collect(Collectors.toList());
+    public OrderParameters filter(Predicate<OrderParameter> predicate) {
+        return new OrderParameters(this.orderParameters.stream().filter(predicate).collect(Collectors.toList()));
     }
 
     public int size() {
         return orderParameters.size();
     }
 
-    public void filterAlreadySellOrdered(OrderDetails orderDetails) {
-        orderParameters = orderParameters.stream().filter((match) -> orderDetails.getOrderDetails().stream().noneMatch(orderDetail -> !orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))).collect(Collectors.toList());
+    public OrderParameters filterAlreadySellOrdered(OrderDetails orderDetails) {
+        return new OrderParameters(orderParameters.stream()
+                .filter((match) -> orderDetails.getOrderDetails()
+                        .stream()
+                        .noneMatch(orderDetail -> !orderDetail.isBuyingOrder() && orderDetail.isSameMarket(match.getMarket()))
+                )
+                .collect(Collectors.toList())
+        );
     }
 
     public OrderParameters copy(int startIndex, int endIndex) {
@@ -115,7 +131,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         final int alreadyExistAndPlusSize = assetResponses.existAssetSize() + size();
         if (alreadyExistAndPlusSize > maxBuyMarket) {
             logger.warn(accountResponse.getEmail() + " " + maxBuyMarket + " 자산 수에 가득 참");
-            filterAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
+            dropAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
         }
 
         final List<String> excludeMarket = accountResponse.getExcludeMarket();

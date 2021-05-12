@@ -71,7 +71,7 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
         this.side = side;
         this.volume = volume;
         this.price = price;
-        validateMinimumOrderCost();
+//        validateMinimumOrderCost();
     }
 
     private void validateMinimumOrderCost() {

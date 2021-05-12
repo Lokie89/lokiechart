@@ -2,6 +2,7 @@ package com.lokiechart.www.domain.strategy;
 
 import com.lokiechart.www.batch.OrderStrategies;
 import com.lokiechart.www.batch.OrderStrategy;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.domain.account.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +21,11 @@ import java.util.Set;
 @Getter
 public class AccountStrategy {
 
-    private Account account;
+    private AccountResponse accountResponse;
     private OrderStrategies orderStrategies;
 
-    private AccountStrategy(Account account, Set<OrderStrategy> orderStrategies) {
-        this.account = account;
+    private AccountStrategy(AccountResponse accountResponse, Set<OrderStrategy> orderStrategies) {
+        this.accountResponse = accountResponse;
         this.orderStrategies = new OrderStrategies(orderStrategies);
     }
 
@@ -33,11 +34,11 @@ public class AccountStrategy {
     }
 
     public static class Builder {
-        private Account account;
+        private AccountResponse accountResponse;
         private Set<OrderStrategy> orderStrategies;
 
-        public Builder account(final Account account) {
-            this.account = account;
+        public Builder accountResponse(final AccountResponse accountResponse) {
+            this.accountResponse = accountResponse;
             return this;
         }
 
@@ -52,7 +53,7 @@ public class AccountStrategy {
         }
 
         public AccountStrategy build() {
-            return new AccountStrategy(this.account, this.orderStrategies);
+            return new AccountStrategy(this.accountResponse, this.orderStrategies);
         }
     }
 }

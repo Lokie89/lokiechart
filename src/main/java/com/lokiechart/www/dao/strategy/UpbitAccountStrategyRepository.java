@@ -4,9 +4,11 @@ import com.lokiechart.www.batch.BuyTradeStrategy;
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.batch.SellTradeStrategy;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.domain.account.Account;
 import com.lokiechart.www.domain.strategy.AccountStrategy;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @Component
 public class UpbitAccountStrategyRepository implements AccountStrategyRepository {
+
 
     private final String[] excludeMarkets = {"BTC", "ETH", "XRP", "ADA", "DOGE", "DOT", "LTC", "BCH", "LINK", "VET", "XLM", "THETA", "TRX"};
 
@@ -58,20 +61,23 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .orderType(OrderType.LIMIT)
             .build();
 
-    private final AccountStrategy tjdfhrBuyAccountStrategy = AccountStrategy.builder().account(tjdfhr).orderStrategies(buyOrderStrategy).build();
-    private final AccountStrategy tjdfhrSellAccountStrategy = AccountStrategy.builder().account(tjdfhr).orderStrategies(sellOrderStrategy).build();
-
-    private final AccountStrategy tjdalsBuyAccountStrategy = AccountStrategy.builder().account(tjdals).orderStrategies(buyOrderStrategy).build();
-    private final AccountStrategy tjdalsSellAccountStrategy = AccountStrategy.builder().account(tjdals).orderStrategies(sellOrderStrategy).build();
-
     private final List<AccountStrategy> all = new ArrayList<>();
 
-    public UpbitAccountStrategyRepository() {
+    public UpbitAccountStrategyRepository(ModelMapper modelMapper) {
+        AccountResponse tjdfhrResponse = modelMapper.map(tjdfhr, AccountResponse.class);
+        AccountResponse tjdalsResponse = modelMapper.map(tjdals, AccountResponse.class);
+
+        final AccountStrategy tjdfhrBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(buyOrderStrategy).build();
+        final AccountStrategy tjdfhrSellAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(sellOrderStrategy).build();
+
+        final AccountStrategy tjdalsBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(buyOrderStrategy).build();
+        final AccountStrategy tjdalsSellAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(sellOrderStrategy).build();
         all.add(tjdfhrBuyAccountStrategy);
         all.add(tjdfhrSellAccountStrategy);
         all.add(tjdalsBuyAccountStrategy);
         all.add(tjdalsSellAccountStrategy);
     }
+
 
     public List<AccountStrategy> getAll() {
         return all;

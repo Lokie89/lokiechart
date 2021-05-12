@@ -35,7 +35,7 @@ class OrderParametersTest {
         OrderParameters orderParameters = new OrderParameters(orderParameterList);
 
 
-        orderParameters.filterAlreadyOwnAndAddCount(assetResponses,2);
+        orderParameters.dropAlreadyOwnAndAddCount(assetResponses,2);
 
         System.out.println(orderParameters.size());
     }

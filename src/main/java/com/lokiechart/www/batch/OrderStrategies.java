@@ -3,6 +3,7 @@ package com.lokiechart.www.batch;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
  * @author SeongRok.Oh
  * @since 2021/05/12
  */
+@ToString
 @EqualsAndHashCode
 @Getter
 public class OrderStrategies implements Iterable<OrderStrategy> {
@@ -50,7 +52,7 @@ public class OrderStrategies implements Iterable<OrderStrategy> {
     public OrderParameters getMatchedOrderParameters() {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         orderStrategies.forEach(orderStrategy -> matchedOrderParameters.intersect(orderStrategy.matchBuying()));
-        matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() > 65);
-        return matchedOrderParameters;
+        OrderParameters rsiOverParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() > 65);
+        return rsiOverParameters;
     }
 }

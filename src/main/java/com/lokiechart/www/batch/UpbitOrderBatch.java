@@ -8,6 +8,7 @@ import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.order.OrderService;
 import com.lokiechart.www.service.order.dto.OrderStrategyCandleTime;
 import com.lokiechart.www.service.strategy.AccountStrategyService;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class UpbitOrderBatch {
         this.upbitOrderService = upbitOrderService;
         this.upbitAssetService = upbitAssetService;
         this.upbitAccountStrategyService = upbitAccountStrategyService;
-//        init();
+        init();
     }
 
     private void init() {
@@ -94,18 +95,21 @@ public class UpbitOrderBatch {
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
         AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
         if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
-
             // TODO : 이부분 자동 캐시로 구현할 수 있는 프레임 워크가 분명히 있을 것 이다. 나중에 찾아 볼것
             filterBuyCandleMinuteResponses.getOrderStrategies().forEach(orderStrategies -> {
                 OrderParameters matchedOrderParameters = orderStrategies.getMatchedOrderParameters();
                 cache.put(new OrderStrategyCandleTime(orderStrategies), matchedOrderParameters);
             });
 
-            filterBuyCandleMinuteResponses.forEach(accountStrategyResponse -> {
-                OrderParameters matchParameters = cache.get(new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies()));
-                matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
-                upbitOrderService.buyByAccount(accountStrategyResponse, matchParameters);
-            });
+            for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
+                OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
+                OrderParameters matchParameters = cache.get(candleTime);
+                if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
+                    continue;
+                }
+                OrderParameters filterAccountOrderParameters = matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
+                upbitOrderService.buyByAccount(accountStrategyResponse, filterAccountOrderParameters);
+            }
         }
     }
 

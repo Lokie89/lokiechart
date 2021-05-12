@@ -33,8 +33,8 @@ class AccountResponseTest {
     @DisplayName("BuyFlag 로직 테스트")
     @Test
     void buyFlagTest() {
-        Account account = Account.builder().maxBuyMarket(5).buyFlag(false).build();
-        AccountStrategy accountStrategy = AccountStrategy.builder().account(account).build();
+        AccountResponse accountResponse = AccountResponse.builder().maxBuyMarket(5).buyFlag(false).build();
+        AccountStrategy accountStrategy = AccountStrategy.builder().accountResponse(accountResponse).build();
         AccountStrategyResponse accountStrategyResponse = modelMapper.map(accountStrategy, AccountStrategyResponse.class);
     }
 
