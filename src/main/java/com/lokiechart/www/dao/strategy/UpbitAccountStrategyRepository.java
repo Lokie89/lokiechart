@@ -33,6 +33,8 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .totalTradeCount(2)
             .buyFlag(true)
             .sellFlag(true)
+            .scaleTradingPercent(10)
+            .incomePercent(2)
             .excludeMarket(Arrays.asList(excludeMarkets))
             .build();
 
@@ -43,6 +45,8 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .totalTradeCount(2)
             .buyFlag(true)
             .sellFlag(true)
+            .scaleTradingPercent(10)
+            .incomePercent(2)
             .excludeMarket(Arrays.asList(excludeMarkets))
             .build();
 

@@ -96,7 +96,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
 
     @Override
     public OrderParameter toBuyOrderParameter(OrderType orderType) {
-        return UpbitOrderParameter.builder().market(market).side(OrderSide.BUY).orderType(orderType).build();
+        return UpbitOrderParameter.builder().market(market).side(OrderSide.BUY).price(tradePrice).orderType(orderType).build();
     }
 
     @Override

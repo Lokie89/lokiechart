@@ -52,7 +52,7 @@ public class OrderStrategies implements Iterable<OrderStrategy> {
     public OrderParameters getMatchedOrderParameters() {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         orderStrategies.forEach(orderStrategy -> matchedOrderParameters.intersect(orderStrategy.matchBuying()));
-        OrderParameters rsiOverParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() > 65);
-        return rsiOverParameters;
+        OrderParameters rsiUnderParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() < 65);
+        return rsiUnderParameters;
     }
 }

@@ -112,7 +112,6 @@ public class OrderParameters implements Iterable<OrderParameter> {
         }
         final double scaleTradingPercent = accountResponse.getScaleTradingPercent();
 
-        this.orderParameters = this.orderParameters.stream().filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent)).collect(Collectors.toList());
 
         final int totalSeed = accountResponse.getTotalSeed();
         final int totalTradeCount = accountResponse.getTotalTradeCount();
@@ -121,6 +120,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         final int onceInvestKRW = investSeed / totalTradeCount / maxBuyMarket;
 
         this.orderParameters.forEach(orderParameter -> orderParameter.setOrderParams(onceInvestKRW));
+        this.orderParameters = this.orderParameters.stream().filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent)).collect(Collectors.toList());
 
         final List<String> decidedMarket = accountResponse.getDecidedMarket();
 

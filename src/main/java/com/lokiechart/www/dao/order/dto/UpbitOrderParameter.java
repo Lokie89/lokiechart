@@ -104,7 +104,7 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
     }
 
     @Override
-    public boolean isAlreadyOwnAndNotCheapEnough(AssetResponses assetResponses, double scaleTradingPercent) {
+    public boolean isAlreadyOwnAndNotCheapEnough(AssetResponses assetResponses, final double scaleTradingPercent) {
         return assetResponses.stream().anyMatch(assetResponse ->
                 assetResponse.isSameMarket(market)
                         && assetResponse.isExistTotalBalance()
