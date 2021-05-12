@@ -1,5 +1,6 @@
 package com.lokiechart.www.domain.strategy;
 
+import com.lokiechart.www.batch.OrderStrategies;
 import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.domain.account.Account;
 import lombok.AllArgsConstructor;
@@ -20,14 +21,12 @@ import java.util.Set;
 public class AccountStrategy {
 
     private Account account;
-    //TODO : OrderStrategy 의 OrderType 이 다르면 안됨 validate
-    private Set<OrderStrategy> orderStrategies;
+    private OrderStrategies orderStrategies;
 
     private AccountStrategy(Account account, Set<OrderStrategy> orderStrategies) {
         this.account = account;
-        this.orderStrategies = orderStrategies;
+        this.orderStrategies = new OrderStrategies(orderStrategies);
     }
-
 
     public static Builder builder() {
         return new Builder();
