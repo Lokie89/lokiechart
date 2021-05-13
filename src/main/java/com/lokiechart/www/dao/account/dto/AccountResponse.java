@@ -29,5 +29,4 @@ public class AccountResponse {
     private boolean sellFlag;
     private double scaleTradingPercent;
     private double incomePercent;
-
 }
