@@ -10,10 +10,7 @@ import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -92,11 +89,11 @@ public class OrderParameters implements Iterable<OrderParameter> {
     }
 
     public OrderParameters copy(int startIndex, int endIndex) {
-        return new OrderParameters(orderParameters.subList(startIndex, endIndex));
+        return new OrderParameters(new ArrayList<>(orderParameters.subList(startIndex, endIndex)));
     }
 
     public OrderParameters copy() {
-        return new OrderParameters(orderParameters.subList(0, size()));
+        return new OrderParameters(new ArrayList<>(orderParameters));
     }
 
     public void intersect(OrderParameters other) {
