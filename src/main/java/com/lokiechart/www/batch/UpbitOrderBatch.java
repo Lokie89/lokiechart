@@ -103,7 +103,7 @@ public class UpbitOrderBatch {
 
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
                 OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
-                OrderParameters matchParameters = cache.get(candleTime);
+                OrderParameters matchParameters = cache.get(candleTime).copy();
                 if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
                     continue;
                 }
@@ -117,10 +117,10 @@ public class UpbitOrderBatch {
     @Scheduled(cron = "${schedule.order.all-minute}")
     private void orderSellTradeStrategy() {
         // TODO Response 의 메서드 분리
-        AccountStrategyResponses accountStrategyResponses = upbitAccountStrategyService.getAll();
-        if (Objects.nonNull(accountStrategyResponses) && !accountStrategyResponses.isEmpty()) {
+        AccountStrategyResponses filterSellResponses = accountStrategyResponses.filterOrderSide(OrderSide.SELL);
+        if (Objects.nonNull(filterSellResponses) && !filterSellResponses.isEmpty()) {
             logger.info("ORDER SELL STRATEGY");
-            accountStrategyResponses.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse.getAccountResponse())));
+            filterSellResponses.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse.getAccountResponse())));
         }
     }
 

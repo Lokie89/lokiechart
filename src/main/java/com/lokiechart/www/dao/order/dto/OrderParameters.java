@@ -95,6 +95,10 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return new OrderParameters(orderParameters.subList(startIndex, endIndex));
     }
 
+    public OrderParameters copy() {
+        return new OrderParameters(orderParameters.subList(0, size()));
+    }
+
     public void intersect(OrderParameters other) {
         if (orderParameters.isEmpty()) {
             orderParameters.addAll(other.orderParameters);
