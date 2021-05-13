@@ -3,6 +3,7 @@ package com.lokiechart.www.dao.order.dto;
 import com.lokiechart.www.dao.asset.dto.AssetResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.asset.dto.UpbitAssetResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,17 @@ import java.util.List;
  */
 @DisplayName("주문 파라미터 리스트 테스트")
 class OrderParametersTest {
+    OrderParameters orderParameters;
+    @BeforeEach
+    void setUp(){
+        List<OrderParameter> orderParameterList = new ArrayList<>();
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-BTC").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SC").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-XTZ").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-MTL").build());
+        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SOLVE").build());
+        orderParameters = new OrderParameters(orderParameterList);
+    }
 
     @DisplayName("자신이 가진 파라미터 놔두고 앞에서 원하는 개수만큼 필터링")
     @Test
@@ -24,16 +36,6 @@ class OrderParametersTest {
         assetResponseList.add(UpbitAssetResponse.builder().currency("BTC").unitCurrency("KRW").build());
         assetResponseList.add(UpbitAssetResponse.builder().currency("ENJ").unitCurrency("KRW").build());
         AssetResponses assetResponses = new AssetResponses(assetResponseList);
-
-
-        List<OrderParameter> orderParameterList = new ArrayList<>();
-        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-BTC").build());
-        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SC").build());
-        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-XTZ").build());
-        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-MTL").build());
-        orderParameterList.add(UpbitOrderParameter.builder().orderType(OrderType.LIMIT).side(OrderSide.BUY).volume(1.0).price(5001.0).market("KRW-SOLVE").build());
-        OrderParameters orderParameters = new OrderParameters(orderParameterList);
-
 
         orderParameters.dropAlreadyOwnAndAddCount(assetResponses,2);
 
@@ -64,4 +66,5 @@ class OrderParametersTest {
         System.out.println(orderParameters1);
 
     }
+
 }

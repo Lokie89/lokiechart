@@ -104,10 +104,12 @@ public class UpbitOrderBatch {
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
                 OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
                 OrderParameters matchParameters = cache.get(candleTime).copy();
+                logger.info("#### Match " + matchParameters);
                 if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
                     continue;
                 }
                 OrderParameters filterAccountOrderParameters = matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
+                logger.info("#### Filter " + filterAccountOrderParameters);
                 upbitOrderService.buyByAccount(accountStrategyResponse, filterAccountOrderParameters);
             }
         }

@@ -1,6 +1,7 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
+import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
@@ -35,7 +36,7 @@ public class OrderStrategy {
     private final CandleMinute candleMinute;
     private final OrderType orderType;
 
-    public OrderParameters matchSell(AssetResponses assetResponses, final double incomePercent) {
+    public OrderParameters matchSell(AssetResponses assetResponses, AccountResponse accountResponse) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
         CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
         for (AssetResponse assetResponse : assetResponses) {
@@ -54,8 +55,9 @@ public class OrderStrategy {
             if (Objects.isNull(matched)) {
                 continue;
             }
+            final double incomePercent = accountResponse.getIncomePercent();
             if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
-                logger.warn(matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
+                logger.warn(accountResponse.getEmail() + " " + matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
                 continue;
             }
             matchedCandleResponses.add(matched);

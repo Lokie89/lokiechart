@@ -45,7 +45,7 @@ public class AccountStrategyResponse {
         }
 
         for (OrderStrategy orderStrategy : orderStrategies) {
-            matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses, accountResponse.getIncomePercent()));
+            matchedOrderParameters.addAll(orderStrategy.matchSell(assetResponses, accountResponse));
         }
 
         if (matchedOrderParameters.isEmpty()) {
@@ -54,7 +54,8 @@ public class AccountStrategyResponse {
 
         List<String> decidedMarket = accountResponse.getDecidedMarket();
         if (Objects.nonNull(decidedMarket) && !decidedMarket.isEmpty()) {
-            return matchedOrderParameters.filterMarkets(decidedMarket);
+            matchedOrderParameters.filterMarkets(decidedMarket);
+            return matchedOrderParameters;
         }
         List<String> excludeMarket = accountResponse.getDecidedMarket();
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
