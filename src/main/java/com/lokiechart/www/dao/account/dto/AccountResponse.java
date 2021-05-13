@@ -66,12 +66,7 @@ public class AccountResponse {
         final int alreadyExistAndPlusSize = assetResponses.existAssetSize() + matchedOrderParameters.size();
         if (alreadyExistAndPlusSize > maxBuyMarket) {
             logger.warn(email + " " + maxBuyMarket + " 자산 수에 가득 참");
-            try {
-                matchedOrderParameters.filterAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
-            } catch (IllegalArgumentException e) {
-                logger.error(matchedOrderParameters.toString());
-                logger.error(assetResponses.toString());
-            }
+            matchedOrderParameters.filterAlreadyOwnAndAddCount(assetResponses, maxBuyMarket - assetResponses.existAssetSize());
         }
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
             matchedOrderParameters.exclude(excludeMarket);
