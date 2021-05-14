@@ -104,7 +104,9 @@ public class UpbitOrderBatch {
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
                 OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
                 OrderParameters matchParameters = cache.get(candleTime).copy();
-                logger.info("#### Match " + matchParameters);
+                if (!matchParameters.isEmpty()) {
+                    logger.warn("#### Match " + matchParameters);
+                }
                 if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
                     continue;
                 }
