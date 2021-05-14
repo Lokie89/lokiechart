@@ -112,7 +112,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
 
         final List<String> excludeMarket = accountResponse.getExcludeMarket();
         if (Objects.nonNull(excludeMarket) && !excludeMarket.isEmpty()) {
-            exclude(excludeMarket);
+            matchedOrderAccount.exclude(excludeMarket);
         }
 
         final int totalSeed = accountResponse.getTotalSeed();
