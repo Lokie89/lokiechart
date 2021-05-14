@@ -108,9 +108,9 @@ public class UpbitOrderBatch {
                     continue;
                 }
                 logger.warn("#### Match " + matchParameters);
-                OrderParameters filterAccountOrderParameters = matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
-                logger.info("#### Filter " + filterAccountOrderParameters);
-                upbitOrderService.buyByAccount(accountStrategyResponse, filterAccountOrderParameters);
+                matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
+                logger.info("#### Filter " + matchParameters);
+                upbitOrderService.buyByAccount(accountStrategyResponse, matchParameters);
             }
         }
 

@@ -40,8 +40,8 @@ public class UpbitOrderService implements OrderService {
             return;
         }
         AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
-        OrderParameters filterAlreadyOrderedParameters = matchParameters.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
-        for (OrderParameter parameter : filterAlreadyOrderedParameters) {
+        matchParameters.filterAlreadyBuyOrdered(getOrderDetails(accountResponse));
+        for (OrderParameter parameter : matchParameters) {
             logger.warn("ORDER BUY : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
             ThreadSleep.doSleep(125);
@@ -52,8 +52,8 @@ public class UpbitOrderService implements OrderService {
     public void sellByAccount(final AccountStrategyResponse accountStrategyResponse, final AssetResponses assetResponses) {
         AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
         OrderParameters matchMarkets = accountStrategyResponse.findSellStrategically(assetResponses);
-        OrderParameters alreadySellOrderedParameters = matchMarkets.filterAlreadySellOrdered(getOrderDetails(accountResponse));
-        for (OrderParameter parameter : alreadySellOrderedParameters) {
+        matchMarkets.filterAlreadySellOrdered(getOrderDetails(accountResponse));
+        for (OrderParameter parameter : matchMarkets) {
             logger.warn("ORDER SELL : " + accountResponse.getEmail() + " : " + parameter.toLog());
             upbitOrderRepository.order(accountResponse.getEmail(), parameter);
             ThreadSleep.doSleep(125);
