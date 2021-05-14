@@ -104,7 +104,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
 
     // TODO : 물타는 전략 : 최근 매수 * 2
     public OrderParameters filterByAccount(AccountStrategyResponse accountStrategyResponse, AssetResponses assetResponses) {
-        OrderParameters matchedOrderAccount = new OrderParameters(this.orderParameters);
+        OrderParameters matchedOrderAccount = new OrderParameters(new ArrayList<>(this.orderParameters));
         AccountResponse accountResponse = accountStrategyResponse.getAccountResponse();
         if (!accountResponse.isBuyFlag()) {
             return new OrderParameters(Collections.emptyList());
