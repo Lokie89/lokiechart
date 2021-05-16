@@ -35,7 +35,7 @@ import javax.validation.constraints.NotEmpty;
 @EqualsAndHashCode(of = "market", callSuper = false)
 @ToString
 @Getter
-public class UpbitOrderParameter extends AbstractOrderParameter implements Cloneable {
+public class UpbitOrderParameter extends AbstractOrderParameter {
 
     @NotEmpty
     private String market;
@@ -112,7 +112,8 @@ public class UpbitOrderParameter extends AbstractOrderParameter implements Clone
     }
 
     @Override
-    protected Object clone() {
+    public OrderParameter copy() {
         return new UpbitOrderParameter(this.market, this.side, this.volume, this.price, this.orderType);
     }
+
 }

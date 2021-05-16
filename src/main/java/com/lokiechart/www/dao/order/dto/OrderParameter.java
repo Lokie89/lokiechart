@@ -15,4 +15,5 @@ public interface OrderParameter {
     String toLog();
     void setOrderParams(final int onceInvestKRW);
     boolean isAlreadyOwnAndNotCheapEnough(AssetResponses assetResponses, double scaleTradingPercent);
+    OrderParameter copy();
 }
