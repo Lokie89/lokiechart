@@ -110,4 +110,9 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
                         && assetResponse.isExistTotalBalance()
                         && assetResponse.avgBuyPricePercent(price) > scaleTradingPercent * -1);
     }
+
+    @Override
+    protected Object clone() {
+        return new UpbitOrderParameter(this.market, this.side, this.volume, this.price, this.orderType);
+    }
 }
