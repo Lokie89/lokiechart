@@ -11,16 +11,16 @@ import java.util.concurrent.Executor;
  * @author SeongRok.Oh
  * @since 2021/05/16
  */
-@Configuration
-@EnableAsync
+//@Configuration
+//@EnableAsync
 public class AsyncConfig {
-    @Bean
-    public Executor cacheExecutor(){
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(2);
-        taskExecutor.setMaxPoolSize(Runtime.getRuntime().availableProcessors());
-        taskExecutor.initialize();
-        return taskExecutor;
-    }
+//    @Bean
+//    public Executor cacheExecutor(){
+//        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+//        taskExecutor.setCorePoolSize(2);
+//        taskExecutor.setMaxPoolSize(Runtime.getRuntime().availableProcessors());
+//        taskExecutor.initialize();
+//        return taskExecutor;
+//    }
 
 }
