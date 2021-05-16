@@ -52,7 +52,7 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
 
     private final OrderStrategy buyOrderStrategy
             = OrderStrategy.builder()
-            .tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE)
+            .tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE)
             .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
             .build();
