@@ -146,101 +146,60 @@ public class UpbitCandlesBatch {
 
     @Scheduled(cron = "${schedule.candle.one-minute}")
     private void updateUpbitOneMinuteCandles() {
-        logger.info("Scheduling UPBIT 1 MINUTES CANDLES UPDATE");
-        upbitMarket.forEach(marketResponse -> {
-            String market = marketResponse.getMarket();
-            CandleResponses origin = upbitOneMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 1);
-            CandleResponses responses = upbitCandleService.get1MinuteCandles(market, onceCallGetCount);
-            origin.addAll(responses);
-            origin.setUnderBollingerBands(onceCallGetCount);
-            ThreadSleep.doSleep(300);
-        });
-        logger.info("1 MINUTE SIZE " + upbitOneMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        updateUpbitMinuteCandles(CandleMinute.ONE, 300);
     }
 
     @Scheduled(cron = "${schedule.candle.three-minutes}")
     private void updateUpbitThreeMinuteCandles() {
-        logger.info("Scheduling UPBIT 3 MINUTES CANDLES UPDATE");
-        upbitMarket.forEach(marketResponse -> {
-            String market = marketResponse.getMarket();
-            CandleResponses origin = upbitThreeMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 3);
-            CandleResponses responses = upbitCandleService.get3MinutesCandles(market, onceCallGetCount);
-            origin.addAll(responses);
-            origin.setUnderBollingerBands(onceCallGetCount);
-            ThreadSleep.doSleep(600);
-        });
-        logger.info("3 MINUTES SIZE " + upbitThreeMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        updateUpbitMinuteCandles(CandleMinute.THREE, 600);
     }
 
     @Scheduled(cron = "${schedule.candle.five-minutes}")
     private void updateUpbitFiveMinuteCandles() {
-        logger.info("Scheduling UPBIT 5 MINUTES CANDLES UPDATE");
-        upbitMarket.forEach(marketResponse -> {
-            String market = marketResponse.getMarket();
-            CandleResponses origin = upbitFiveMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 5);
-            CandleResponses responses = upbitCandleService.get5MinutesCandles(market, onceCallGetCount);
-            origin.addAll(responses);
-            origin.setUnderBollingerBands(onceCallGetCount);
-            ThreadSleep.doSleep(1000);
-        });
-        logger.info("5 MINUTES SIZE " + upbitFiveMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        updateUpbitMinuteCandles(CandleMinute.FIVE, 1000);
     }
 
     @Scheduled(cron = "${schedule.candle.fifteen-minutes}")
     private void updateUpbitFifteenMinuteCandles() {
-        logger.info("Scheduling UPBIT 15 MINUTES CANDLES UPDATE");
-        upbitMarket.forEach(marketResponse -> {
-            String market = marketResponse.getMarket();
-            CandleResponses origin = upbitFifteenMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 15);
-            CandleResponses responses = upbitCandleService.get15MinutesCandles(market, onceCallGetCount);
-            origin.addAll(responses);
-            origin.setUnderBollingerBands(onceCallGetCount);
-            ThreadSleep.doSleep(1000);
-        });
-        logger.info("15 MINUTES SIZE " + upbitFifteenMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        updateUpbitMinuteCandles(CandleMinute.FIFTEEN, 1000);
     }
 
     @Scheduled(cron = "${schedule.candle.thirty-minutes}")
     private void updateUpbitThirtyMinuteCandles() {
-        logger.info("Scheduling UPBIT 30 MINUTES CANDLES UPDATE");
-        upbitMarket.forEach(marketResponse -> {
-            String market = marketResponse.getMarket();
-            CandleResponses origin = upbitThirtyMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 30);
-            CandleResponses responses = upbitCandleService.get30MinutesCandles(market, onceCallGetCount);
-            origin.addAll(responses);
-            origin.setUnderBollingerBands(onceCallGetCount);
-            ThreadSleep.doSleep(1000);
-        });
-        logger.info("30 MINUTES SIZE " + upbitThirtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        updateUpbitMinuteCandles(CandleMinute.THIRTY, 1000);
     }
 
     @Scheduled(cron = "${schedule.candle.one-hour}")
     private void updateUpbitSixtyMinuteCandles() {
-        logger.info("Scheduling UPBIT 60 MINUTES CANDLES UPDATE");
+        updateUpbitMinuteCandles(CandleMinute.SIXTY, 1000);
+    }
+
+
+    private void updateUpbitMinuteCandles(CandleMinute candleMinute, final int sleepTime) {
+        long start = System.currentTimeMillis();
+        logger.info("Scheduling UPBIT " + candleMinute.getNumber() + " MINUTES CANDLES UPDATE");
         upbitMarket.forEach(marketResponse -> {
             String market = marketResponse.getMarket();
-            CandleResponses origin = upbitSixtyMinuteCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 60);
-            CandleResponses responses = upbitCandleService.get60MinutesCandles(market, onceCallGetCount);
+            CandleResponses origin = candleMinute.getLiveCandles().get(market);
+            int onceCallGetCount = howToGetCandles(origin, candleMinute.getNumber());
+            CandleResponses responses = upbitCandleService.getMinuteCandles(candleMinute, market, onceCallGetCount);
             origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);
-            ThreadSleep.doSleep(1000);
+            origin.setRsi(onceCallGetCount);
+            ThreadSleep.doSleep(sleepTime);
         });
-        logger.info("60 MINUTES SIZE " + upbitSixtyMinuteCandles.get("KRW-BTC").getCandleResponses().size());
+        logger.info(candleMinute.getNumber() + " MINUTES SIZE " + candleMinute.getLiveCandles().get("KRW-BTC").getCandleResponses().size());
+        logger.info(System.currentTimeMillis() - start + "밀리초");
     }
 
     @Scheduled(cron = "${schedule.candle.one-hour}")
     private void updateUpbitDayCandles() {
         logger.info("Scheduling UPBIT 1 DAY CANDLES UPDATE");
+        CandleMinute candleMinute = CandleMinute.DAY;
         upbitMarket.forEach(marketResponse -> {
             String market = marketResponse.getMarket();
             CandleResponses origin = upbitDayCandles.get(market);
-            int onceCallGetCount = howToGetCandles(origin, 1440);
+            int onceCallGetCount = howToGetCandles(origin, candleMinute.getNumber());
             CandleResponses responses = upbitCandleService.get1DayCandles(market, onceCallGetCount);
             origin.addAll(responses);
             origin.setUnderBollingerBands(onceCallGetCount);

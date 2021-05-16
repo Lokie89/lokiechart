@@ -95,11 +95,10 @@ public class UpbitOrderBatch {
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
         AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
         if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
+
             // TODO : 이부분 자동 캐시로 구현할 수 있는 프레임 워크가 분명히 있을 것 이다. 나중에 찾아 볼것
-            // TODO : 멀티 쓰레드
-            filterBuyCandleMinuteResponses.getOrderStrategies().forEach(orderStrategies ->
-                    cache.put(new OrderStrategyCandleTime(orderStrategies), orderStrategies.getMatchedOrderParameters())
-            );
+            filterBuyCandleMinuteResponses.getOrderStrategies().forEach(
+                    orderStrategies -> cache.put(new OrderStrategyCandleTime(orderStrategies), orderStrategies.getMatchedOrderParameters()));
 
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
                 OrderStrategyCandleTime candleTime = new OrderStrategyCandleTime(accountStrategyResponse.getOrderStrategies());
@@ -113,8 +112,8 @@ public class UpbitOrderBatch {
                 upbitOrderService.buyByAccount(accountStrategyResponse, matchParameters);
             }
         }
-
     }
+
 
     @Scheduled(cron = "${schedule.order.all-minute}")
     private void orderSellTradeStrategy() {

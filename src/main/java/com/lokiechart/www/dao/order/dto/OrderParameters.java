@@ -84,12 +84,9 @@ public class OrderParameters implements Iterable<OrderParameter> {
                 .collect(Collectors.toList());
     }
 
-    public OrderParameters copy(int startIndex, int endIndex) {
-        return new OrderParameters(new ArrayList<>(orderParameters.subList(startIndex, endIndex)));
-    }
-
     public OrderParameters copy() {
-        return new OrderParameters(new ArrayList<>(orderParameters));
+        OrderParameter[] orderParameterArr = orderParameters.toArray(OrderParameter[]::new).clone();
+        return new OrderParameters(new ArrayList<>(Arrays.asList(orderParameterArr)));
     }
 
     public void intersect(OrderParameters other) {
@@ -121,13 +118,10 @@ public class OrderParameters implements Iterable<OrderParameter> {
         this.orderParameters.forEach(orderParameter -> orderParameter.setOrderParams(onceInvestKRW));
 
         final double scaleTradingPercent = accountResponse.getScaleTradingPercent();
-        this.orderParameters = this.orderParameters.stream().filter(orderParameter -> {
-            boolean notCheap = !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent);
-            if (notCheap) {
-                logger.info("#### But NotCheap " + accountResponse.getEmail() + " " + orderParameter);
-            }
-            return notCheap;
-        }).collect(Collectors.toList());
+        this.orderParameters = this.orderParameters.stream()
+                .filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent))
+                .collect(Collectors.toList())
+        ;
 
         final List<String> decidedMarket = accountResponse.getDecidedMarket();
 
@@ -138,7 +132,6 @@ public class OrderParameters implements Iterable<OrderParameter> {
 
         final int alreadyExistAndPlusSize = assetResponses.existAssetSize() + size();
         if (alreadyExistAndPlusSize > maxBuyMarket) {
-            logger.warn(accountResponse.getEmail() + " " + maxBuyMarket + " 자산 수에 가득 참 " + this.orderParameters.stream().map(OrderParameter::getMarket).collect(Collectors.toList()));
             final int addCount = Integer.max(maxBuyMarket - assetResponses.existAssetSize(), 0);
             dropAlreadyOwnAndAddCount(assetResponses, addCount);
         }
