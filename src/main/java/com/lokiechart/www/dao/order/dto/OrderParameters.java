@@ -85,7 +85,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
     }
 
     public OrderParameters copy() {
-        OrderParameter[] orderParameterArr = orderParameters.toArray(OrderParameter[]::new).clone();
+        OrderParameter[] orderParameterArr = Arrays.copyOf(orderParameters.toArray(OrderParameter[]::new), size());
         return new OrderParameters(new ArrayList<>(Arrays.asList(orderParameterArr)));
     }
 
