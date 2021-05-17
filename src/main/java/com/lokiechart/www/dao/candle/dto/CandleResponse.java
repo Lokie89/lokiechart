@@ -1,7 +1,6 @@
 package com.lokiechart.www.dao.candle.dto;
 
 import com.lokiechart.www.dao.order.dto.OrderParameter;
-import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
 
 import java.time.LocalDateTime;
@@ -32,7 +31,6 @@ public interface CandleResponse {
     void setAverageDown(double averageDown);
     double getAverageDown();
     double getChangePrice();
-    Double compareUnderMiddleBands();
-    Double compareOverMiddleBands();
+    Double compareMiddleBands();
     void set120Line(double average);
 }

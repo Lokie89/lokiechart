@@ -2,11 +2,13 @@ package com.lokiechart.www.batch;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.common.ThreadSleep;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.MarketRepository;
 import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.service.candle.UpbitCandleService;
+import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -175,22 +177,37 @@ public class UpbitCandlesBatch {
     }
 
 
-    private void updateUpbitMinuteCandles(CandleMinute candleMinute, final int sleepTime) {
+    private void updateUpbitMinuteCandles(final CandleMinute candleMinute, final int sleepTime) {
         long start = System.currentTimeMillis();
         logger.info("Scheduling UPBIT " + candleMinute.getNumber() + " MINUTES CANDLES UPDATE");
         upbitMarket.forEach(marketResponse -> {
             String market = marketResponse.getMarket();
-            CandleResponses origin = candleMinute.getLiveCandles().get(market);
-            int onceCallGetCount = howToGetCandles(origin, candleMinute.getNumber());
-            CandleResponses responses = upbitCandleService.getMinuteCandles(candleMinute, market, onceCallGetCount);
-            origin.addAll(responses);
-            origin.set120Line(onceCallGetCount);
-            origin.setUnderBollingerBands(onceCallGetCount);
-            origin.setRsi(onceCallGetCount);
-            ThreadSleep.doSleep(sleepTime);
+            setUpbitMinuteCandles(market, candleMinute, sleepTime);
         });
         logger.info(candleMinute.getNumber() + " MINUTES SIZE " + candleMinute.getLiveCandles().get("KRW-BTC").getCandleResponses().size());
         logger.info(System.currentTimeMillis() - start + "밀리초");
+    }
+
+    void setUpbitMinuteCandles(final String market, final CandleMinute candleMinute, final int sleepTime) {
+        CandleResponses origin = candleMinute.getLiveCandles().get(market);
+        int onceCallGetCount = howToGetCandles(origin, candleMinute.getNumber());
+        CandleResponses responses = upbitCandleService.getMinuteCandles(candleMinute, market, onceCallGetCount);
+        origin.addAll(responses);
+        origin.set120Line(onceCallGetCount);
+        origin.setUnderBollingerBands(onceCallGetCount);
+        origin.setRsi(onceCallGetCount);
+        ThreadSleep.doSleep(sleepTime);
+    }
+
+    void updateAssetCandles(AccountStrategyResponse accountStrategyResponse, AssetResponses assetResponses) {
+        assetResponses.stream().filter(assetResponse -> !assetResponse.isBaseCurrency() && assetResponse.isExistSellBalance()).forEach(assetResponse -> {
+            final String market = assetResponse.getMarketCurrency();
+            accountStrategyResponse.getOrderStrategies().forEach(orderStrategy -> {
+                final CandleMinute candleMinute = orderStrategy.getCandleMinute();
+                logger.info(market + " " + candleMinute + " " + accountStrategyResponse.getAccountResponse().getEmail() + " Update AssetCandles");
+                setUpbitMinuteCandles(market, candleMinute, 1000);
+            });
+        });
     }
 
     @Scheduled(cron = "${schedule.candle.one-hour}")

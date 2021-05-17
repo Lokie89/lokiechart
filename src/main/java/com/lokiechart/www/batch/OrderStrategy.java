@@ -57,7 +57,6 @@ public class OrderStrategy {
             }
             final double incomePercent = accountResponse.getIncomePercent();
             if (assetResponse.avgBuyPricePercent(matched.getTradePrice()) < incomePercent) {
-                logger.warn(accountResponse.getEmail() + " " + matched.toLog() + " " + incomePercent + "% 이상 올라야 매도함");
                 continue;
             }
             matchedCandleResponses.add(matched);

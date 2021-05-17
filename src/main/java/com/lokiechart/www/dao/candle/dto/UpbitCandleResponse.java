@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.lokiechart.www.dao.order.dto.OrderParameter;
-import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
+import com.lokiechart.www.dao.order.dto.UpbitOrderParameter;
 import com.lokiechart.www.exception.CannotCompareObjectException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -148,15 +148,7 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     }
 
     @Override
-    public Double compareOverMiddleBands() {
-        if (middleBands == 0) {
-            return null;
-        }
-        return (tradePrice - middleBands) / middleBands * 100;
-    }
-
-    @Override
-    public Double compareUnderMiddleBands() {
+    public Double compareMiddleBands() {
         if (middleBands == 0) {
             return null;
         }

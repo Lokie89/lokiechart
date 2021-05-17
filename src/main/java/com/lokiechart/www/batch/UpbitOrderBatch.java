@@ -1,6 +1,7 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.service.account.AccountService;
@@ -39,14 +40,16 @@ public class UpbitOrderBatch {
     private final AssetService upbitAssetService;
     private final OrderService upbitOrderService;
     private final AccountStrategyService upbitAccountStrategyService;
+    private final UpbitCandlesBatch upbitCandlesBatch;
     private AccountStrategyResponses accountStrategyResponses;
 
     public UpbitOrderBatch(AccountService accountService, OrderService upbitOrderService, AssetService upbitAssetService,
-                           AccountStrategyService upbitAccountStrategyService) {
+                           AccountStrategyService upbitAccountStrategyService, UpbitCandlesBatch upbitCandlesBatch) {
         this.accountService = accountService;
         this.upbitOrderService = upbitOrderService;
         this.upbitAssetService = upbitAssetService;
         this.upbitAccountStrategyService = upbitAccountStrategyService;
+        this.upbitCandlesBatch = upbitCandlesBatch;
         init();
     }
 
@@ -106,9 +109,7 @@ public class UpbitOrderBatch {
                 if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
                     continue;
                 }
-                logger.warn("#### Match " + matchParameters);
                 matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
-                logger.info("#### Filter " + matchParameters);
                 upbitOrderService.buyByAccount(accountStrategyResponse, matchParameters);
             }
         }
@@ -121,7 +122,11 @@ public class UpbitOrderBatch {
         AccountStrategyResponses filterSellResponses = accountStrategyResponses.filterOrderSide(OrderSide.SELL);
         if (Objects.nonNull(filterSellResponses) && !filterSellResponses.isEmpty()) {
             logger.info("ORDER SELL STRATEGY");
-            filterSellResponses.forEach(accountResponse -> upbitOrderService.sellByAccount(accountResponse, upbitAssetService.getAssets(accountResponse.getAccountResponse())));
+            filterSellResponses.forEach(accountStrategyResponse -> {
+                AssetResponses assetResponses = upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse());
+                upbitCandlesBatch.updateAssetCandles(accountStrategyResponse, assetResponses);
+                upbitOrderService.sellByAccount(accountStrategyResponse, assetResponses);
+            });
         }
     }
 
