@@ -184,6 +184,7 @@ public class UpbitCandlesBatch {
             int onceCallGetCount = howToGetCandles(origin, candleMinute.getNumber());
             CandleResponses responses = upbitCandleService.getMinuteCandles(candleMinute, market, onceCallGetCount);
             origin.addAll(responses);
+            origin.set120Line(onceCallGetCount);
             origin.setUnderBollingerBands(onceCallGetCount);
             origin.setRsi(onceCallGetCount);
             ThreadSleep.doSleep(sleepTime);
@@ -202,6 +203,7 @@ public class UpbitCandlesBatch {
             int onceCallGetCount = howToGetCandles(origin, candleMinute.getNumber());
             CandleResponses responses = upbitCandleService.get1DayCandles(market, onceCallGetCount);
             origin.addAll(responses);
+            origin.set120Line(onceCallGetCount);
             origin.setUnderBollingerBands(onceCallGetCount);
             origin.setRsi(onceCallGetCount);
             ThreadSleep.doSleep(1000);

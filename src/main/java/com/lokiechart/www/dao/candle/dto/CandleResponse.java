@@ -15,6 +15,8 @@ public interface CandleResponse {
     OrderParameter toSellOrderParameter(Double volume, OrderType orderType);
     Double compareVolumePercentage(CandleResponse compare);
     Double compareTradePricePercentage(CandleResponse compare);
+    Double compare120LinePercentage(CandleResponse compare);
+    Double compareOpeningTradePricePercentage();
     Double compareUnderBollingerBands();
     Double compareOverBollingerBands();
     Double getTradePrice();
@@ -32,4 +34,5 @@ public interface CandleResponse {
     double getChangePrice();
     Double compareUnderMiddleBands();
     Double compareOverMiddleBands();
+    void set120Line(double average);
 }

@@ -94,6 +94,11 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     @ApiModelProperty(value = "rsi", example = "70.23")
     private double rsi;
 
+    @Getter
+    @Setter
+    @ApiModelProperty(value = "line120", example = "859.3")
+    private double line120;
+
     @Override
     public OrderParameter toBuyOrderParameter(OrderType orderType) {
         return UpbitOrderParameter.builder().market(market).side(OrderSide.BUY).price(tradePrice).orderType(orderType).build();
@@ -159,10 +164,29 @@ public abstract class UpbitCandleResponse implements CandleResponse, Comparable<
     }
 
     @Override
+    public Double compare120LinePercentage(CandleResponse compare) {
+        UpbitCandleResponse other = getCompareInstance(compare);
+        if (this.line120 == 0 || other.line120 == 0) {
+            return null;
+        }
+        return (this.line120 - other.line120) / other.line120 * 100;
+    }
+
+    @Override
+    public Double compareOpeningTradePricePercentage() {
+        return (tradePrice - openingPrice) / openingPrice * 100;
+    }
+
+    @Override
     public void setBollingerBands(double middle, double deviation) {
         this.lowBollingerBands = middle - deviation * 2;
         this.middleBands = middle;
         this.highBollingerBands = middle + deviation * 2;
+    }
+
+    @Override
+    public void set120Line(double average) {
+        this.line120 = average;
     }
 
     @Override

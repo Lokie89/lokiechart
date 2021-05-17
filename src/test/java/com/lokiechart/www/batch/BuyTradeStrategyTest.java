@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -44,6 +45,21 @@ public class BuyTradeStrategyTest {
         candleResponses.setUnderBollingerBands(6);
         CandleResponse matchedResponse = BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
+    }
+
+    @DisplayName("120 라인 증가 테스트")
+    @Test
+    void increasing120LineTest(){
+        CandleResponses candleResponses = candleService.getMinuteCandles(CandleMinute.THIRTY,"KRW-BTC", 125, LocalDateTime.of(2021, 5, 10, 4, 0, 3));
+        candleResponses.set120Line(5);
+        CandleResponse matchedResponse = BuyTradeStrategy.LINE120_INCREASING.match(candleResponses);
+        assertTrue(Objects.nonNull(matchedResponse));
+
+
+        CandleResponses candleResponses2 = candleService.getMinuteCandles(CandleMinute.THIRTY,"KRW-BTC", 125, LocalDateTime.of(2021, 5, 12, 0, 0, 3));
+        candleResponses2.set120Line(5);
+        CandleResponse matchedResponse2 = BuyTradeStrategy.LINE120_INCREASING.match(candleResponses2);
+        assertTrue(Objects.isNull(matchedResponse2));
     }
 
 }

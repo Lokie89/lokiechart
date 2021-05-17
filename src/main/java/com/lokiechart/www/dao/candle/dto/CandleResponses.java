@@ -71,6 +71,19 @@ public class CandleResponses {
         return rsi;
     }
 
+    public void set120Line(final int setCount){
+        for (int i = 0; i < setCount; i++) {
+            final int set120LineIndex = this.candleResponses.size() - (i + 1);
+            if (set120LineIndex < 120) {
+                break;
+            }
+            CandleResponse set120LineCandle = candleResponses.get(set120LineIndex);
+            SynchronizedNonOverlapList<CandleResponse> copy = this.candleResponses.copyRecent(i, i + 120);
+            final double avg = copy.stream().mapToDouble(CandleResponse::getTradePrice).average().orElseThrow();
+            set120LineCandle.set120Line(avg);
+        }
+    }
+
     public void setRsi(final int setCount) {
         for (int i = setCount - 1; i >= 0; i--) {
             final int setRsiIndex = this.candleResponses.size() - (i + 1);
