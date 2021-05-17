@@ -1,6 +1,7 @@
 package com.lokiechart.www.batch;
 
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.asset.dto.AssetResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.order.dto.OrderSide;
@@ -17,10 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author SeongRok.Oh
@@ -122,11 +122,28 @@ public class UpbitOrderBatch {
         AccountStrategyResponses filterSellResponses = accountStrategyResponses.filterOrderSide(OrderSide.SELL);
         if (Objects.nonNull(filterSellResponses) && !filterSellResponses.isEmpty()) {
             logger.info("ORDER SELL STRATEGY");
+            Set<MarketCandleMinute> updateCandles = new HashSet<>();
             filterSellResponses.forEach(accountStrategyResponse -> {
+                Set<CandleMinute> candleMinutes = accountStrategyResponse.getOrderStrategies().stream()
+                        .map(OrderStrategy::getCandleMinute)
+                        .collect(Collectors.toSet())
+                        ;
                 AssetResponses assetResponses = upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse());
-                upbitCandlesBatch.updateAssetCandles(accountStrategyResponse, assetResponses);
-                upbitOrderService.sellByAccount(accountStrategyResponse, assetResponses);
+                Set<String> markets = assetResponses.stream()
+                        .filter(assetResponse -> !assetResponse.isBaseCurrency() && assetResponse.isExistSellBalance())
+                        .map(AssetResponse::getMarketCurrency)
+                        .collect(Collectors.toSet())
+                        ;
+                candleMinutes
+                        .forEach(candleMinute -> updateCandles.addAll(markets.stream()
+                                .map(market -> MarketCandleMinute.builder().market(market).candleMinute(candleMinute).build())
+                                .collect(Collectors.toSet())))
+                ;
             });
+            upbitCandlesBatch.updateAssetCandles(updateCandles);
+            filterSellResponses.forEach(accountStrategyResponse ->
+                    upbitOrderService.sellByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()))
+            );
         }
     }
 

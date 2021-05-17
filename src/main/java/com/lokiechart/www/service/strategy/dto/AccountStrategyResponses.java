@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @ToString
 @RequiredArgsConstructor
 @Getter
-public class AccountStrategyResponses implements Iterable<AccountStrategyResponse>{
+public class AccountStrategyResponses implements Iterable<AccountStrategyResponse> {
 
     private final List<AccountStrategyResponse> accountStrategyResponses;
 
@@ -47,7 +47,7 @@ public class AccountStrategyResponses implements Iterable<AccountStrategyRespons
         return accountStrategyResponses.isEmpty();
     }
 
-    public Set<OrderStrategies> getOrderStrategies(){
+    public Set<OrderStrategies> getOrderStrategies() {
         return accountStrategyResponses.stream().map(AccountStrategyResponse::getOrderStrategies).collect(Collectors.toSet());
     }
 

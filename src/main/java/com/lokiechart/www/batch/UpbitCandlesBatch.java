@@ -2,13 +2,11 @@ package com.lokiechart.www.batch;
 
 import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.common.ThreadSleep;
-import com.lokiechart.www.dao.asset.dto.AssetResponses;
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.MarketRepository;
 import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.service.candle.UpbitCandleService;
-import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -153,7 +152,7 @@ public class UpbitCandlesBatch {
 
     @Scheduled(cron = "${schedule.candle.three-minutes}")
     private void updateUpbitThreeMinuteCandles() {
-        updateUpbitMinuteCandles(CandleMinute.THREE, 600);
+        updateUpbitMinuteCandles(CandleMinute.THREE, 500);
     }
 
     @Scheduled(cron = "${schedule.candle.five-minutes}")
@@ -199,14 +198,12 @@ public class UpbitCandlesBatch {
         ThreadSleep.doSleep(sleepTime);
     }
 
-    void updateAssetCandles(AccountStrategyResponse accountStrategyResponse, AssetResponses assetResponses) {
-        assetResponses.stream().filter(assetResponse -> !assetResponse.isBaseCurrency() && assetResponse.isExistSellBalance()).forEach(assetResponse -> {
-            final String market = assetResponse.getMarketCurrency();
-            accountStrategyResponse.getOrderStrategies().forEach(orderStrategy -> {
-                final CandleMinute candleMinute = orderStrategy.getCandleMinute();
-                logger.info(market + " " + candleMinute + " " + accountStrategyResponse.getAccountResponse().getEmail() + " Update AssetCandles");
-                setUpbitMinuteCandles(market, candleMinute, 1000);
-            });
+    void updateAssetCandles(Set<MarketCandleMinute> marketCandleMinutes) {
+        marketCandleMinutes.forEach(marketCandleMinute -> {
+            final String market = marketCandleMinute.getMarket();
+            final CandleMinute candleMinute = marketCandleMinute.getCandleMinute();
+            logger.info(market + " " + candleMinute + " Update AssetCandles");
+            setUpbitMinuteCandles(market, candleMinute, 1000);
         });
     }
 
