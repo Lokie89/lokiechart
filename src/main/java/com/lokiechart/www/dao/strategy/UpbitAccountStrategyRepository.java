@@ -43,7 +43,7 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .maxBuyMarket(20)
             .totalSeed(1600000)
             .totalTradeCount(2)
-            .buyFlag(true)
+            .buyFlag(false)
             .sellFlag(true)
             .scaleTradingPercent(10)
             .incomePercent(5)
