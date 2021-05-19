@@ -40,6 +40,10 @@ public class OrderStrategies implements Iterable<OrderStrategy> {
         return orderStrategies.stream();
     }
 
+    public int minIndex() {
+        return orderStrategies.stream().mapToInt(orderStrategy -> orderStrategy.getTradeStrategy().getUseIndex()).max().orElse(0);
+    }
+
     public boolean isEmpty() {
         return orderStrategies.isEmpty();
     }

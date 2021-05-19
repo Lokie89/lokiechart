@@ -1,5 +1,7 @@
 package com.lokiechart.www.service.simulation;
 
+import com.lokiechart.www.service.simulation.dto.SimulationResult;
+import com.lokiechart.www.service.simulation.dto.UpbitSimulationModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class UpbitSimulationServiceTest {
 
-//    @Autowired
-//    Simulation upbitSimulation;
-//
-//    @DisplayName("시뮬레이트 테스트")
-//    @Test
-//    void simulateTest(){
-//
-//    }
+    @Autowired
+    SimulationService upbitSimulationService;
+
+    @DisplayName("시뮬레이트 테스트")
+    @Test
+    void simulateTest() {
+        SimulationResult result = upbitSimulationService.simulate(UpbitSimulationModel.builder().build());
+        System.out.println(result);
+    }
 }

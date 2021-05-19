@@ -11,4 +11,5 @@ import com.lokiechart.www.dao.order.dto.OrderSide;
 public interface TradeStrategy {
     CandleResponse match(CandleResponses candles);
     OrderSide getOrderSide();
+    int getUseIndex();
 }

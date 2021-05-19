@@ -52,13 +52,13 @@ public class BuyTradeStrategyTest {
     void increasing120LineTest(){
         CandleResponses candleResponses = candleService.getMinuteCandles(CandleMinute.THIRTY,"KRW-BTC", 125, LocalDateTime.of(2021, 5, 10, 4, 0, 3));
         candleResponses.set120Line(5);
-        CandleResponse matchedResponse = BuyTradeStrategy.LINE120_INCREASING.match(candleResponses);
+        CandleResponse matchedResponse = BuyTradeStrategy.BTCLINE120_INCREASING.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
 
 
         CandleResponses candleResponses2 = candleService.getMinuteCandles(CandleMinute.THIRTY,"KRW-BTC", 125, LocalDateTime.of(2021, 5, 12, 0, 0, 3));
         candleResponses2.set120Line(5);
-        CandleResponse matchedResponse2 = BuyTradeStrategy.LINE120_INCREASING.match(candleResponses2);
+        CandleResponse matchedResponse2 = BuyTradeStrategy.BTCLINE120_INCREASING.match(candleResponses2);
         assertTrue(Objects.isNull(matchedResponse2));
     }
 
