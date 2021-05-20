@@ -1,8 +1,8 @@
 package com.lokiechart.www.dao.market.dto;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
  * @since 2021/05/01
  */
 @RequiredArgsConstructor
-@Getter
-public class MarketResponses {
+public class MarketResponses implements Iterable<MarketResponse> {
     private final List<MarketResponse> marketResponseList;
 
     public List<String> getMarkets() {
@@ -20,5 +19,10 @@ public class MarketResponses {
                 .map(MarketResponse::getMarket)
                 .collect(Collectors.toList())
                 ;
+    }
+
+    @Override
+    public Iterator<MarketResponse> iterator() {
+        return marketResponseList.iterator();
     }
 }

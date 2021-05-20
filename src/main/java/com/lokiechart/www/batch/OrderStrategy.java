@@ -96,4 +96,24 @@ public class OrderStrategy {
         );
     }
 
+    public OrderParameters matchBuying(Map<CandleMinute, Map<String, CandleResponses>> candleResponsesMap) {
+        Map<String, CandleResponses> candles = candleResponsesMap.get(candleMinute);
+        CandleResponses matchedCandleResponses = new CandleResponses(new SynchronizedNonOverlapList<>());
+        for (String key : candles.keySet()) {
+            if (!UpbitCandlesBatch.isAlready15PercentNotIncreasedInTwoDays.get(key)) {
+                continue;
+            }
+            CandleResponse matched = tradeStrategy.match(candles.get(key));
+            if (Objects.isNull(matched)) {
+                continue;
+            }
+            matchedCandleResponses.add(matched);
+        }
+        return new OrderParameters(matchedCandleResponses.getCandleResponses()
+                .stream()
+                .map(candleResponse -> candleResponse.toBuyOrderParameter(orderType))
+                .collect(Collectors.toList())
+        );
+    }
+
 }

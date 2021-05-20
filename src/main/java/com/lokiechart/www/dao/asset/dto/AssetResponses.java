@@ -1,5 +1,7 @@
 package com.lokiechart.www.dao.asset.dto;
 
+import com.lokiechart.www.dao.order.dto.OrderParameter;
+import com.lokiechart.www.dao.order.dto.OrderParameters;
 import com.lokiechart.www.dao.ticker.dto.TickerResponses;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -73,5 +75,14 @@ public class AssetResponses implements Iterable<AssetResponse> {
 
     public Double getBaseCurrency() {
         return assetResponses.stream().filter(AssetResponse::isBaseCurrency).findFirst().map(AssetResponse::getBalance).orElse(null);
+    }
+
+    public void buy(OrderParameters buyOrderParameters) {
+        assetResponses.addAll(buyOrderParameters.getOrderParameters().stream().map(OrderParameter::toAsset).collect(Collectors.toList()));
+        useBaseCurrency(buyOrderParameters.getOrderParameters().stream().mapToDouble(OrderParameter::total).sum());
+    }
+
+    private void useBaseCurrency(double currency){
+        assetResponses.stream().filter(AssetResponse::isBaseCurrency).forEach(assetResponse -> assetResponse.useBaseCurrency(currency));
     }
 }

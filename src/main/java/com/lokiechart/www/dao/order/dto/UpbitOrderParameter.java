@@ -2,7 +2,9 @@ package com.lokiechart.www.dao.order.dto;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lokiechart.www.dao.asset.dto.AssetResponse;
 import com.lokiechart.www.dao.asset.dto.AssetResponses;
+import com.lokiechart.www.dao.asset.dto.UpbitAssetResponse;
 import com.lokiechart.www.exception.order.NotEnoughTotalCostException;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -116,4 +118,13 @@ public class UpbitOrderParameter extends AbstractOrderParameter {
         return new UpbitOrderParameter(this.market, this.side, this.volume, this.price, this.orderType);
     }
 
+    @Override
+    public AssetResponse toAsset() {
+        return UpbitAssetResponse.builder().currency(market).balance(volume).avgBuyPrice(price).locked(0.0).unitCurrency("KRW").avgBuyPriceModified(false).build();
+    }
+
+    @Override
+    public Double total() {
+        return price * volume;
+    }
 }

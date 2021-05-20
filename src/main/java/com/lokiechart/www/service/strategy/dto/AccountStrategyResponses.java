@@ -47,7 +47,7 @@ public class AccountStrategyResponses implements Iterable<AccountStrategyRespons
         return accountStrategyResponses.isEmpty();
     }
 
-    public Set<OrderStrategies> getOrderStrategies() {
+    public Set<OrderStrategies> getOrderStrategySet() {
         return accountStrategyResponses.stream().map(AccountStrategyResponse::getOrderStrategies).collect(Collectors.toSet());
     }
 

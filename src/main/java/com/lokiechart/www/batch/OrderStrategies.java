@@ -1,5 +1,6 @@
 package com.lokiechart.www.batch;
 
+import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -56,6 +58,13 @@ public class OrderStrategies implements Iterable<OrderStrategy> {
     public OrderParameters getMatchedOrderParameters() {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         orderStrategies.forEach(orderStrategy -> matchedOrderParameters.intersect(orderStrategy.matchBuying()));
+        OrderParameters rsiUnderParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() < 65);
+        return rsiUnderParameters;
+    }
+
+    public OrderParameters getMatchedOrderParameters(Map<CandleMinute,Map<String, CandleResponses>> candleResponsesMap) {
+        OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
+        orderStrategies.forEach(orderStrategy -> matchedOrderParameters.intersect(orderStrategy.matchBuying(candleResponsesMap)));
         OrderParameters rsiUnderParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() < 65);
         return rsiUnderParameters;
     }

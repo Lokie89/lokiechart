@@ -100,6 +100,13 @@ public class UpbitAssetResponse implements AssetResponse {
     }
 
     @Override
+    public void useBaseCurrency(double currency) {
+        if (isBaseCurrency()) {
+            balance = balance - currency;
+        }
+    }
+
+    @Override
     public String toString() {
         return currency +
                 "\t|\t" +
