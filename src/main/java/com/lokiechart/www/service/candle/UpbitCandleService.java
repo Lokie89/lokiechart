@@ -80,10 +80,12 @@ public class UpbitCandleService implements CandleService {
         return monthCandleRepository.getCandles(UpbitMonthCandleParameter.builder().market(market).count(candleCount).build());
     }
 
+    @Override
     public CandleResponses getMinuteCandles(CandleMinute candleMinute, String market, int candleCount) {
         return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(candleMinute).count(candleCount).build());
     }
 
+    @Override
     public CandleResponses getMinuteCandles(CandleMinute candleMinute, String market, int candleCount, LocalDateTime to) {
         return minuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().market(market).candleMinute(candleMinute).count(candleCount).to(to).build());
     }

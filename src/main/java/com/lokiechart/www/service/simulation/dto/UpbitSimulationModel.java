@@ -11,6 +11,8 @@ import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,25 +25,30 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 @RequiredArgsConstructor
 public class UpbitSimulationModel implements SimulationModel {
+    private final Logger logger = LoggerFactory.getLogger(UpbitSimulationModel.class);
     private final AccountStrategyResponses accountStrategyResponses;
     private final Map<CandleMinute, Map<String, CandleResponses>> simulateCandles;
     private final AssetResponses assetResponses;
 
     public SimulationResult experiment() {
         Map<CandleMinute, Map<String, CandleResponses>> experimentMap = new ConcurrentHashMap<>();
-        int index = accountStrategyResponses.getOrderStrategySet().stream().mapToInt(OrderStrategies::minIndex).min().getAsInt();
-        for (CandleMinute candleMinute : simulateCandles.keySet()) {
-            Map<String, CandleResponses> candleResponsesMap = simulateCandles.get(candleMinute);
-            Map<String, CandleResponses> experimentCandles = new ConcurrentHashMap<>();
-            for (String market : candleResponsesMap.keySet()) {
-                CandleResponses candleResponses = new CandleResponses(candleResponsesMap.get(market).getCandleResponses().copy(0, index));
-                experimentCandles.put(market, candleResponses);
+        final int index = accountStrategyResponses.getOrderStrategySet().stream().mapToInt(OrderStrategies::minIndex).max().getAsInt();
+        // TODO : CandleSize 해결
+        final int candleSize = simulateCandles.get(CandleMinute.THREE).get("KRW-BTC").getCandleResponses().size();
+        for (int i = 0; i <= candleSize-index; i++) {
+            for (CandleMinute candleMinute : simulateCandles.keySet()) {
+                Map<String, CandleResponses> candleResponsesMap = simulateCandles.get(candleMinute);
+                Map<String, CandleResponses> experimentCandles = new ConcurrentHashMap<>();
+                for (String market : candleResponsesMap.keySet()) {
+                    CandleResponses candleResponses = new CandleResponses(candleResponsesMap.get(market).getCandleResponses().copy(i, index + i));
+                    experimentCandles.put(market, candleResponses);
+                }
+                experimentMap.put(candleMinute, experimentCandles);
             }
-            experimentMap.put(candleMinute, experimentCandles);
+            buy(experimentMap);
+            sell(experimentMap);
         }
-
-        buy(experimentMap);
-        sell(experimentMap);
+        System.out.println(assetResponses);
         return SimulationResult.builder().build();
     }
 
@@ -55,8 +62,6 @@ public class UpbitSimulationModel implements SimulationModel {
             OrderParameters buyOrderParameters = accountStrategyResponse.getOrderStrategies().getMatchedOrderParameters(experimentCandles);
             buyOrderParameters.filterByAccount(accountStrategyResponse, assetResponses);
             assetResponses.buy(buyOrderParameters);
-            System.out.println(assetResponses);
-
         }
     }
 }

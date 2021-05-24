@@ -40,13 +40,15 @@ public class CandleResponses {
 
     public void addAll(CandleResponses responses) {
         this.candleResponses.addAll(responses.candleResponses);
-        while (candleResponses.size() > maxSize) {
-            candleResponses.removeOldest();
-        }
+        removeOverSize();
     }
 
     public void add(CandleResponse response) {
         this.candleResponses.add(response);
+        removeOverSize();
+    }
+
+    private void removeOverSize() {
         while (candleResponses.size() > maxSize) {
             candleResponses.removeOldest();
         }
@@ -71,7 +73,7 @@ public class CandleResponses {
         return rsi;
     }
 
-    public void set120Line(final int setCount){
+    public void set120Line(final int setCount) {
         for (int i = 0; i < setCount; i++) {
             final int set120LineIndex = this.candleResponses.size() - (i + 1);
             if (set120LineIndex < 120) {
@@ -129,6 +131,22 @@ public class CandleResponses {
 
     public Set<String> getMarkets() {
         return candleResponses.stream().map(CandleResponse::getMarket).collect(Collectors.toSet());
+    }
+
+    public CandleResponse get(int index) {
+        return this.candleResponses.get(index);
+    }
+
+    public CandleResponse getRecent(int index) {
+        return this.candleResponses.getRecent(index);
+    }
+
+    public CandleResponses copy(int startIndex, int endIndex) {
+        return new CandleResponses(new SynchronizedNonOverlapList<>(this.candleResponses.copy(startIndex, endIndex)));
+    }
+
+    public CandleResponses copyRecent(int startIndex, int endIndex) {
+        return new CandleResponses(new SynchronizedNonOverlapList<>(this.candleResponses.copyRecent(startIndex, endIndex)));
     }
 
 }

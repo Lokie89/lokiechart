@@ -17,9 +17,13 @@ import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author SeongRok.Oh
  * @since 2021/05/20
  */
+@TestPropertySource(properties = "app.scheduling.enable=false")
 @DisplayName("시뮬레이션 모델 테스트")
 @SpringBootTest
 class SimulationModelTest {
@@ -43,7 +48,7 @@ class SimulationModelTest {
     @DisplayName("buy 테스트")
     @Test
     void buyTest() {
-        AccountResponse accountResponse = AccountResponse.builder().buyFlag(true).sellFlag(true).totalSeed(1000000).excludeMarket(Arrays.asList(excludeMarkets)).incomePercent(5).scaleTradingPercent(10).totalTradeCount(2).build();
+        AccountResponse accountResponse = AccountResponse.builder().buyFlag(true).sellFlag(true).totalSeed(1000000).excludeMarket(Arrays.asList(excludeMarkets)).incomePercent(5).scaleTradingPercent(10).totalTradeCount(2).maxBuyMarket(20).build();
 
         Set<OrderStrategy> buyOrderStrategySet = new HashSet<>();
         buyOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).build());
@@ -61,7 +66,7 @@ class SimulationModelTest {
         accountStrategyResponseList.add(sellAccountStrategyResponse);
 
         List<AssetResponse> assetResponseList = new ArrayList<>();
-        assetResponseList.add(UpbitAssetResponse.builder().currency("KRW").unitCurrency("KRW").balance(1000000.0).avgBuyPrice(null).build());
+        assetResponseList.add(UpbitAssetResponse.builder().currency("KRW").unitCurrency("KRW").balance(1000000.0).avgBuyPrice(null).locked(0.0).build());
         AssetResponses assetResponses = new AssetResponses(assetResponseList);
 
 
@@ -69,18 +74,19 @@ class SimulationModelTest {
         Map<String, CandleResponses> threeCandleResponsesMap = new ConcurrentHashMap<>();
         Map<String, CandleResponses> fiveCandleResponsesMap = new ConcurrentHashMap<>();
         MarketResponses marketResponses = upbitMarketService.getAll();
-        final int howGetCandles = 200;
+        final int howGetCandles = 30;
         for (MarketResponse marketResponse : marketResponses) {
             final String market = marketResponse.getMarket();
             threeCandleResponsesMap.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), Integer.MAX_VALUE));
-            CandleResponses responses3 = upbitCandleService.get3MinutesCandles(market, howGetCandles);
+            CandleResponses responses3 = upbitCandleService.getMinuteCandles(CandleMinute.THREE, market, howGetCandles, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
+            responses3.setUnderBollingerBands(6);
             CandleResponses origin3 = threeCandleResponsesMap.get(market);
             origin3.addAll(responses3);
             ThreadSleep.doSleep(100);
 
             fiveCandleResponsesMap.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), Integer.MAX_VALUE));
-            CandleResponses responses5 = upbitCandleService.get5MinutesCandles(market, howGetCandles);
-            CandleResponses origin5 = threeCandleResponsesMap.get(market);
+            CandleResponses responses5 = upbitCandleService.getMinuteCandles(CandleMinute.FIVE, market, howGetCandles);
+            CandleResponses origin5 = fiveCandleResponsesMap.get(market);
             origin5.addAll(responses5);
             ThreadSleep.doSleep(100);
         }

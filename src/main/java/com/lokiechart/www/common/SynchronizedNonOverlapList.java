@@ -26,6 +26,10 @@ public class SynchronizedNonOverlapList<E> implements Iterable<E> {
         this.list = list.stream().distinct().collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public SynchronizedNonOverlapList(SynchronizedNonOverlapList<E> list) {
+        this.list = list.stream().distinct().collect(Collectors.toCollection(LinkedList::new));
+    }
+
     public SynchronizedNonOverlapList(E[] array) {
         this.list = Arrays.stream(array).distinct().collect(Collectors.toCollection(LinkedList::new));
     }

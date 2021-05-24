@@ -2,6 +2,7 @@ package com.lokiechart.www.dao.asset.dto;
 
 import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
+import com.lokiechart.www.dao.order.dto.*;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -36,5 +37,21 @@ class AssetResponsesTest {
         candleResponses.setUnderBollingerBands(5);
         CandleResponse candleResponse = candleResponses.getCandleResponses().getRecent(0);
 
+    }
+
+    @DisplayName("구매 테스트")
+    @Test
+    void buyTest() {
+        List<AssetResponse> assetResponseList = new ArrayList<>();
+        UpbitAssetResponse upbitAssetResponse = UpbitAssetResponse.builder().currency("KRW").unitCurrency("KRW").avgBuyPrice(null).balance(10000.0).avgBuyPriceModified(false).locked(0.0).build();
+        assetResponseList.add(upbitAssetResponse);
+        AssetResponses assetResponses = new AssetResponses(assetResponseList);
+
+        List<OrderParameter> orderParameterList = new ArrayList<>();
+        UpbitOrderParameter upbitOrderParameter = UpbitOrderParameter.builder().market("BTC").price(5000.0).side(OrderSide.BUY).volume(1.0).orderType(OrderType.LIMIT).build();
+        orderParameterList.add(upbitOrderParameter);
+        OrderParameters orderParameters = new OrderParameters(orderParameterList);
+        assetResponses.buy(orderParameters);
+        System.out.println(assetResponses);
     }
 }

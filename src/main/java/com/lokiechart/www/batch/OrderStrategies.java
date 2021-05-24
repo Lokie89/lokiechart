@@ -58,14 +58,13 @@ public class OrderStrategies implements Iterable<OrderStrategy> {
     public OrderParameters getMatchedOrderParameters() {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         orderStrategies.forEach(orderStrategy -> matchedOrderParameters.intersect(orderStrategy.matchBuying()));
-        OrderParameters rsiUnderParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() < 65);
-        return rsiUnderParameters;
+        return matchedOrderParameters;
     }
 
-    public OrderParameters getMatchedOrderParameters(Map<CandleMinute,Map<String, CandleResponses>> candleResponsesMap) {
+    public OrderParameters getMatchedOrderParameters(Map<CandleMinute, Map<String, CandleResponses>> candleResponsesMap) {
         OrderParameters matchedOrderParameters = new OrderParameters(new ArrayList<>());
         orderStrategies.forEach(orderStrategy -> matchedOrderParameters.intersect(orderStrategy.matchBuying(candleResponsesMap)));
-        OrderParameters rsiUnderParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() < 65);
-        return rsiUnderParameters;
+//        OrderParameters rsiUnderParameters = matchedOrderParameters.filter(orderParameter -> UpbitCandlesBatch.upbitDayCandles.get(orderParameter.getMarket()).getCandleResponses().getRecent(0).getRsi() < 65);
+        return matchedOrderParameters;
     }
 }

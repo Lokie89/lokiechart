@@ -1,5 +1,6 @@
 package com.lokiechart.www.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -10,6 +11,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  * @author SeongRok.Oh
  * @since 2021/04/20
  */
+@ConditionalOnProperty(
+        value = "app.scheduling.enable", havingValue = "true", matchIfMissing = true
+)
 @Configuration
 @EnableScheduling
 public class ScheduleConfig {

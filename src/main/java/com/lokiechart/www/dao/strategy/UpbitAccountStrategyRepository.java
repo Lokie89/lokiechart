@@ -57,11 +57,25 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .orderType(OrderType.LIMIT)
             .build();
 
+    private final OrderStrategy rsi65
+            = OrderStrategy.builder()
+            .tradeStrategy(BuyTradeStrategy.RSI_UNDERSIXTYFIVE)
+            .candleMinute(CandleMinute.DAY)
+            .orderType(OrderType.LIMIT)
+            .build();
+
 
     private final OrderStrategy sellOrderStrategy
             = OrderStrategy.builder()
             .tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS)
             .candleMinute(CandleMinute.FIVE)
+            .orderType(OrderType.LIMIT)
+            .build();
+
+    private final OrderStrategy sellOrderStrategy2
+            = OrderStrategy.builder()
+            .tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERFIVEPERCENT)
+            .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
             .build();
 
@@ -71,13 +85,15 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
         AccountResponse tjdfhrResponse = modelMapper.map(tjdfhr, AccountResponse.class);
         AccountResponse tjdalsResponse = modelMapper.map(tjdals, AccountResponse.class);
 
-        final AccountStrategy tjdfhrBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(buyOrderStrategy).build();
+        final AccountStrategy tjdfhrBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(buyOrderStrategy, rsi65).build();
         final AccountStrategy tjdfhrSellAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(sellOrderStrategy).build();
+        final AccountStrategy tjdfhrSellAccountStrategy2 = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(sellOrderStrategy2).build();
 
-        final AccountStrategy tjdalsBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(buyOrderStrategy).build();
+        final AccountStrategy tjdalsBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(buyOrderStrategy, rsi65).build();
         final AccountStrategy tjdalsSellAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(sellOrderStrategy).build();
         all.add(tjdfhrBuyAccountStrategy);
         all.add(tjdfhrSellAccountStrategy);
+        all.add(tjdfhrSellAccountStrategy2);
         all.add(tjdalsBuyAccountStrategy);
         all.add(tjdalsSellAccountStrategy);
     }
