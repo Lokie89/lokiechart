@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @ToString
-@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute", "orderType"})
+@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute", "orderType", "orderSide"})
 @Builder
 @RequiredArgsConstructor
 @Getter
@@ -35,6 +35,7 @@ public class OrderStrategy {
     private final TradeStrategy tradeStrategy;
     private final CandleMinute candleMinute;
     private final OrderType orderType;
+    private final OrderSide orderSide;
 
     public OrderParameters matchSell(AssetResponses assetResponses, AccountResponse accountResponse) {
         Map<String, CandleResponses> liveCandles = candleMinute.getLiveCandles();
@@ -73,7 +74,7 @@ public class OrderStrategy {
     }
 
     public boolean equalsByOrderSide(final OrderSide orderSide) {
-        return this.tradeStrategy.getOrderSide().equals(orderSide);
+        return this.orderSide.equals(orderSide);
     }
 
     public OrderParameters matchBuying() {

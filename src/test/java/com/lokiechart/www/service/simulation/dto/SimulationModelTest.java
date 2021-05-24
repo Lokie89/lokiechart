@@ -17,8 +17,6 @@ import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -51,7 +49,7 @@ class SimulationModelTest {
         AccountResponse accountResponse = AccountResponse.builder().buyFlag(true).sellFlag(true).totalSeed(1000000).excludeMarket(Arrays.asList(excludeMarkets)).incomePercent(5).scaleTradingPercent(10).totalTradeCount(2).maxBuyMarket(20).build();
 
         Set<OrderStrategy> buyOrderStrategySet = new HashSet<>();
-        buyOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).candleMinute(CandleMinute.THREE).tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).build());
+        buyOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).candleMinute(CandleMinute.THREE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).build());
         Set<OrderStrategy> sellOrderStrategySet = new HashSet<>();
         sellOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).build());
         OrderStrategies buyOrderStrategies = new OrderStrategies(buyOrderStrategySet);

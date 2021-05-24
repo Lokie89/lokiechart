@@ -12,9 +12,13 @@ public class OrderStrategyCandleTime {
     private LocalDateTime localDateTime;
     private OrderStrategies orderStrategies;
 
-    public OrderStrategyCandleTime(OrderStrategies orderStrategies) {
+    private OrderStrategyCandleTime(OrderStrategies orderStrategies) {
         this.localDateTime = LocalDateTime.now();
         this.orderStrategies = orderStrategies;
+    }
+
+    public static OrderStrategyCandleTime of(OrderStrategies orderStrategies){
+        return new OrderStrategyCandleTime(orderStrategies);
     }
 
     @Override

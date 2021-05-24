@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DisplayName("매수 조건 검사 테스트")
 @SpringBootTest
-public class BuyTradeStrategyTest {
+public class TradeStrategyTest {
 
     @Autowired
     UpbitCandleService candleService;
@@ -34,7 +34,7 @@ public class BuyTradeStrategyTest {
     void underBollingerBandsTwiceTest() {
         CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-SC", 30, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
         candleResponses.setUnderBollingerBands(3);
-        CandleResponse matchedResponse = BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE.match(candleResponses);
+        CandleResponse matchedResponse = TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
     }
 
@@ -43,7 +43,7 @@ public class BuyTradeStrategyTest {
     void underBollingerBandsFiveTimesTest() {
         CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-SC", 30, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
         candleResponses.setUnderBollingerBands(6);
-        CandleResponse matchedResponse = BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE.match(candleResponses);
+        CandleResponse matchedResponse = TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
     }
 
@@ -52,13 +52,13 @@ public class BuyTradeStrategyTest {
     void increasing120LineTest(){
         CandleResponses candleResponses = candleService.getMinuteCandles(CandleMinute.THIRTY,"KRW-BTC", 125, LocalDateTime.of(2021, 5, 10, 4, 0, 3));
         candleResponses.set120Line(5);
-        CandleResponse matchedResponse = BuyTradeStrategy.BTCLINE120_INCREASING.match(candleResponses);
+        CandleResponse matchedResponse = TradeStrategy.BTCLINE120_INCREASING.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
 
 
         CandleResponses candleResponses2 = candleService.getMinuteCandles(CandleMinute.THIRTY,"KRW-BTC", 125, LocalDateTime.of(2021, 5, 12, 0, 0, 3));
         candleResponses2.set120Line(5);
-        CandleResponse matchedResponse2 = BuyTradeStrategy.BTCLINE120_INCREASING.match(candleResponses2);
+        CandleResponse matchedResponse2 = TradeStrategy.BTCLINE120_INCREASING.match(candleResponses2);
         assertTrue(Objects.isNull(matchedResponse2));
     }
 

@@ -1,9 +1,8 @@
 package com.lokiechart.www.dao.strategy;
 
-import com.lokiechart.www.batch.BuyTradeStrategy;
+import com.lokiechart.www.batch.TradeStrategy;
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategy;
-import com.lokiechart.www.batch.SellTradeStrategy;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
 import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.domain.account.Account;
@@ -52,14 +51,14 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
 
     private final OrderStrategy buyOrderStrategy
             = OrderStrategy.builder()
-            .tradeStrategy(BuyTradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE)
+            .tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE)
             .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
             .build();
 
     private final OrderStrategy rsi65
             = OrderStrategy.builder()
-            .tradeStrategy(BuyTradeStrategy.RSI_UNDERSIXTYFIVE)
+            .tradeStrategy(TradeStrategy.RSI_UNDERSIXTYFIVE)
             .candleMinute(CandleMinute.DAY)
             .orderType(OrderType.LIMIT)
             .build();
@@ -67,14 +66,14 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
 
     private final OrderStrategy sellOrderStrategy
             = OrderStrategy.builder()
-            .tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS)
+            .tradeStrategy(TradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS)
             .candleMinute(CandleMinute.FIVE)
             .orderType(OrderType.LIMIT)
             .build();
 
     private final OrderStrategy sellOrderStrategy2
             = OrderStrategy.builder()
-            .tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERFIVEPERCENT)
+            .tradeStrategy(TradeStrategy.TRADEPRICE_OVERFIVEPERCENT)
             .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
             .build();

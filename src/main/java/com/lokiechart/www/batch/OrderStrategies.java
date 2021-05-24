@@ -35,7 +35,7 @@ public class OrderStrategies implements Iterable<OrderStrategy> {
     }
 
     private boolean isContainsAnotherOrderSide(Set<OrderStrategy> orderStrategies) {
-        return orderStrategies.stream().map(orderStrategy -> orderStrategy.getTradeStrategy().getOrderSide()).distinct().count() > 1;
+        return orderStrategies.stream().map(OrderStrategy::getOrderSide).distinct().count() > 1;
     }
 
     public Stream<OrderStrategy> stream() {
