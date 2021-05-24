@@ -39,10 +39,10 @@ class AccountStrategyResponsesTest {
             .buyFlag(true)
             .sellFlag(true);
 
-    private final OrderStrategy buy = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).build();
-    private final OrderStrategy buy5 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).build();
-    private final OrderStrategy buy15 = OrderStrategy.builder().candleMinute(CandleMinute.FIFTEEN).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderType(OrderType.LIMIT).build();
-    private final OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).orderType(OrderType.LIMIT).build();
+    private final OrderStrategy buy = OrderStrategy.builder().candleMinute(CandleMinute.THREE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build();
+    private final OrderStrategy buy5 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build();
+    private final OrderStrategy buy15 = OrderStrategy.builder().candleMinute(CandleMinute.FIFTEEN).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build();
+    private final OrderStrategy sell1 = OrderStrategy.builder().candleMinute(CandleMinute.FIVE).tradeStrategy(TradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).orderSide(OrderSide.SELL).orderType(OrderType.LIMIT).build();
 
     private AccountStrategyResponses upbitAccountStrategyResponses;
 

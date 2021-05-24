@@ -1,5 +1,6 @@
 package com.lokiechart.www.batch;
 
+import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,12 +21,12 @@ class OrderStrategiesTest {
     void setTest() {
         Set<OrderStrategies> orderStrategiesSet = new HashSet<>();
         Set<OrderStrategy> strategies = new HashSet<>();
-        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderType(OrderType.LIMIT).build());
-        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderType(OrderType.DOWNERMARKET).build());
+        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).orderSide(OrderSide.BUY).candleMinute(CandleMinute.THREE).orderType(OrderType.LIMIT).build());
+        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).orderSide(OrderSide.BUY).candleMinute(CandleMinute.FIVE).orderType(OrderType.DOWNERMARKET).build());
 
         Set<OrderStrategy> strategies2 = new HashSet<>();
-        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderType(OrderType.LIMIT).build());
-        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderType(OrderType.DOWNERMARKET).build());
+        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build());
+        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderSide(OrderSide.BUY).orderType(OrderType.DOWNERMARKET).build());
 
         OrderStrategies orderStrategies1 = new OrderStrategies(strategies);
         OrderStrategies orderStrategies2 = new OrderStrategies(strategies2);
@@ -40,15 +41,15 @@ class OrderStrategiesTest {
     void setTest2() {
         Set<OrderStrategies> orderStrategiesSet = new HashSet<>();
         Set<OrderStrategy> strategies = new HashSet<>();
-        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderType(OrderType.LIMIT).build());
-        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderType(OrderType.DOWNERMARKET).build());
+        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build());
+        strategies.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderSide(OrderSide.BUY).orderType(OrderType.DOWNERMARKET).build());
 
         Set<OrderStrategy> strategies2 = new HashSet<>();
-        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderType(OrderType.LIMIT).build());
-        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderType(OrderType.DOWNERMARKET).build());
+        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build());
+        strategies2.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).candleMinute(CandleMinute.FIVE).orderSide(OrderSide.BUY).orderType(OrderType.DOWNERMARKET).build());
 
         Set<OrderStrategy> strategies3 = new HashSet<>();
-        strategies3.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderType(OrderType.LIMIT).build());
+        strategies3.add(OrderStrategy.builder().tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE).candleMinute(CandleMinute.THREE).orderSide(OrderSide.BUY).orderType(OrderType.LIMIT).build());
 
         OrderStrategies orderStrategies1 = new OrderStrategies(strategies);
         OrderStrategies orderStrategies2 = new OrderStrategies(strategies2);

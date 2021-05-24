@@ -62,4 +62,14 @@ public class TradeStrategyTest {
         assertTrue(Objects.isNull(matchedResponse2));
     }
 
+    @DisplayName("종가가 볼린저 밴드보다 높음 테스트")
+    @Test
+    void overBollingerBandsTwiceTest() {
+        CandleResponses candleResponses = candleService.get5MinutesCandles("KRW-BTT", 30, LocalDateTime.of(2021, 5, 1, 14, 55, 5));
+        candleResponses.setUnderBollingerBands(3);
+        CandleResponse matchedResponse = TradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS.match(candleResponses);
+        System.out.println(matchedResponse);
+        assertTrue(Objects.nonNull(matchedResponse));
+    }
+
 }

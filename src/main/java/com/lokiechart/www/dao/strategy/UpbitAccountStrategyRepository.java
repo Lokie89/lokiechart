@@ -4,6 +4,7 @@ import com.lokiechart.www.batch.TradeStrategy;
 import com.lokiechart.www.batch.CandleMinute;
 import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
+import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.domain.account.Account;
 import com.lokiechart.www.domain.strategy.AccountStrategy;
@@ -54,6 +55,7 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE)
             .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.BUY)
             .build();
 
     private final OrderStrategy rsi65
@@ -61,6 +63,7 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .tradeStrategy(TradeStrategy.RSI_UNDERSIXTYFIVE)
             .candleMinute(CandleMinute.DAY)
             .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.BUY)
             .build();
 
 
@@ -69,6 +72,7 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .tradeStrategy(TradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS)
             .candleMinute(CandleMinute.FIVE)
             .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.SELL)
             .build();
 
     private final OrderStrategy sellOrderStrategy2
@@ -76,6 +80,7 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .tradeStrategy(TradeStrategy.TRADEPRICE_OVERFIVEPERCENT)
             .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.SELL)
             .build();
 
     private final List<AccountStrategy> all = new ArrayList<>();

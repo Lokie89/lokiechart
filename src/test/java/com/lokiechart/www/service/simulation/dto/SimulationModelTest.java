@@ -10,6 +10,7 @@ import com.lokiechart.www.dao.asset.dto.UpbitAssetResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.market.dto.MarketResponse;
 import com.lokiechart.www.dao.market.dto.MarketResponses;
+import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.dao.order.dto.OrderType;
 import com.lokiechart.www.service.candle.UpbitCandleService;
 import com.lokiechart.www.service.market.MarketService;
@@ -49,9 +50,9 @@ class SimulationModelTest {
         AccountResponse accountResponse = AccountResponse.builder().buyFlag(true).sellFlag(true).totalSeed(1000000).excludeMarket(Arrays.asList(excludeMarkets)).incomePercent(5).scaleTradingPercent(10).totalTradeCount(2).maxBuyMarket(20).build();
 
         Set<OrderStrategy> buyOrderStrategySet = new HashSet<>();
-        buyOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).candleMinute(CandleMinute.THREE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).build());
+        buyOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).orderSide(OrderSide.BUY).candleMinute(CandleMinute.THREE).tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE).build());
         Set<OrderStrategy> sellOrderStrategySet = new HashSet<>();
-        sellOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).candleMinute(CandleMinute.FIVE).tradeStrategy(SellTradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).build());
+        sellOrderStrategySet.add(OrderStrategy.builder().orderType(OrderType.LIMIT).orderSide(OrderSide.BUY).candleMinute(CandleMinute.FIVE).tradeStrategy(TradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS).build());
         OrderStrategies buyOrderStrategies = new OrderStrategies(buyOrderStrategySet);
         OrderStrategies sellOrderStrategies = new OrderStrategies(sellOrderStrategySet);
 
