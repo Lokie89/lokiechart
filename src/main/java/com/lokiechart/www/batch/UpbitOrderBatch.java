@@ -17,10 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -94,21 +92,19 @@ public class UpbitOrderBatch {
         orderBuyTradeStrategy(candleMinute);
     }
 
-    private final MatchedOrderParameters buyCache = new MatchedOrderParameters();
 
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
         AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
+        Map<OrderStrategies, OrderParameters> buyMatchParametersMap = new ConcurrentHashMap<>();
         if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
             filterBuyCandleMinuteResponses.getOrderStrategySet().forEach(
-                    orderStrategies -> buyCache.put(OrderStrategyCandleTime.of(orderStrategies), orderStrategies.getMatchedOrderParameters()));
+                    orderStrategies -> buyMatchParametersMap.put(orderStrategies, orderStrategies.getMatchedOrderParameters()));
 
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
-                OrderStrategyCandleTime candleTime = OrderStrategyCandleTime.of(accountStrategyResponse.getOrderStrategies());
-                OrderParameters matchParameters = buyCache.get(candleTime).copy();
+                OrderParameters matchParameters = buyMatchParametersMap.get(accountStrategyResponse.getOrderStrategies()).copy();
                 if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
                     continue;
                 }
-                matchParameters.filterByAccount(accountStrategyResponse, upbitAssetService.getAssets(accountStrategyResponse.getAccountResponse()));
                 upbitOrderService.buyByAccount(accountStrategyResponse, matchParameters);
             }
         }

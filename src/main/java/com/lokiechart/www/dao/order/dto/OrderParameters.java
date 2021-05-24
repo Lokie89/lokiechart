@@ -39,7 +39,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
                         .collect(Collectors.toList());
     }
 
-    public void filterAlreadyBuyOrdered(OrderDetails orderDetails) {
+    public void filterBuyOrdered(OrderDetails orderDetails) {
         this.orderParameters =
                 orderParameters.stream()
                         .filter((match) -> orderDetails.getOrderDetails().stream()
@@ -75,7 +75,7 @@ public class OrderParameters implements Iterable<OrderParameter> {
         return orderParameters.size();
     }
 
-    public void filterAlreadySellOrdered(OrderDetails orderDetails) {
+    public void filterSellOrdered(OrderDetails orderDetails) {
         this.orderParameters = orderParameters.stream()
                 .filter((match) -> orderDetails.getOrderDetails()
                         .stream()

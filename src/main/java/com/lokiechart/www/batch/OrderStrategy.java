@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @ToString
-@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute", "orderType", "orderSide"})
+@EqualsAndHashCode(of = {"tradeStrategy", "candleMinute"})
 @Builder
 @RequiredArgsConstructor
 @Getter
