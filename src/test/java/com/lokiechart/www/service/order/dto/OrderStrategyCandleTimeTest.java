@@ -1,5 +1,6 @@
 package com.lokiechart.www.service.order.dto;
 
+import com.lokiechart.www.batch.OrderStrategyCandleTime;
 import com.lokiechart.www.batch.TradeStrategy;
 import com.lokiechart.www.batch.OrderStrategies;
 import com.lokiechart.www.batch.OrderStrategy;

@@ -3,7 +3,6 @@ package com.lokiechart.www.batch;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.order.dto.OrderParameters;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import java.util.stream.Stream;
  */
 @ToString
 @EqualsAndHashCode
-@Getter
 public class OrderStrategies implements Iterable<OrderStrategy> {
     private Set<OrderStrategy> orderStrategies;
 

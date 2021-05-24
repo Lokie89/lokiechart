@@ -8,7 +8,6 @@ import com.lokiechart.www.dao.order.dto.OrderSide;
 import com.lokiechart.www.service.account.AccountService;
 import com.lokiechart.www.service.asset.AssetService;
 import com.lokiechart.www.service.order.OrderService;
-import com.lokiechart.www.service.order.dto.OrderStrategyCandleTime;
 import com.lokiechart.www.service.strategy.AccountStrategyService;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponse;
 import com.lokiechart.www.service.strategy.dto.AccountStrategyResponses;
@@ -18,8 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -93,17 +94,17 @@ public class UpbitOrderBatch {
         orderBuyTradeStrategy(candleMinute);
     }
 
-    private final Map<OrderStrategyCandleTime, OrderParameters> cache = new ConcurrentHashMap<>();
+    private final MatchedOrderParameters buyCache = new MatchedOrderParameters();
 
     private void orderBuyTradeStrategy(final CandleMinute candleMinute) {
         AccountStrategyResponses filterBuyCandleMinuteResponses = accountStrategyResponses.filterCandleMinute(candleMinute).filterOrderSide(OrderSide.BUY);
         if (Objects.nonNull(filterBuyCandleMinuteResponses) && !filterBuyCandleMinuteResponses.isEmpty()) {
             filterBuyCandleMinuteResponses.getOrderStrategySet().forEach(
-                    orderStrategies -> cache.put(OrderStrategyCandleTime.of(orderStrategies), orderStrategies.getMatchedOrderParameters()));
+                    orderStrategies -> buyCache.put(OrderStrategyCandleTime.of(orderStrategies), orderStrategies.getMatchedOrderParameters()));
 
             for (AccountStrategyResponse accountStrategyResponse : filterBuyCandleMinuteResponses) {
                 OrderStrategyCandleTime candleTime = OrderStrategyCandleTime.of(accountStrategyResponse.getOrderStrategies());
-                OrderParameters matchParameters = cache.get(candleTime).copy();
+                OrderParameters matchParameters = buyCache.get(candleTime).copy();
                 if (Objects.isNull(matchParameters) || matchParameters.isEmpty()) {
                     continue;
                 }

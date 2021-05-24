@@ -1,24 +1,30 @@
-package com.lokiechart.www.service.order.dto;
+package com.lokiechart.www.batch;
 
-import com.lokiechart.www.batch.OrderStrategies;
-import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ToString
-@Getter
 public class OrderStrategyCandleTime {
     private LocalDateTime localDateTime;
     private OrderStrategies orderStrategies;
 
-    private OrderStrategyCandleTime(OrderStrategies orderStrategies) {
-        this.localDateTime = LocalDateTime.now();
+    private OrderStrategyCandleTime(OrderStrategies orderStrategies, LocalDateTime localDateTime) {
+        this.localDateTime = Objects.isNull(localDateTime) ? LocalDateTime.now() : localDateTime;
         this.orderStrategies = orderStrategies;
     }
 
-    public static OrderStrategyCandleTime of(OrderStrategies orderStrategies){
-        return new OrderStrategyCandleTime(orderStrategies);
+    public static OrderStrategyCandleTime of(OrderStrategies orderStrategies) {
+        return new OrderStrategyCandleTime(orderStrategies, null);
+    }
+
+    public static OrderStrategyCandleTime of(OrderStrategies orderStrategies, LocalDateTime localDateTime) {
+        return new OrderStrategyCandleTime(orderStrategies, localDateTime);
+    }
+
+    public boolean is2HoursPass(){
+        return this.localDateTime.isBefore(LocalDateTime.now().minusHours(2));
     }
 
     @Override
