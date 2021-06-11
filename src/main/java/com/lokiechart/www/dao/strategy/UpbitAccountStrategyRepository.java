@@ -24,7 +24,8 @@ import java.util.List;
 public class UpbitAccountStrategyRepository implements AccountStrategyRepository {
 
 
-    private final String[] excludeMarkets = {"BTC", "ETH", "XRP", "ADA", "DOGE", "DOT", "LTC", "BCH", "LINK", "VET", "XLM", "THETA", "TRX"};
+    private final String[] excludeMarkets = {"BTC", "ETH", "XRP", "ADA", "DOGE", "DOT", "LTC", "BCH", "LINK", "VET", "XLM", "THETA", "TRX",
+            "LAMB", "EDR", "QTCON", "MARO", "PXL", "IGNIS", "OBSR", "PCI", "SOLVE", "DMT", "LBC", "EMC2", "TSHP", "KMD", "ADX"};
 
     private final Account tjdfhr = Account.builder()
             .email("tjdfhrdk10@naver.com")
