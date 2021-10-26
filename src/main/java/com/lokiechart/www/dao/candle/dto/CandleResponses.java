@@ -54,7 +54,7 @@ public class CandleResponses {
         }
     }
 
-    public void setUnderBollingerBands(final int setCount) {
+    public void setBollingerBands(final int setCount) {
         for (int i = 0; i < setCount; i++) {
             final int setBollingerBandsIndex = this.candleResponses.size() - (i + 1);
             if (setBollingerBandsIndex < 20) {

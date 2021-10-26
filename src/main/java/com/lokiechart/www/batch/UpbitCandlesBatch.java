@@ -35,7 +35,7 @@ public class UpbitCandlesBatch {
     public UpbitCandlesBatch(MarketRepository upbitMarketRepository, UpbitCandleService upbitCandleService) {
         this.upbitMarketRepository = upbitMarketRepository;
         this.upbitCandleService = upbitCandleService;
-        init();
+//        init();
     }
 
     static List<MarketResponse> upbitMarket;
@@ -74,6 +74,7 @@ public class UpbitCandlesBatch {
     }
 
     private void initPreCandles() {
+        long start = System.currentTimeMillis();
         final int howGetCandles = 200;
         for (MarketResponse marketResponse : upbitMarket) {
             String market = marketResponse.getMarket();
@@ -131,6 +132,7 @@ public class UpbitCandlesBatch {
             SynchronizedNonOverlapList<CandleResponse> candles = candleResponses.getCandleResponses();
             isAlready15PercentNotIncreasedInTwoDays.put(market, candles.copyRecent(1, 3).stream().allMatch(candle -> candle.getIncreasePercent() < 15 && candles.getRecent(0).getIncreasePercent() < 10));
         }
+        logger.info((System.currentTimeMillis() - start) / 1000.0 + "초");
     }
 
     @Scheduled(cron = "${schedule.market}")
@@ -193,7 +195,7 @@ public class UpbitCandlesBatch {
         CandleResponses responses = upbitCandleService.getMinuteCandles(candleMinute, market, onceCallGetCount);
         origin.addAll(responses);
         origin.set120Line(onceCallGetCount);
-        origin.setUnderBollingerBands(onceCallGetCount);
+        origin.setBollingerBands(onceCallGetCount);
         origin.setRsi(onceCallGetCount);
         ThreadSleep.doSleep(sleepTime);
     }
@@ -202,7 +204,6 @@ public class UpbitCandlesBatch {
         marketCandleMinutes.forEach(marketCandleMinute -> {
             final String market = marketCandleMinute.getMarket();
             final CandleMinute candleMinute = marketCandleMinute.getCandleMinute();
-            logger.info(market + " " + candleMinute + " Update AssetCandles");
             setUpbitMinuteCandles(market, candleMinute, 1000);
         });
     }
@@ -218,7 +219,7 @@ public class UpbitCandlesBatch {
             CandleResponses responses = upbitCandleService.get1DayCandles(market, onceCallGetCount);
             origin.addAll(responses);
             origin.set120Line(onceCallGetCount);
-            origin.setUnderBollingerBands(onceCallGetCount);
+            origin.setBollingerBands(onceCallGetCount);
             origin.setRsi(onceCallGetCount);
             ThreadSleep.doSleep(1000);
         });

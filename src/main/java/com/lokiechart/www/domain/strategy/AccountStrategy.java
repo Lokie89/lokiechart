@@ -3,9 +3,6 @@ package com.lokiechart.www.domain.strategy;
 import com.lokiechart.www.batch.OrderStrategies;
 import com.lokiechart.www.batch.OrderStrategy;
 import com.lokiechart.www.dao.account.dto.AccountResponse;
-import com.lokiechart.www.domain.account.Account;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 

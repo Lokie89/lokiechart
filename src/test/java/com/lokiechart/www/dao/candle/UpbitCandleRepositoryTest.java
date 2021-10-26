@@ -1,15 +1,11 @@
 package com.lokiechart.www.dao.candle;
 
 import com.lokiechart.www.batch.CandleMinute;
-import com.lokiechart.www.common.SynchronizedNonOverlapList;
 import com.lokiechart.www.dao.candle.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author SeongRok.Oh
@@ -43,7 +39,7 @@ class UpbitCandleRepositoryTest {
     void setBollingerBandsTest() {
         final String market = "KRW-BTC";
         CandleResponses candleResponseList = upbitMinuteCandleRepository.getCandles(UpbitMinuteCandleParameter.builder().candleMinute(CandleMinute.ONE).market(market).count(60).build());
-        candleResponseList.setUnderBollingerBands(2);
+        candleResponseList.setBollingerBands(2);
         System.out.println(candleResponseList.getCandleResponses().copyRecent(0, 3));
     }
 

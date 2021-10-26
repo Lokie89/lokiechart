@@ -117,10 +117,8 @@ public class OrderParameters implements Iterable<OrderParameter> {
         this.orderParameters.forEach(orderParameter -> orderParameter.setOrderParams(onceInvestKRW));
 
         final double scaleTradingPercent = accountResponse.getScaleTradingPercent();
-        this.orderParameters = this.orderParameters.stream()
-                .filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent))
-                .collect(Collectors.toList())
-        ;
+
+        filterOwned(assetResponses, scaleTradingPercent);
 
         final List<String> decidedMarket = accountResponse.getDecidedMarket();
 
@@ -140,8 +138,14 @@ public class OrderParameters implements Iterable<OrderParameter> {
         this.orderParameters = this.orderParameters.subList(0, Integer.min(size(), possiblePurchaseCount));
     }
 
-    public void addAll(OrderParameters other) {
+    private void filterOwned(AssetResponses assetResponses, double scaleTradingPercent) {
+        this.orderParameters = this.orderParameters.stream()
+                .filter(orderParameter -> !orderParameter.isAlreadyOwnAndNotCheapEnough(assetResponses, scaleTradingPercent))
+                .collect(Collectors.toList())
+        ;
+    }
 
+    public void addAll(OrderParameters other) {
         this.orderParameters.addAll(other.orderParameters);
     }
 }

@@ -50,9 +50,17 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             .excludeMarket(Arrays.asList(excludeMarkets))
             .build();
 
-    private final OrderStrategy buyOrderStrategy
+    private final OrderStrategy fourTimeBollinger
             = OrderStrategy.builder()
             .tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE)
+            .candleMinute(CandleMinute.THREE)
+            .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.BUY)
+            .build();
+
+    private final OrderStrategy twoTimeBollinger
+            = OrderStrategy.builder()
+            .tradeStrategy(TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE)
             .candleMinute(CandleMinute.THREE)
             .orderType(OrderType.LIMIT)
             .orderSide(OrderSide.BUY)
@@ -62,6 +70,22 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
             = OrderStrategy.builder()
             .tradeStrategy(TradeStrategy.RSI_UNDERSIXTYFIVE)
             .candleMinute(CandleMinute.DAY)
+            .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.BUY)
+            .build();
+
+    private final OrderStrategy btc30m
+            = OrderStrategy.builder()
+            .tradeStrategy(TradeStrategy.BTCLINE120_INCREASING)
+            .candleMinute(CandleMinute.THIRTY)
+            .orderType(OrderType.LIMIT)
+            .orderSide(OrderSide.BUY)
+            .build();
+
+    private final OrderStrategy btc60m
+            = OrderStrategy.builder()
+            .tradeStrategy(TradeStrategy.BTCLINE120_INCREASING)
+            .candleMinute(CandleMinute.SIXTY)
             .orderType(OrderType.LIMIT)
             .orderSide(OrderSide.BUY)
             .build();
@@ -89,15 +113,19 @@ public class UpbitAccountStrategyRepository implements AccountStrategyRepository
         AccountResponse tjdfhrResponse = modelMapper.map(tjdfhr, AccountResponse.class);
         AccountResponse tjdalsResponse = modelMapper.map(tjdals, AccountResponse.class);
 
-        final AccountStrategy tjdfhrBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(buyOrderStrategy, rsi65).build();
+        final AccountStrategy tjdfhrBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(rsi65, fourTimeBollinger).build();
+        final AccountStrategy tjdfhrBuyAccountStrategy2 = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(rsi65, twoTimeBollinger, btc30m, btc60m).build();
         final AccountStrategy tjdfhrSellAccountStrategy = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(sellOrderStrategy).build();
         final AccountStrategy tjdfhrSellAccountStrategy2 = AccountStrategy.builder().accountResponse(tjdfhrResponse).orderStrategies(sellOrderStrategy2).build();
 
-        final AccountStrategy tjdalsBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(buyOrderStrategy, rsi65).build();
+        final AccountStrategy tjdalsBuyAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(fourTimeBollinger, rsi65).build();
         final AccountStrategy tjdalsSellAccountStrategy = AccountStrategy.builder().accountResponse(tjdalsResponse).orderStrategies(sellOrderStrategy).build();
+
         all.add(tjdfhrBuyAccountStrategy);
+        all.add(tjdfhrBuyAccountStrategy2);
         all.add(tjdfhrSellAccountStrategy);
         all.add(tjdfhrSellAccountStrategy2);
+
         all.add(tjdalsBuyAccountStrategy);
         all.add(tjdalsSellAccountStrategy);
     }

@@ -77,4 +77,11 @@ class AccountStrategyResponsesTest {
         AccountStrategyResponses filterSellAccountStrategyResponses = upbitAccountStrategyResponses.filterOrderSide(OrderSide.SELL);
         assertEquals(3, filterSellAccountStrategyResponses.size());
     }
+
+    @DisplayName("OrderStrategy 가져오기")
+    @Test
+    void getOrderStrategiesTest() {
+        upbitAccountStrategyResponses.getOrderStrategySet();
+    }
+
 }

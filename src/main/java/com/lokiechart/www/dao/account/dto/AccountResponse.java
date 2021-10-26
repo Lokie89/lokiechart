@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class AccountResponse {
-    private final Logger logger = LoggerFactory.getLogger(AccountResponse.class);
     private String email;
     private List<String> excludeMarket;
     private List<String> decidedMarket;

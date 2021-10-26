@@ -78,7 +78,7 @@ class SimulationModelTest {
             final String market = marketResponse.getMarket();
             threeCandleResponsesMap.put(market, new CandleResponses(new SynchronizedNonOverlapList<>(), Integer.MAX_VALUE));
             CandleResponses responses3 = upbitCandleService.getMinuteCandles(CandleMinute.THREE, market, howGetCandles, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
-            responses3.setUnderBollingerBands(6);
+            responses3.setBollingerBands(6);
             CandleResponses origin3 = threeCandleResponsesMap.get(market);
             origin3.addAll(responses3);
             ThreadSleep.doSleep(100);

@@ -4,7 +4,6 @@ import com.lokiechart.www.dao.candle.dto.CandleResponse;
 import com.lokiechart.www.dao.candle.dto.CandleResponses;
 import com.lokiechart.www.dao.order.dto.*;
 import com.lokiechart.www.service.candle.UpbitCandleService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ class AssetResponsesTest {
         AssetResponses assetResponses = new AssetResponses(assetResponseList);
 
         CandleResponses candleResponses = upbitCandleService.get3MinutesCandles("KRW-STMX", 30, LocalDateTime.of(2021, 5, 4, 23, 12, 10));
-        candleResponses.setUnderBollingerBands(5);
+        candleResponses.setBollingerBands(5);
         CandleResponse candleResponse = candleResponses.getCandleResponses().getRecent(0);
 
     }

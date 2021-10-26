@@ -33,7 +33,7 @@ public class TradeStrategyTest {
     @Test
     void underBollingerBandsTwiceTest() {
         CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-SC", 30, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
-        candleResponses.setUnderBollingerBands(3);
+        candleResponses.setBollingerBands(3);
         CandleResponse matchedResponse = TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSTWICE.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
     }
@@ -42,7 +42,7 @@ public class TradeStrategyTest {
     @Test
     void underBollingerBandsFiveTimesTest() {
         CandleResponses candleResponses = candleService.get3MinutesCandles("KRW-SC", 30, LocalDateTime.of(2021, 4, 28, 12, 45, 0));
-        candleResponses.setUnderBollingerBands(6);
+        candleResponses.setBollingerBands(6);
         CandleResponse matchedResponse = TradeStrategy.TRADEPRICE_UNDERBOLLINGERBANDSFOURTIMESINFIVE.match(candleResponses);
         assertTrue(Objects.nonNull(matchedResponse));
     }
@@ -66,7 +66,7 @@ public class TradeStrategyTest {
     @Test
     void overBollingerBandsTwiceTest() {
         CandleResponses candleResponses = candleService.get5MinutesCandles("KRW-BTT", 30, LocalDateTime.of(2021, 5, 1, 14, 55, 5));
-        candleResponses.setUnderBollingerBands(3);
+        candleResponses.setBollingerBands(3);
         CandleResponse matchedResponse = TradeStrategy.TRADEPRICE_OVERBOLLINGERBANDS.match(candleResponses);
         System.out.println(matchedResponse);
         assertTrue(Objects.nonNull(matchedResponse));

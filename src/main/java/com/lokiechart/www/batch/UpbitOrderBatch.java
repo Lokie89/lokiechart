@@ -49,7 +49,7 @@ public class UpbitOrderBatch {
         this.upbitAssetService = upbitAssetService;
         this.upbitAccountStrategyService = upbitAccountStrategyService;
         this.upbitCandlesBatch = upbitCandlesBatch;
-        init();
+//        init();
     }
 
     private void init() {

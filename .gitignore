@@ -38,5 +38,4 @@ out/
 
 
 src/main/resources/application-secret.yml
-src/main/java/com/lokiechart/www/batch/BuyTradeStrategy.java
-src/main/java/com/lokiechart/www/batch/SellTradeStrategy.java
+src/main/java/com/lokiechart/www/batch/TradeStrategy.java

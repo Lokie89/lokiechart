@@ -22,7 +22,7 @@ public class CandleResponseTest {
     @Test
     void setBollingerTest() {
         CandleResponses candleresponses = upbitCandleService.get3MinutesCandles("KRW-EOS",25, LocalDateTime.of(2021,4,29,19,24,0));
-        candleresponses.setUnderBollingerBands(3);
+        candleresponses.setBollingerBands(3);
         System.out.println(candleresponses);
     }
 
